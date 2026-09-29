@@ -10,23 +10,28 @@
   var CO = function (i) { return [{ v: 0, label: 'c' }, { v: i, label: 'o' }]; };
 
   // 01 Energetics — adult muscle AChR, cell-attached −100 mV, ~65 pS. Cluster Po rises with [ACh].
+  // At 1 µM a channel activates only every ~0.1–1 s: each segment holds exactly one burst (C has no exit), long gaps shown as breaks.
+  var M1 = { rates: { D: { O: 1 / 1.5 }, O: { C: 1.0, F: 0.43 }, F: { O: 50 } }, level: { O: 1 } };
   var t01 = lazy(function () {
     return TE.channelTrace({ seed: 101, dt: 0.01, fc: 10, i: -6.5, rms: 0.4, openRms: 0.25, breakMs: 3, wrapBreak: true, segs: [
-      { label: '1 µM ACh', dur: 46, model: { rates: { C: { O: 1 / 12 }, O: { C: 1.0, F: 0.43 }, F: { O: 50 } }, level: { O: 1 } } },
+      { label: '1 µM ACh', brk: true, dur: 9, start: 'D', model: M1 },
+      { brk: true, dur: 9, start: 'D', model: M1 },
+      { brk: true, dur: 9, start: 'D', model: M1 },
+      { brk: true, dur: 9, start: 'D', model: M1 },
       { label: '30 µM · Po≈0.5', brk: true, dur: 32, model: { rates: { C: { O: 1 / 1.2 }, O: { C: 1 / 1.2 } }, level: { O: 1 } } },
-      { label: '500 µM · Po≈0.95', brk: true, dur: 32, model: { rates: { C: { O: 10 }, O: { C: 0.5 } }, level: { O: 1 } } }
+      { label: '500 µM · Po≈0.95', brk: true, dur: 32, i: -5.5, model: { rates: { C: { O: 10 }, O: { C: 0.5 } }, level: { O: 1 } } }
     ] });
   });
   TE.define('c01', scrollFig(t01, { windowMs: 40, rate: 9, range: [2.6, -8.4], levels: CO(-6.5), scale: { pA: 5, ms: 5 }, hold: '−100 mV', labelSize: 9 }));
 
-  // 02 Allostery — same receptor; abrupt switch between a high-Po and a low-Po gating mode.
+  // 02 Allostery — same receptor and conditions as c01 at 30 µM; an M2 pore mutation ~50 Å from the binding site lengthens openings.
   var t02 = lazy(function () {
-    return TE.channelTrace({ seed: 202, dt: 0.01, fc: 10, i: -6.5, rms: 0.4, openRms: 0.25, segs: [
-      { label: 'high-Po mode', dur: 55, model: { rates: { C: { O: 3 }, O: { C: 1 / 3 } }, level: { O: 1 } } },
-      { label: 'low-Po mode', dur: 55, model: { rates: { C: { O: 1 / 3.2 }, O: { C: 1 / 0.8 } }, level: { O: 1 } } }
+    return TE.channelTrace({ seed: 202, dt: 0.01, fc: 10, i: -6.5, rms: 0.4, openRms: 0.25, breakMs: 3, wrapBreak: true, segs: [
+      { label: 'wild type', dur: 55, model: { rates: { C: { O: 1 / 1.2 }, O: { C: 1 / 1.2 } }, level: { O: 1 } } },
+      { label: 'M2 pore mutant', brk: true, dur: 55, model: { rates: { C: { O: 1 / 1.2 }, O: { C: 1 / 6 } }, level: { O: 1 } } }
     ] });
   });
-  TE.define('c02', scrollFig(t02, { windowMs: 40, rate: 9, range: [2.6, -8.4], levels: CO(-6.5), scale: { pA: 5, ms: 5 }, hold: '−100 mV', labelSize: 9 }));
+  TE.define('c02', scrollFig(t02, { windowMs: 40, rate: 9, range: [2.6, -8.4], levels: CO(-6.5), scale: { pA: 5, ms: 5 }, hold: '−100 mV · 30 µM ACh', labelSize: 9 }));
 
   // 03 Therapeutics — α7 nAChR, −100 mV, ~90 pS. Control: rare, very brief openings. + type II PAM: long bursts.
   var t03 = lazy(function () {
@@ -68,14 +73,15 @@
 
   // 06 GPCRs — GIRK1/2 + Gi/o receptor, whole-cell −80 mV, high K⁺. Macroscopic current, drawn as a chart sweep.
   TE.define('c06', function () {
-    var r = TE.rng(606), T = 40, dt = 0.02, N = Math.round(T / dt), y = new Float32Array(N), s18 = 0;
+    // Agonist 3–25 s; Ba²⁺ 1 mM 12–17 s, applied while the GIRK current is on (blocks basal + evoked current).
+    var r = TE.rng(606), T = 40, dt = 0.02, N = Math.round(T / dt), y = new Float32Array(N), s25 = 0;
     for (var k = 0; k < N; k++) {
       var t = k * dt, act = 0;
-      if (t >= 3 && t < 18) { act = (1 - Math.exp(-(t - 3) / 0.7)) * (0.68 + 0.32 * Math.exp(-(t - 3) / 5)); s18 = act; }
-      else if (t >= 18) act = s18 * Math.exp(-(t - 18) / 2.5);
+      if (t >= 3 && t < 25) { act = (1 - Math.exp(-(t - 3) / 0.7)) * (0.68 + 0.32 * Math.exp(-(t - 3) / 5)); s25 = act; }
+      else if (t >= 25) act = s25 * Math.exp(-(t - 25) / 2.5);
       var blk = 1;
-      if (t >= 27 && t < 33) blk = 1 - 0.97 * (1 - Math.exp(-(t - 27) / 0.3));
-      else if (t >= 33) blk = 1 - 0.97 * (1 - Math.exp(-6 / 0.3)) * Math.exp(-(t - 33) / 1.5);
+      if (t >= 12 && t < 17) blk = 1 - 0.97 * (1 - Math.exp(-(t - 12) / 0.3));
+      else if (t >= 17) blk = 1 - 0.97 * (1 - Math.exp(-5 / 0.3)) * Math.exp(-(t - 17) / 1.5);
       var I = (-45 - 1150 * act) * blk;
       y[k] = I + TE.gauss(r) * (4 + 0.006 * Math.abs(I));
     }
@@ -83,10 +89,10 @@
     return { still: dur, draw: function (ctx, W, H, tt) {
       var B = box(W, H), u = tt % (dur + hold), frac = Math.min(1, u / dur), top = 120, bot = -1300;
       var Y = function (v) { return B.y + 6 + (top - v) / (top - bot) * (B.h - 6); }, X = function (ts) { return B.x + ts / T * B.w; };
-      [[3, 18, 'agonist'], [27, 33, 'Ba²⁺ 1 mM']].forEach(function (a) {
+      [[3, 25, 'agonist', 0], [12, 17, 'Ba²⁺ 1 mM', 1]].forEach(function (a) { // Ba²⁺ bar stacked just below the agonist bar
         var x0 = X(a[0]), x1 = X(a[1]);
-        ctx.fillStyle = 'rgba(241,212,154,0.55)'; ctx.fillRect(x0, B.y - 2, x1 - x0, 3);
-        TE.text(ctx, a[2], x0, B.y - 5, { size: 9, color: TE.C.lab });
+        ctx.fillStyle = a[3] ? 'rgba(232,236,243,0.7)' : 'rgba(241,212,154,0.55)'; ctx.fillRect(x0, B.y - 2 + a[3] * 5, x1 - x0, 3);
+        TE.text(ctx, a[2], x0, B.y - 5, { size: 9, color: a[3] ? 'rgba(232,236,243,0.8)' : TE.C.lab });
       });
       TE.text(ctx, '−80 mV', B.x + B.w, B.y - 5, { size: 9, align: 'right' });
       var n = Math.floor(frac * N), step = Math.max(1, Math.floor(N / B.w / 1.5));
@@ -98,12 +104,12 @@
     } };
   });
 
-  // 07 Organelles — whole-endolysosome ramps, −100 → +100 mV, before/after cytosolic PI(3,5)P₂.
+  // 07 Organelles — TPC2, whole-endolysosome ramps, symmetric 160 mM Na⁺ (E_rev ≈ 0 mV), −100 → +100 mV, before/after cytosolic PI(3,5)P₂.
   // Bertl et al. (1992): V = V_cytosol − V_lumen; inward = cations lumen → cytosol (negative).
   TE.define('c07', function () {
     var r = TE.rng(707), NV = 201, curves = [0.3, 3.1].map(function (g) {
       var a = new Float32Array(NV);
-      for (var k = 0; k < NV; k++) { var V = -100 + k; a[k] = g * (V - 12) * (V < 0 ? 1 + 0.18 * (-V / 100) : 1) + TE.gauss(r) * 2.2; }
+      for (var k = 0; k < NV; k++) { var V = -100 + k; a[k] = g * (V - 0) * (V < 0 ? 1 + 0.18 * (-V / 100) : 1) + TE.gauss(r) * 2.2; }
       return a;
     });
     var ramp = 3, hold = 2.5, cyc = ramp * 2 + hold;
@@ -115,7 +121,8 @@
       TE.text(ctx, '−100', X(-100), Y(0) - 4, { size: 9, align: 'left' });
       TE.text(ctx, '+100 mV', X(100), Y(0) - 4, { size: 9, align: 'right' });
       TE.text(ctx, 'V = V_cyt − V_lumen · inward = lumen → cytosol', B.x, B.y - 5, { size: 9 });
-      [[0, 'control', 'rgba(232,236,243,0.6)'], [1, '+ PI(3,5)P₂', TE.C.gold]].forEach(function (c) {
+      TE.text(ctx, '160 mM Na⁺ both sides', B.x, B.y + 7, { size: 9 });
+      [[0, 'control', 'rgba(232,236,243,0.6)'], [1, 'TPC2 + PI(3,5)P₂', TE.C.gold]].forEach(function (c) {
         var p = TE.clamp((u - c[0] * ramp) / ramp, 0, 1), n = Math.floor(p * (NV - 1)); if (n < 1) return;
         var a = curves[c[0]];
         ctx.beginPath(); for (var k = 0; k <= n; k++) { var xx = X(-100 + k), yy = Y(a[k]); if (k) ctx.lineTo(xx, yy); else ctx.moveTo(xx, yy); }

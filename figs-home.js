@@ -94,15 +94,16 @@
       while (count < target) { var s = sweep(count); for (var i = 0; i < NS; i++) sum[i] += s[i]; count++; }
       if (count >= 500 && !fit) fit = fitAvg();
       var pad = Math.max(20, Math.min(40, W * 0.05)), left = Math.max(pad, (W - 1360) / 2 + pad), right = Math.min(W - pad, (W + 1360) / 2 - pad);
-      var cap = canvas.closest('section'), capEl = cap && cap.querySelector('[data-fig-cap]'), cb = capEl ? capEl.getBoundingClientRect().bottom - canvas.getBoundingClientRect().top : 40;
+      var cap = canvas.closest('section'), capEl = cap && cap.querySelector('[data-fig-cap]'), cb = 44;
       var sec = canvas.closest('section'), h1 = sec && sec.querySelector('h1'), wrap = h1 && h1.parentNode;
       if (sec && wrap) { // make room above the headline so the figure never sits behind text (phones, short laptop windows)
         if (sec.__mh0 == null) sec.__mh0 = sec.style.minHeight;
-        var need = Math.round(Math.max(78, cb + 34) + (right - left < 760 ? 320 : 280) + wrap.offsetHeight);
+        var need = Math.round(Math.max(78, cb + 34) + (right - left < 760 ? 344 : 304) + wrap.offsetHeight);
         var mh = sec.__mh0 ? 'max(' + need + 'px, ' + sec.__mh0 + ')' : need + 'px';
-        if (sec.__mhs !== mh) { sec.__mhs = mh; sec.style.minHeight = mh; }
+        if (sec.__mhs !== mh || sec.style.minHeight !== sec.__mhn) { sec.__mhs = mh; sec.style.minHeight = mh; sec.__mhn = sec.style.minHeight; }
       }
-      var at = anchorTop(), y0 = Math.max(78, cb + 34), lim = at != null ? at - 36 : H * 0.5, y1 = Math.max(y0 + 170, lim), side = right - left >= 760;
+      var at = anchorTop(), y0 = Math.max(78, cb + 34), lim = at != null ? at - 60 : H * 0.5, y1 = Math.max(y0 + 170, lim), side = right - left >= 760;
+      if (capEl && capEl.parentNode) { var cs = capEl.parentNode.style, cl = side ? right - 2 * Math.min(560, (right - left) * 0.44) - 56 : left, st = { top: Math.round(y1 + 14) + 'px', left: Math.round(cl) + 'px', right: Math.round(W - right) + 'px' }; for (var p in st) if (cs[p] !== st[p]) cs[p] = st[p]; }
       var alpha = (y1 > lim + 8 ? 0.4 : 1) * Math.max(0, Math.min(1, u / 0.4, (LOOP - u) / 0.5));
       ctx.save(); ctx.globalAlpha = alpha;
       if (side) {
@@ -117,5 +118,123 @@
       ctx.restore();
     }
     return { still: 11, draw: draw };
+  });
+})();
+
+/* Bind, then gate (Home) — equilibrium two-site cyclic scheme for the adult muscle AChR.
+   E0 = 7e-7, Kd = 100 µM (closed), Jd = 17 nM (open); detailed balance: E1 = E0·Kd/Jd, E2 = E0·(Kd/Jd)². No desensitisation.
+   Canvases: <canvas data-fig="bindgate" data-part="cube|plot|strip" data-ach="log10 µM" data-e0f="E0 factor">. */
+(function () {
+  var TE = window.TE; if (!TE || TE.__bindgate) return; TE.__bindgate = true;
+  var BG = TE.bindgate = { E0: 7e-7, Kd: 100, Jd: 0.017 };
+  BG.weights = function (A, E0) {
+    var a = A / BG.Kd, j = A / BG.Jd;
+    return { C: 1, AC: a, CA: a, ACA: a * a, O: E0, AO: E0 * j, OA: E0 * j, AOA: E0 * j * j };
+  };
+  BG.po = function (A, E0) { var o = E0 * Math.pow(1 + A / BG.Jd, 2); return o / (Math.pow(1 + A / BG.Kd, 2) + o); };
+  BG.E = function (n, E0) { return E0 * Math.pow(BG.Kd / BG.Jd, n); };
+  BG.ec50 = function (E0) {
+    var E2 = BG.E(2, E0), half = (BG.po(0, E0) + E2 / (1 + E2)) / 2, a = -4, b = 6;
+    for (var k = 0; k < 60; k++) { var m = (a + b) / 2; if (BG.po(Math.pow(10, m), E0) < half) a = m; else b = m; }
+    return Math.pow(10, (a + b) / 2);
+  };
+  var SUP = { '-': '⁻', '0': '⁰', '1': '¹', '2': '²', '3': '³', '4': '⁴', '5': '⁵', '6': '⁶', '7': '⁷', '8': '⁸', '9': '⁹' };
+  BG.sci = function (v) {
+    if (v >= 0.01 && v < 1000) return v >= 10 ? String(Math.round(v)) : v.toPrecision(2);
+    var e = Math.floor(Math.log10(v)), m = v / Math.pow(10, e);
+    return (Math.abs(m - 1) < 0.05 ? '' : m.toFixed(1) + '×') + '10' + String(e).split('').map(function (ch) { return SUP[ch]; }).join('');
+  };
+  function params(c) {
+    var l = parseFloat(c.getAttribute('data-ach')), f = parseFloat(c.getAttribute('data-e0f'));
+    if (!(l === l)) l = Math.log10(30); if (!(f > 0)) f = 1;
+    return { l: l, A: Math.pow(10, l), f: f, E0: BG.E0 * f };
+  }
+  function pct(p) { var v = p * 100; return (v >= 10 ? v.toFixed(0) : v >= 1 ? v.toFixed(1) : v >= 0.01 ? v.toFixed(2) : '<0.01') + '%'; }
+
+  // [name, open (0/1), site 2 bound (depth), site 1 bound (right)]
+  var NODES = [['C', 0, 0, 0], ['AC', 0, 0, 1], ['CA', 0, 1, 0], ['ACA', 0, 1, 1], ['O', 1, 0, 0], ['AO', 1, 0, 1], ['OA', 1, 1, 0], ['AOA', 1, 1, 1]];
+  function drawCube(ctx, W, H, P) {
+    var w8 = BG.weights(P.A, P.E0), S = 0, k; for (k in w8) S += w8[k];
+    var fs = W < 420 ? 9.5 : 10.5, x0 = W * 0.22, y0 = H * 0.33, w = W * 0.38, dx = W * 0.2, dy = -H * 0.16, h = H * 0.44;
+    var pos = {}; NODES.forEach(function (n) { pos[n[0]] = { x: x0 + n[3] * w + n[2] * dx, y: y0 + n[1] * h + n[2] * dy, n: n }; });
+    TE.text(ctx, 'top face: closed · bottom face: open', 0, 12, { size: fs });
+    for (var i = 0; i < 8; i++) for (var j = i + 1; j < 8; j++) {
+      var A = NODES[i], B = NODES[j], diff = (A[1] !== B[1]) + (A[2] !== B[2]) + (A[3] !== B[3]);
+      if (diff !== 1) continue;
+      var gate = A[1] !== B[1], hidden = A[0] === 'OA' || B[0] === 'OA', pa = pos[A[0]], pb = pos[B[0]];
+      TE.line(ctx, pa.x, pa.y, pb.x, pb.y, gate ? 'rgba(241,212,154,0.45)' : 'rgba(232,236,243,0.3)', 1.2, hidden ? [3, 4] : null);
+    }
+    var mid = x0 + w / 2;
+    TE.text(ctx, 'bind · Kd = 100 µM', mid, y0 - 8, { size: fs, color: TE.C.ink, align: 'center' });
+    TE.text(ctx, 'bind · Jd = 17 nM', mid, y0 + h + 18, { size: fs, color: TE.C.ink, align: 'center' });
+    TE.text(ctx, 'gate', x0 - 9, y0 + h / 2 - 7, { size: fs, align: 'right', base: 'middle' });
+    TE.text(ctx, 'E₀ ' + BG.sci(P.E0), x0 - 9, y0 + h / 2 + 7, { size: fs, color: TE.C.lab, align: 'right', base: 'middle' });
+    TE.text(ctx, 'E₁ ' + BG.sci(BG.E(1, P.E0)), x0 + w + 8, y0 + h / 2 + 8, { size: fs, color: TE.C.lab, base: 'middle' });
+    TE.text(ctx, 'E₁', x0 + dx + 6, y0 + dy + h / 2, { size: fs, color: 'rgba(241,212,154,0.6)', base: 'middle' });
+    TE.text(ctx, 'E₂ ' + BG.sci(BG.E(2, P.E0)), x0 + w + dx + 8, y0 + dy + h / 2, { size: fs, color: TE.C.lab, base: 'middle' });
+    NODES.forEach(function (n) {
+      var q = pos[n[0]], p = w8[n[0]] / S, sp = Math.sqrt(p), r = 3.5 + 15 * sp, open = n[1] === 1;
+      var rgb = open ? '241,212,154' : '232,236,243';
+      ctx.beginPath(); ctx.arc(q.x, q.y, r, 0, 6.2832);
+      ctx.fillStyle = 'rgba(' + rgb + ',' + (0.12 + 0.88 * sp).toFixed(3) + ')'; ctx.fill();
+      ctx.strokeStyle = 'rgba(' + rgb + ',0.7)'; ctx.lineWidth = 1; ctx.stroke();
+      var right = n[3] === 1, lx = right ? q.x + r + 7 : q.x - r - 7, ly = q.y + (n[2] && !right ? -7 : 0), al = right ? 'left' : 'right';
+      TE.text(ctx, n[0], lx, ly - 6, { size: fs, color: TE.C.ink, align: al, base: 'middle' });
+      TE.text(ctx, pct(p), lx, ly + 7, { size: fs, color: open ? TE.C.gold : TE.C.mute, align: al, base: 'middle', weight: 600 });
+    });
+  }
+
+  function drawPlot(ctx, W, H, P) {
+    var fs = W < 420 ? 9.5 : 10.5, L = 38, R = 12, T = 14, Bm = 42, pw = W - L - R, ph = H - T - Bm;
+    var X = function (l) { return L + (l + 2) / 6 * pw; }, Y = function (p) { return T + (1 - p) * ph; };
+    [0, 0.5, 1].forEach(function (v) {
+      TE.line(ctx, L, Math.round(Y(v)) + 0.5, L + pw, Math.round(Y(v)) + 0.5, v ? TE.C.grid : TE.C.axis, 1);
+      TE.text(ctx, v === 0.5 ? '0.5' : String(v), L - 8, Y(v), { size: fs, align: 'right', base: 'middle' });
+    });
+    TE.line(ctx, L + 0.5, T, L + 0.5, T + ph, TE.C.axis, 1);
+    ['0.01', '0.1', '1', '10', '100', '1000', '10000'].forEach(function (s, k) {
+      var x = Math.round(X(k - 2)) + 0.5;
+      if (k) TE.line(ctx, x, T, x, T + ph, TE.C.grid, 1);
+      TE.line(ctx, x, T + ph, x, T + ph + 4, TE.C.axis, 1);
+      TE.text(ctx, s, x, T + ph + 16, { size: fs, align: 'center' });
+    });
+    TE.text(ctx, '[ACh], µM', L + pw / 2, T + ph + 34, { size: fs, align: 'center' });
+    TE.text(ctx, 'Po', L - 8, T - 2, { size: fs, color: TE.C.ink, align: 'right', base: 'top' });
+    function curve(E0, col, lw, dash) {
+      ctx.beginPath();
+      for (var i = 0; i <= 300; i++) { var l = -2 + i / 50, xx = X(l), yy = Y(BG.po(Math.pow(10, l), E0)); if (i) ctx.lineTo(xx, yy); else ctx.moveTo(xx, yy); }
+      ctx.strokeStyle = col; ctx.lineWidth = lw; ctx.setLineDash(dash || []); ctx.lineJoin = 'round'; ctx.stroke(); ctx.setLineDash([]);
+    }
+    if (P.f !== 1) curve(BG.E0, 'rgba(232,236,243,0.4)', 1.2, [4, 4]);
+    curve(P.E0, TE.C.gold, 2);
+    if (P.f !== 1) TE.text(ctx, 'wild type', X(3.95), Y(BG.po(1e4, BG.E0)) + (P.f > 1 ? 14 : -8), { size: fs, color: 'rgba(232,236,243,0.6)', align: 'right' });
+    var cx = X(P.l), cy = Y(BG.po(P.A, P.E0));
+    TE.line(ctx, cx + 0.5, cy, cx + 0.5, T + ph, 'rgba(255,255,255,0.25)', 1, [2, 3]);
+    TE.line(ctx, L, cy + 0.5, cx, cy + 0.5, 'rgba(255,255,255,0.25)', 1, [2, 3]);
+    ctx.beginPath(); ctx.arc(cx, cy, 5, 0, 6.2832); ctx.fillStyle = '#fff'; ctx.fill();
+  }
+
+  // Live C⇌O record at the current Po: mean open time 1 ms, opening rate Po/(1−Po) per ms, −6.5 pA at −100 mV, 10 kHz, 0.4 pA RMS.
+  function strip(c) {
+    var key = null, sc = null, last = 0, o = { windowMs: 40, rate: 9, range: [2.6, -8.4], levels: [{ v: 0, label: 'c' }, { v: -6.5, label: 'o' }], scale: { pA: 5, ms: 5 }, labelSize: 9 };
+    function build(po) {
+      var beta = Math.min(500, po / Math.max(1e-9, 1 - po)), open = TE.rng(817)() < po;
+      sc = TE.scroller(TE.channelTrace({ seed: 818, dt: 0.01, fc: 10, i: -6.5, rms: 0.4, openRms: 0.25, segs: [
+        { dur: 240, tail: 0, start: open ? 'O' : 'C', model: { rates: { C: { O: beta }, O: { C: 1 } }, level: { O: 1 } } }
+      ] }), o);
+    }
+    return { still: 1.5, draw: function (ctx, W, H, t) {
+      var P = params(c), po = BG.po(P.A, P.E0), k = po.toPrecision(3), now = performance.now();
+      if (k !== key && (!sc || TE.reduce || now - last > 120)) { key = k; last = now; build(po); }
+      TE.text(ctx, 'single channel at this [ACh]', 12, 10, { size: 9, color: TE.C.lab });
+      TE.text(ctx, '−100 mV', W - 2, 10, { size: 9, align: 'right' });
+      sc.draw(ctx, { x: 0, y: 24, w: W, h: H - 40 }, t);
+    } };
+  }
+
+  TE.define('bindgate', function (c) {
+    var part = c.getAttribute('data-part') || 'plot';
+    if (part === 'strip') return strip(c);
+    return { still: 0, key: function () { return c.getAttribute('data-ach') + '|' + c.getAttribute('data-e0f'); }, draw: function (ctx, W, H) { (part === 'cube' ? drawCube : drawPlot)(ctx, W, H, params(c)); } };
   });
 })();

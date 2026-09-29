@@ -16,19 +16,23 @@
    ============================================================================ */
 window.LAB_CONTENT = {
 
+  /* PRINCIPAL INVESTIGATOR — title and department, used in the nav, footer,
+     Home, People, Teaching and Join pages and the map link.                   */
+  "pi": { "title": "[TITLE]", "dept": "[DEPARTMENT]" },
+
   /* PEOPLE ------------------------------------------------------------------
      status: "current"  → shows in "Lab Group"
      status: "alumni"   → shows in "Lab alumni"
      Move someone to alumni by changing their status from "current" to "alumni".
      bio and past are optional (use "" to leave blank).                        */
   "people": [
-    { "status": "current", "img": "assets/people/sunil.png", "name": "Sunil Gadhwal", "role": "Ph.D. Scholar",
-      "bio": "Understanding the structure\u2013function relationship of the human intracellular two-pore-domain ion channel HsTPC2. Enjoys experimental research; sports are a stressbuster in free time.",
+    { "status": "current", "img": "assets/people/sunil.jpg", "name": "Sunil Gadhwal", "role": "Ph.D. Scholar",
+      "bio": "Understanding the structure\u2013function relationship of the human two-pore channel 2 (hsTPC2), an endolysosomal ion channel. Enjoys experimental research; sports are a stressbuster in free time.",
       "past": "Past:\nMSc Biotechnology (2019\u201321)\nBSBE, IIT Bombay" },
-    { "status": "current", "img": "assets/people/pooja.png", "name": "Pooja Verma", "role": "Ph.D. Scholar",
+    { "status": "current", "img": "assets/people/pooja.jpg", "name": "Pooja Verma", "role": "Ph.D. Scholar",
       "bio": "Modeling the behaviour of neurons in the nicotinic addiction-and-withdrawal network, using the NEURON simulation environment to capture pathways with complex branched anatomy and biophysical membrane properties.",
       "past": "Past:\nB.Tech Electronics & Communication Engg, Maharaja Surajmal Institute of Technology, Delhi (2016\u201320)" },
-    { "status": "current", "img": "assets/people/mahesh.png", "name": "Mahesh Mahadeo Mathe", "role": "Ph.D. Scholar",
+    { "status": "current", "img": "assets/people/mahesh.jpg", "name": "Mahesh Mahadeo Mathe", "role": "Ph.D. Scholar",
       "bio": "Screening ion channels involved in neuropathic pain \u2014 in silico / in vitro HTS, transcriptomics, electrophysiology and MD simulations.",
       "past": "Past:\nM.Tech Medical Biotechnology, IIT Hyderabad (2018\u201320)" },
     { "status": "current", "img": "", "name": "Rajiv Sharma", "role": "Ph.D. Scholar",
@@ -38,7 +42,9 @@ window.LAB_CONTENT = {
       "bio": "Investigating the biophysical properties and functional role of ion channels in endolysosomes \u2014 ion permeability, channel regulation and intracellular trafficking.",
       "past": "Past:\nMSc Biochemistry, Institute of Sciences, Banaras Hindu University (2021\u20132023)\nBSc (Hons.) Biochemistry, University of Delhi (2018\u20132021)" },
     { "status": "current", "img": "", "name": "Gauri Saini", "role": "Ph.D. Scholar", "bio": "", "past": "" },
-    { "status": "current", "img": "", "name": "Rakesh Barwar", "role": "Ph.D. Scholar", "bio": "", "past": "" },
+    { "status": "current", "img": "", "name": "Rakesh Barwar", "role": "Ph.D. Scholar",
+      "bio": "Investigating how the human two-pore channel 2 (hsTPC2) senses luminal pH and how this controls its gating, combining computational structural biology, site-directed mutagenesis and patch-clamp electrophysiology. CSIR-JRF fellow.",
+      "past": "Past:\n[ADD DEGREE, INSTITUTION, YEARS]" },
     { "status": "current", "img": "", "name": "Jaweria Mariam", "role": "Ph.D. Scholar", "bio": "", "past": "" },
     { "status": "current", "img": "", "name": "Tanish Gupta", "role": "Ph.D. Scholar", "bio": "", "past": "" },
     { "status": "current", "img": "", "name": "Shayamolima Gogoi", "role": "Ph.D. Scholar",
@@ -46,24 +52,24 @@ window.LAB_CONTENT = {
       "past": "Past:\nIntegrated MSc in Systems Biology, University of Hyderabad (2020\u20132025)" },
     { "status": "current", "img": "", "name": "Dhawal Kumar Jha", "role": "M.Sc. Student",
       "bio": "Passionate about understanding the nervous system at multiple scales \u2014 from the biophysics of ion channels to the computational logic of neural circuits and the transcriptional landscape of individual cells.",
-      "past": "Past:\nMSc Biological Sciences, KSBS, IIT Delhi (2025\u20132026)\nBSc Zoology, Hansraj College, University of Delhi (2020\u20132023)" },
+      "past": "Current: MSc Biological Sciences, IIT Delhi (2025\u20132026)\nPast:\nBSc Zoology, Hansraj College, University of Delhi (2020\u20132023)" },
     { "status": "current", "img": "", "name": "Nikita", "role": "Student", "bio": "", "past": "" },
 
-    { "status": "alumni", "img": "assets/people/sushanth.png", "name": "Sushanth Adusumilli", "role": "Ph.D. Scholar",
+    { "status": "alumni", "img": "assets/people/sushanth.jpg", "name": "Sushanth Adusumilli", "role": "Ph.D. Scholar",
       "bio": "Investigating the intracellular TRPML3 ion channel; experienced in patch-clamp and RNA-seq data analysis. Finds satisfaction in understanding new concepts and teaching others \u2014 console and PC gaming are a favourite way to unwind.",
       "past": "Past:\nMS Biochemistry & Molecular Biology, University of Southern California (2016\u201318)" },
-    { "status": "alumni", "img": "assets/people/pradeepti.png", "name": "Pradeepti Kampani", "role": "Ph.D. Scholar",
+    { "status": "alumni", "img": "assets/people/pradeepti.jpg", "name": "Pradeepti Kampani", "role": "Ph.D. Scholar",
       "bio": "Studying allostery in a model GPCR \u2014 the muscarinic acetylcholine receptor with the GIRK channel as a reporter \u2014 using patch-clamp electrophysiology to capture the receptor\u2019s millisecond conformational changes. An avid reader who enjoys time with family and friends.",
       "past": "Past:\nMSc Biomedical Science, ACBR, University of Delhi (2014\u201316)" },
-    { "status": "alumni", "img": "assets/people/awanish.png", "name": "Awanish Kumar", "role": "Post-doctoral Fellow",
+    { "status": "alumni", "img": "assets/people/awanish.jpg", "name": "Awanish Kumar", "role": "Post-doctoral Fellow",
       "bio": "Studied the role of choline in neuromuscular synapse formation using chick-embryo neuronal preparations, and how receptor engineering shapes synaptic responses during development.",
       "past": "Past:\nPostdoctoral Scholar, University of Kentucky\u2013Lexington, USA (2021\u20132022)" },
-    { "status": "alumni", "img": "assets/people/nadira.png", "name": "Nadira Khatoon", "role": "Ph.D. Scholar",
+    { "status": "alumni", "img": "assets/people/nadira.jpg", "name": "Nadira Khatoon", "role": "Ph.D. Scholar",
       "bio": "Investigated ligand binding at the orthosteric site and allosteric modulation in neuronal nAChRs by patch-clamp \u2014 quantifying ligand-binding energies, gating energies and communication between allosteric and ligand-binding sites.",
       "past": "Past:\nMSc, University of Lucknow (2017\u20132019)" },
-    { "status": "alumni", "img": "assets/people/poulomi.png", "name": "Poulomi Dey", "role": "Post-doctoral Fellow",
+    { "status": "alumni", "img": "assets/people/poulomi.jpg", "name": "Poulomi Dey", "role": "Post-doctoral Fellow",
       "bio": "Now a postdoctoral fellow at the Centre of Molecular Biology and Genetics of Neurodegeneration, Dept. of Psychiatry, Icahn School of Medicine at Mount Sinai.", "past": "" },
-    { "status": "alumni", "img": "assets/people/rachita.png", "name": "Rachita Sharma", "role": "MS(R) Scholar",
+    { "status": "alumni", "img": "assets/people/rachita.jpg", "name": "Rachita Sharma", "role": "MS(R) Scholar",
       "bio": "Now pursuing a PhD at the Max Planck Institute of Biophysics, Frankfurt.",
       "past": "Past:\nBTech, GGSIP University" }
   ],
@@ -72,6 +78,7 @@ window.LAB_CONTENT = {
      Newest first is nice but not required — the site groups them by "year".
      "year" can be a range like "2007\u20132011". url = link to the paper.       */
   "publications": [
+    { "year": "2024", "title": "Mechanism of hydrophobic gating in the acetylcholine receptor channel pore", "authors": "Kumari M, Khatoon N, Sharma R, Adusumilli S, Auerbach A, Kashyap HK, Nayak TK", "venue": "J. Gen. Physiol.", "url": "https://doi.org/10.1085/jgp.202213189" },
     { "year": "2019", "title": "Efficiency measures the conversion of agonist binding energy into receptor conformational change", "authors": "Nayak TK, Vij R, Bruhova I, Shandilya J, Auerbach A", "venue": "J. Gen. Physiol.", "url": "https://doi.org/10.1085/jgp.201812215" },
     { "year": "2019", "title": "iPSC model of CHRFAM7A effect on \u03b17 nicotinic acetylcholine receptor function in the human context", "authors": "Ihnatovych I, Nayak TK, Ouf A, Sule N, Birkaya B, Auerbach A, Szigeti K", "venue": "Transl. Psychiatry", "url": "https://doi.org/10.1038/s41398-019-0382-0" },
     { "year": "2017", "title": "Cyclic activation of endplate acetylcholine receptors", "authors": "Nayak TK, Auerbach A", "venue": "PNAS", "url": "https://doi.org/10.1073/pnas.1700920114" },
@@ -88,41 +95,45 @@ window.LAB_CONTENT = {
 
   /* BOOK CHAPTERS & UNDER REVIEW (shown in their own block, no year, no link) */
   "publicationsOther": [
-    { "title": "Protein engineering and design in ion channels and receptors (Book chapter)", "authors": "Khatoon N, Adusumilli S, Dey P, Sharma R, Kampani P, Shandilya J, Nayak TK (2022)", "venue": "Methods Cell Biol. 169:143\u2013168" },
-    { "title": "Hydrophobic gating of the acetylcholine receptor channel pore", "authors": "Kumari M, Khatoon N, Adusumilli S, Sharma R, Auerbach A, Kashyap H, Nayak TK", "venue": "Under revision, J. Gen. Physiol." }
+    { "title": "Protein engineering and design in ion channels and receptors (Book chapter)", "authors": "Khatoon N, Adusumilli S, Dey P, Sharma R, Kampani P, Shandilya J, Nayak TK (2022)", "venue": "Methods Cell Biol. 169:143\u2013168" }
   ],
 
-  /* LAB UPDATES / NEWS (homepage) — newest first. tag e.g. Research, Publication, People, Talk, Grant */
+  /* LAB UPDATES / NEWS (homepage) — newest first; the homepage shows the first 4.
+     date: month + year, e.g. "Mar 2026".  tag: Paper, People, Facility, Talk or Award.
+     text: one sentence.                                                         */
   "news": [
-    { "date": "2024", "tag": "Research", "text": "New project launched on the hydrophobic gating of the acetylcholine receptor channel pore, combining electrophysiology with all-atom simulation." },
-    { "date": "2023", "tag": "Publication", "text": "Book chapter \u201cProtein engineering and design in ion channels and receptors\u201d published in Methods in Cell Biology." },
-    { "date": "2023", "tag": "People", "text": "The lab welcomes new PhD scholars joining the patch-clamp and computational teams." },
-    { "date": "2022", "tag": "Talk", "text": "Group presented work on the energetics of agonist binding at the receptor biophysics symposium." }
+    { "date": "2024", "tag": "Publication", "text": "Our paper on the mechanism of hydrophobic gating in the acetylcholine receptor pore is published in the Journal of General Physiology." },
+    { "date": "[CONFIRM 2022 OR 2023]", "tag": "Publication", "text": "Book chapter \u201cProtein engineering and design in ion channels and receptors\u201d published in Methods in Cell Biology." }
   ],
 
-  /* RESEARCH THEMES (homepage "Recent work" cards) */
+  /* RESEARCH THEMES — the seven Research-page cards, in order. Home shows 1, 3 and 7. */
   "research": [
-    { "img": "assets/research/ligand-binding.jpg", "tag": "Energetics", "title": "Ligand-Binding Energetics", "blurb": "Quantifying how agonist binding energy is converted into receptor conformational change at single-channel resolution." },
-    { "img": "assets/research/allosteric-communication.jpg", "tag": "Allostery", "title": "Allosteric Communication", "blurb": "How conformational signals propagate across receptor domains to couple binding at one site to gating at another." },
-    { "img": "assets/research/neuropathic-pain.jpg", "tag": "Circuits", "title": "Neuropathic Pain", "blurb": "Dissecting nicotinic, glutamatergic and TRP channel contributions to chronic and inflammatory pain signalling." }
+    { "img": "assets/research/ligand-binding.jpg", "tag": "Energetics", "title": "Ligand-Binding Energetics", "blurb": "Measuring how much of an agonist\u2019s binding energy is spent opening the channel." },
+    { "img": "assets/research/allosteric-communication.jpg", "tag": "Allostery", "title": "Allosteric Communication", "blurb": "Tracing how a binding signal travels ~50 \u00c5 from the transmitter site to the pore." },
+    { "img": "assets/research/allosteric-therapeutics.jpg", "tag": "Drug design", "title": "Allosteric Therapeutics", "blurb": "An in silico-to-bench pipeline for new allosteric drug candidates." },
+    { "img": "assets/research/neuropathic-pain.jpg", "tag": "Circuits", "title": "Neuropathic Pain", "blurb": "Dissecting nicotinic, glutamatergic and TRP channel contributions to chronic pain." },
+    { "img": "assets/research/synaptic-maturation.jpg", "tag": "Development", "title": "Synaptic Maturation", "blurb": "How synaptic receptors change as synapses mature during development." },
+    { "img": "assets/research/allosteric-gpcrs.jpg", "tag": "Signalling", "title": "Allosteric GPCRs", "blurb": "Using GIRK channels as a fast electrical reporter of GPCR activation." },
+    { "img": "assets/research/intracellular-ion-channels.jpg", "tag": "Organelles", "title": "Intracellular Ion Channels", "blurb": "Probing TRPML3 and TPC2 in autophagy and neurodegeneration." }
   ],
 
-  /* GALLERY — list image paths in the order you want them shown.
-     First image is the big featured one on the gallery page.                  */
+  /* GALLERY — images in the order you want them shown; the first is the big featured one.
+     caption (optional) is shown under the photo and used as its alt text.
+     A plain path string, e.g. "assets/gallery/1.jpeg", also works.            */
   "gallery": [
-    "assets/gallery/8.jpeg",
-    "assets/gallery/9.jpeg",
-    "assets/gallery/1.jpeg",
-    "assets/gallery/5.jpeg",
-    "assets/gallery/11.jpeg",
-    "assets/gallery/3.jpeg",
-    "assets/gallery/12.jpeg",
-    "assets/gallery/7.jpeg",
-    "assets/gallery/10.jpeg",
-    "assets/gallery/13.jpeg",
-    "assets/gallery/14.jpeg",
-    "assets/gallery/20.jpeg",
-    "assets/gallery/mughal-garden.jpg"
+    { "img": "assets/gallery/8.jpeg", "caption": "Lab members at a group dinner" },
+    { "img": "assets/gallery/9.jpeg", "caption": "Lab members on a group outing" },
+    { "img": "assets/gallery/1.jpeg", "caption": "The group in the lab" },
+    { "img": "assets/gallery/5.jpeg", "caption": "The group outside the IIT Delhi main building" },
+    { "img": "assets/gallery/11.jpeg", "caption": "A patch-clamp rig with an inverted microscope" },
+    { "img": "assets/gallery/3.jpeg", "caption": "Lab members on a video call" },
+    { "img": "assets/gallery/12.jpeg", "caption": "Beside a patch-clamp rig" },
+    { "img": "assets/gallery/7.jpeg", "caption": "A group selfie outside the IIT Delhi main building" },
+    { "img": "assets/gallery/10.jpeg", "caption": "Lab members in the lab" },
+    { "img": "assets/gallery/13.jpeg", "caption": "A patch-clamp rig inside its Faraday cage" },
+    { "img": "assets/gallery/14.jpeg", "caption": "Presenting a certificate at an event" },
+    { "img": "assets/gallery/20.jpeg", "caption": "Portrait beside the patch-clamp microscope" },
+    { "img": "assets/gallery/mughal-garden.jpg", "caption": "Lab members at a group lunch" }
   ],
 
   /* OPEN POSITIONS (Join page) —

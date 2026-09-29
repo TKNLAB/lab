@@ -11,12 +11,12 @@
   <div aria-hidden="true" style="position:absolute;inset:0;background:rgba(7,12,22,0.78);backdrop-filter:blur(16px) saturate(1.4);-webkit-backdrop-filter:blur(16px) saturate(1.4);pointer-events:none;"></div>
   <a href="#main" style="position:absolute;left:-9999px;top:10px;z-index:10;font-size:14px;font-weight:500;color:#070c16;background:#f1d49a;padding:10px 16px;border-radius:999px;text-decoration:none;" style-focus="left:16px;">Skip to content</a>
   <div style="position:relative;max-width:1360px;margin:0 auto;padding:0 clamp(16px,4vw,40px);height:64px;display:flex;align-items:center;justify-content:space-between;gap:20px;">
-    <a href="Nayak Lab.dc.html" aria-label="Tapan Nayak Lab — home" style="display:flex;align-items:center;gap:14px;flex-shrink:0;text-decoration:none;border-radius:8px;">
+    <a href="Nayak Lab.dc.html" aria-label="Tapan Kumar Nayak Lab — home" style="display:flex;align-items:center;gap:14px;flex-shrink:0;text-decoration:none;border-radius:8px;">
       <span style="position:relative;display:block;height:34px;width:83px;flex:none;">
-        <img src="assets/logos/tkn-logo-reversed.png" alt="TKN" style="width:100%;height:100%;display:block;-webkit-mask-image:linear-gradient(90deg,#000 14.2%,transparent 14.2%,transparent 18.2%,#000 18.2%);mask-image:linear-gradient(90deg,#000 14.2%,transparent 14.2%,transparent 18.2%,#000 18.2%);">
+        <img src="assets/logos/tkn-logo-reversed.webp" width="480" height="196" decoding="async" fetchpriority="high" alt="TKN" style="width:100%;height:100%;display:block;-webkit-mask-image:linear-gradient(90deg,#000 14.2%,transparent 14.2%,transparent 18.2%,#000 18.2%);mask-image:linear-gradient(90deg,#000 14.2%,transparent 14.2%,transparent 18.2%,#000 18.2%);">
         <canvas data-tkn-ions="" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none;"></canvas>
       </span>
-      <span style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.14em;color:#8792a6;text-transform:uppercase;white-space:nowrap;">Tapan Nayak Lab / IIT Delhi</span>
+      <span style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.14em;color:#8792a6;text-transform:uppercase;white-space:nowrap;">Tapan Kumar Nayak Lab / IIT Delhi</span>
     </a>
     <sc-if value="{{ desktop }}" hint-placeholder-val="{{ true }}">
       <nav aria-label="Main" style="display:flex;gap:2px;">
@@ -53,11 +53,11 @@
       </nav>
       <div style="padding:24px clamp(16px,4vw,40px) 36px;display:flex;flex-direction:column;gap:18px;border-top:1px solid rgba(255,255,255,0.07);">
         <span style="position:relative;display:block;height:56px;width:137px;flex:none;">
-          <img src="assets/logos/tkn-logo-reversed.png" alt="TKN" style="width:100%;height:100%;display:block;-webkit-mask-image:linear-gradient(90deg,#000 14.2%,transparent 14.2%,transparent 18.2%,#000 18.2%);mask-image:linear-gradient(90deg,#000 14.2%,transparent 14.2%,transparent 18.2%,#000 18.2%);">
+          <img src="assets/logos/tkn-logo-reversed.webp" width="480" height="196" decoding="async" fetchpriority="high" alt="TKN" style="width:100%;height:100%;display:block;-webkit-mask-image:linear-gradient(90deg,#000 14.2%,transparent 14.2%,transparent 18.2%,#000 18.2%);mask-image:linear-gradient(90deg,#000 14.2%,transparent 14.2%,transparent 18.2%,#000 18.2%);">
           <canvas data-tkn-ions="" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none;"></canvas>
         </span>
-        <a href="mailto:tnayak@bioschool.iitd.ac.in" style="font-size:16px;color:#f1d49a;text-decoration:none;min-height:44px;display:flex;align-items:center;">tnayak@bioschool.iitd.ac.in</a>
-        <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:#7d889c;">Kusuma School of Biological Sciences · IIT Delhi</span>
+        <a href="mailto:tapannayak@bioschool.iitd.ac.in" style="font-size:16px;color:#f1d49a;text-decoration:none;min-height:44px;display:flex;align-items:center;">tapannayak@bioschool.iitd.ac.in</a>
+        <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:#7d889c;">{{ piDept }} · IIT Delhi</span>
       </div>
     </div>
   </sc-if>
@@ -87,12 +87,13 @@ class Component extends DCLogic {
   }
   renderVals() {
     const a = this.props.active || '';
+    const piDept = ((window.LAB_CONTENT || {}).pi || {}).dept || '[DEPARTMENT]';
     const L = [['research', 'Research', 'Research.dc.html'], ['publications', 'Publications', 'Publications.dc.html'], ['people', 'People', 'People.dc.html'], ['teaching', 'Teaching', 'Teaching.dc.html'], ['gallery', 'Gallery', 'Gallery.dc.html'], ['join', 'Join us', 'Join.dc.html']];
     const mobile = this.state.w < 960;
     return {
       links: L.map(([k, label, href], i) => ({ label, href, on: k === a, off: k !== a, n: '0' + (i + 1), color: k === a ? '#f1d49a' : '#e8ecf3' })),
       deskLinks: [{ label: 'Home', href: 'Nayak Lab.dc.html', on: a === '', off: a !== '' }, ...L.map(([k, label, href]) => ({ label, href, on: k === a, off: k !== a }))],
-      desktop: !mobile, mobile, open: mobile && this.state.open, expanded: this.state.open ? 'true' : 'false',
+      piDept, desktop: !mobile, mobile, open: mobile && this.state.open, expanded: this.state.open ? 'true' : 'false',
       btnRef: this.btnRef, drawerRef: this.drawerRef,
       openMenu: () => this.open(),
       closeMenu: () => this.close(),

@@ -203,6 +203,24 @@
 
   /* Hero figure box: right-hand side of the hero on wide screens (aligned to the 1360px content
      column), a faint band at the top on narrow screens. */
+  // Caption sits just below the lowest ink the figure draws, aligned to the figure's left edge (rechecked about once a second).
+  function placeCap(c, hc, y0, yMax, x0, x1, key) {
+    var now = performance.now();
+    if (c.__capK !== key) { c.__capK = key; c.__capY = null; c.__capT = 0; }
+    if (c.__capT && now - c.__capT < 1000) return;
+    if (!c.__capT) setTimeout(function () { c.__capT = 1; placeCap(c, hc, y0, yMax, x0, x1, key); }, 150);
+    c.__capT = now;
+    var k = c.width / Math.max(1, c.clientWidth), ink = y0;
+    try {
+      var sx = Math.max(0, Math.floor(x0 * k)), sw = Math.max(1, Math.min(c.width - sx, Math.ceil((x1 - x0) * k))), sy = Math.floor(y0 * k), sh = Math.max(1, Math.floor((yMax - y0) * k)), d = c.getContext('2d').getImageData(sx, sy, sw, sh).data;
+      for (var r = sh - 1; r >= 0 && ink === y0; r--) for (var x = 0, o = r * sw * 4; x < sw; x++) if (d[o + x * 4 + 3] > 16) { ink = y0 + (r + 1) / k; break; }
+    } catch (e) { }
+    var y = Math.min(yMax, Math.round(ink + 14));
+    if (c.__capY == null || y > c.__capY) c.__capY = y;
+    var st = { top: c.__capY + 'px', bottom: 'auto', left: Math.round(x0) + 'px', right: Math.max(0, Math.round(c.clientWidth - x1)) + 'px', textAlign: 'left', textWrap: 'pretty' };
+    for (var p in st) if (hc.style[p] !== st[p]) hc.style[p] = st[p];
+  }
+  TE.placeCap = placeCap;
   TE.heroBox = function (W, H, o) {
     o = o || {}; var pad = Math.max(20, Math.min(40, W * 0.05));
     if (W >= 1180 || TE.forceWide) {
@@ -210,13 +228,16 @@
       if (ww && ww.__pt0 != null) { ww.style.paddingTop = ww.__pt0; ww.__pt0 = null; }
       if (cw && cw.__ov) { cw.__ov.style.display = ''; cw.__ov = null; }
       var right = Math.min(W - pad, (W + 1360) / 2 - pad), x = Math.max(W * (o.x0 || 0.56), right - (o.maxW || 720));
-      return { x: x, y: H * (o.y0 != null ? o.y0 : 0.16), w: right - x, h: H * ((o.y1 || 0.82) - (o.y0 != null ? o.y0 : 0.16)), a: 1, wide: true };
+      var by = H * (o.y0 != null ? o.y0 : 0.16), bh = H * ((o.y1 || 0.82) - (o.y0 != null ? o.y0 : 0.16));
+      var hcw = sw && sw.querySelector('[data-hero-cap]'); if (hcw && cw) placeCap(cw, hcw, Math.min(by + bh, H - 40), H - 30, x, right, 'w' + W + 'x' + H);
+      return { x: x, y: by, w: right - x, h: bh, a: 1, wide: true };
     }
     var y0 = H * (o.my0 || 0.06), c = TE._cur, sec = c && c.closest('section'), h1 = sec && sec.querySelector('h1'), wrap = h1 && h1.parentNode;
     if (wrap && !o.noRoom) { // narrow screens: reserve a band above the headline, full opacity, never behind text
       var fh = Math.round(TE.clamp(W * 0.85, 280, 380)), ov = c.nextElementSibling;
       if (wrap.__pt0 == null) wrap.__pt0 = wrap.style.paddingTop;
-      var want = (fh + 48) + 'px'; if (wrap.style.paddingTop !== want) wrap.style.paddingTop = want;
+      var want = (fh + 100) + 'px'; if (wrap.style.paddingTop !== want) wrap.style.paddingTop = want;
+      var hc = sec.querySelector('[data-hero-cap]'); if (hc) placeCap(c, hc, fh + 20, fh + 70, pad, W - pad, 'n' + W);
       if (ov && !ov.hasAttribute('data-fig-cap') && ov.style.display !== 'none') { c.__ov = ov; ov.style.display = 'none'; }
       return { x: pad, y: 40, w: W - 2 * pad, h: fh - 20, a: 1, wide: false };
     }
@@ -242,12 +263,12 @@
     function size() {
       var bb = c.getBoundingClientRect(); st.dpr = Math.min(window.devicePixelRatio || 1, 2);
       st.W = Math.max(1, bb.width); st.H = Math.max(1, bb.height);
-      c.width = Math.round(st.W * st.dpr); c.height = Math.round(st.H * st.dpr); c.__sized = true; paint();
+      c.width = Math.round(st.W * st.dpr); c.height = Math.round(st.H * st.dpr); c.__sized = true; if (f.key) st.k = f.key(); paint();
     }
     function tick(now) {
       if (c.__gen !== gen || !c.isConnected) return;
       var dt = st.last ? Math.min(0.05, (now - st.last) / 1000) : 0; st.last = now;
-      if (st.vis && st.W > 1) { st.t += dt; var bw = c.clientWidth, bh = c.clientHeight; if (Math.abs(bw - st.W) > 1 || Math.abs(bh - st.H) > 1) size(); else paint(); }
+      if (st.vis && st.W > 1) { st.t += dt; var bw = c.clientWidth, bh = c.clientHeight; if (Math.abs(bw - st.W) > 1 || Math.abs(bh - st.H) > 1) size(); else if (!f.key) paint(); else { var k = f.key(); if (k !== st.k) { st.k = k; paint(); } } }
       requestAnimationFrame(tick);
     }
     if (window.ResizeObserver) new ResizeObserver(size).observe(c); else window.addEventListener('resize', size);
