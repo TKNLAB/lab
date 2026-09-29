@@ -156,7 +156,7 @@
   function drawCube(ctx, W, H, P) {
     var w8 = BG.weights(P.A, P.E0), S = 0, k; for (k in w8) S += w8[k];
     var fs = W < 420 ? 10.5 : 11.5, sm = W < 420, padL = fs * (sm ? 5.5 : 8), padR = fs * (sm ? 5.5 : 7.5), avail = Math.max(60, W - padL - padR), w = Math.min(avail * 0.64, W * 0.4), dx = Math.min(avail * 0.36, W * 0.2), x0 = padL + (avail - w - dx) / 2, y0 = H * (sm ? 0.3 : 0.36), dy = -H * (sm ? 0.13 : 0.15), h = H * (sm ? 0.42 : 0.46);
-    if (W < 560 && window.innerWidth < 600) { var S = Math.max(80, H - 50 - 40); h = S / 1.31; dy = -0.31 * h; y0 = 50 - dy; }
+    if (W < 560 && window.innerWidth < 600) { var S = Math.max(80, H - 58 - 76); h = S / 1.31; dy = -0.31 * h; y0 = 58 - dy; }
     var pos = {}; NODES.forEach(function (n) { pos[n[0]] = { x: x0 + n[3] * w + n[2] * dx, y: y0 + n[1] * h + n[2] * dy, n: n }; });
     TE.text(ctx, sm ? 'top: closed · bottom: open' : 'top face: closed · bottom face: open', 0, 12, { size: fs });
     for (var i = 0; i < 8; i++) for (var j = i + 1; j < 8; j++) {
@@ -167,13 +167,13 @@
     }
     var mid = x0 + w / 2, e0 = BG.sci(P.E0), e1 = BG.sci(BG.E(1, P.E0)), e2 = BG.sci(BG.E(2, P.E0));
     if (sm) {
-      TE.text(ctx, 'Kd', mid, y0 - 8, { size: fs, color: TE.C.ink, align: 'center' });
-      TE.text(ctx, 'Jd', mid, y0 + h + 18, { size: fs, color: TE.C.ink, align: 'center' });
+      TE.text(ctx, 'Kd', x0 + w * 0.26, y0 - 8, { size: fs, color: TE.C.ink, align: 'center' });
+      TE.text(ctx, 'Jd', x0 + w * 0.74, y0 + h + 18, { size: fs, color: TE.C.ink, align: 'center' });
       TE.text(ctx, 'E₀', x0 - 8, y0 + h / 2, { size: fs, color: TE.C.lab, align: 'right', base: 'middle' });
       TE.text(ctx, 'E₁', x0 + w + 7, y0 + h / 2, { size: fs, color: TE.C.lab, base: 'middle' });
       TE.text(ctx, 'E₂', x0 + w + dx + 7, y0 + dy + h / 2, { size: fs, color: TE.C.lab, base: 'middle' });
-      TE.text(ctx, 'Kd = 100 µM (closed) · Jd = 17 nM (open)', 0, H - 24, { size: fs });
-      TE.text(ctx, 'E₀ = ' + e0 + ' · E₁ = ' + e1 + ' · E₂ = ' + e2, 0, H - 7, { size: fs });
+      TE.text(ctx, 'Kd = 100 µM (closed) · Jd = 17 nM (open)', 0, H - 26, { size: fs });
+      TE.text(ctx, 'E₀ = ' + e0 + ' · E₁ = ' + e1 + ' · E₂ = ' + e2, 0, H - 6, { size: fs });
     } else {
       TE.text(ctx, 'bind · Kd = 100 µM', mid, y0 - 8, { size: fs, color: TE.C.ink, align: 'center' });
       TE.text(ctx, 'bind · Jd = 17 nM', mid, y0 + h + 20, { size: fs, color: TE.C.ink, align: 'center' });

@@ -391,11 +391,12 @@ class Component extends DCLogic {
     const set = (e, css) => { e.style.cssText = e.__css0 + ';' + css; };
     const measure = () => { const r = track.getBoundingClientRect(), y = scrollY; cache = { top: r.top + y, total: Math.max(1, r.height - (innerHeight - 64)) }; };
     const target = () => { if (!cache) measure(); const q = cl((64 - (cache.top - scrollY)) / cache.total, 0, 1) * (N - 1), i = Math.floor(q); return Math.min(N - 1, i + ease(cl((q - i - 0.25) / 0.75, 0, 1))); };
-    const parts = rows.map(row => ({ art: row.querySelector('[data-art]'), txt: row.querySelector('[data-text]'), o: '', v: '' }));
+    const parts = rows.map(row => ({ art: row.querySelector('[data-art]'), txt: row.querySelector('[data-text]'), fr: row.querySelector('[data-frame]'), o: '', v: '' }));
     const render = p => {
       if (dots) [...dots.children].forEach((b, j) => { const a = cl(1 - Math.abs(p - j), 0, 1); b.style.transform = 'scaleX(' + (1 + a * 3).toFixed(3) + ')'; b.style.background = a > 0.5 ? '#f1d49a' : 'rgba(255,255,255,0.22)'; });
       parts.forEach((pt, j) => {
         const d = p - j, art = pt.art, txt = pt.txt;
+        if (j && pt.fr && pt.fr.style.backgroundColor !== 'transparent') { pt.fr.style.background = 'transparent'; pt.fr.style.borderColor = 'transparent'; }
         let o = null, sc = 1, op = 0;
         if (d < 0 && j > 0 && d > -1) { o = O[j - 1]; sc = Math.pow(Z[j - 1], d); op = cl((1 + d - 0.25) / 0.6, 0, 1); }
         else if (d >= 0 && d < 1) { if (j < N - 1) { o = O[j]; sc = Math.pow(Z[j], d); } op = 1 - cl((d - 0.2) / 0.6, 0, 1); }
@@ -433,7 +434,7 @@ class Component extends DCLogic {
       if (dots) { set(dots, 'display:flex;gap:6px;contain:layout;align-items:center;margin-bottom:clamp(8px,2vh,20px)'); if (!dots.children.length) rows.forEach((_, j) => { const b = document.createElement('span'); b.style.cssText = 'height:3px;width:8px;border-radius:2px;background:rgba(255,255,255,0.22);transform-origin:left center;margin-right:' + (j < N - 1 ? 18 : 0) + 'px;will-change:transform'; dots.appendChild(b); }); }
       set(qEl, 'margin-top:clamp(12px,2.5vh,28px);font-size:' + 'clamp(21px,2.3vw,34px);line-height:1.22;max-width:34ch');
       rows.forEach((row, j) => {
-        set(row, 'position:absolute;inset:0;' + (wide ? 'grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-content:center' : 'grid-template-columns:minmax(0,1fr);align-content:center;gap:16px'));
+        set(row, 'position:absolute;inset:0;' + (wide ? 'grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-content:center' : 'grid-template-columns:minmax(0,1fr);align-content:start;gap:16px'));
         set(row.querySelector('[data-frame]'), (wide ? 'max-width:min(640px,calc((100vh - 380px) * 1.6))' : 'max-width:min(100%,calc((100svh - 520px) * 1.6))') + (j ? ';background:transparent;border-color:transparent' : ''));
         set(row.querySelector('[data-art]'), 'will-change:transform,opacity;backface-visibility:hidden;contain:strict');
         set(row.querySelector('[data-text]'), 'will-change:transform,opacity');
@@ -464,11 +465,11 @@ class Component extends DCLogic {
       onAch: e => { this._achNext = +e.target.value; if (!this._achRaf) this._achRaf = requestAnimationFrame(() => { this._achRaf = 0; if (this._achNext !== this.state.achLog) this.setState({ achLog: this._achNext }); }); },
       bgRef: this.bgRef,
       bgCols: narrow ? 'minmax(0,1fr)' : 'minmax(0,1.1fr) minmax(0,1fr)',
-      bgCubeH: phone ? 'clamp(180px, calc((100svh - 450px) * 0.6), 320px)' : narrow ? 'clamp(260px, min(52vw, calc(100svh - 380px)), 440px)' : 'clamp(240px, calc(100svh - 500px), 520px)',
-      bgPlotH: phone ? 'clamp(100px, calc((100svh - 450px) * 0.4), 220px)' : narrow ? 'clamp(200px, min(40vw, calc(100svh - 420px)), 360px)' : 'clamp(130px, calc(100svh - 614px), 406px)',
-      bgStripH: phone ? '44px' : narrow ? '96px' : '84px',
+      bgCubeH: phone ? 'clamp(300px, 92vw, 380px)' : narrow ? 'clamp(260px, min(52vw, calc(100svh - 380px)), 440px)' : 'clamp(240px, calc(100svh - 500px), 520px)',
+      bgPlotH: phone ? '200px' : narrow ? 'clamp(200px, min(40vw, calc(100svh - 420px)), 360px)' : 'clamp(130px, calc(100svh - 614px), 406px)',
+      bgStripH: phone ? '84px' : narrow ? '96px' : '84px',
       bgReadCols: phone ? 'repeat(2,minmax(0,1fr))' : 'repeat(4,minmax(0,1fr))',
-      bgBtnDir: 'row', bgBtnInner: 'column', bgBtnAlign: 'flex-start',
+      bgBtnDir: phone ? 'column' : 'row', bgBtnInner: phone ? 'row' : 'column', bgBtnAlign: phone ? 'center' : 'flex-start',
       bgModes: modes.map(([id, label, note]) => { const on = this.state.bgMode === id; return { label, note, on, pick: () => this.setState({ bgMode: id }), bg: on ? '#f1d49a' : 'transparent', fg: on ? '#070c16' : '#e8ecf3', border: on ? '#f1d49a' : 'rgba(255,255,255,0.16)' }; }),
       bgReadouts: [{ k: '[ACh]', v: conc(A) }, { k: 'Po', v: poText }, { k: 'EC50', v: conc(10 ** ((lo + hi) / 2)) }, { k: 'E₂ = E₀(Kd/Jd)²', v: sig(E2) }],
     };

@@ -9,7 +9,7 @@
     ['42,53,72', '212,205,192'], ['5,9,17', '246,243,237'],
     ['232,236,243', '20,26,38'], ['255,255,255', '12,17,28'], ['170,179,195', '72,81,100'], ['195,202,214', '54,62,79'],
     ['135,146,166', '88,97,116'], ['125,136,156', '94,103,122'], ['152,162,180', '82,91,108'],
-    ['241,212,154', '150,98,18'], ['230,182,103', '166,110,26'], ['224,165,58', '182,120,28'], ['201,142,60', '176,116,40'],
+    ['241,212,154', '150,98,18'], ['230,182,103', '146,94,16'], ['224,165,58', '156,100,18'], ['201,142,60', '176,116,40'],
     ['251,231,191', '122,78,12'], ['196,127,51', '138,85,22'], ['143,180,232', '46,98,176']
   ];
   var FWD = {}, REV = {};
@@ -17,6 +17,8 @@
   var hex2 = function (n) { n = (+n).toString(16); return n.length < 2 ? '0' + n : n; };
   function mapWith(M, s) {
     if (!s || typeof s !== 'string') return s;
+    // Solid white panels (figure/image frames) stay white in both themes.
+    if (M === FWD) s = s.replace(/(background(?:-color)?\s*:\s*)(#fff\b|#ffffff\b|rgb\(\s*255\s*,\s*255\s*,\s*255\s*\))/gi, '$1#fffffe');
     return s.replace(/#([0-9a-f]{6}|[0-9a-f]{3})\b/gi, function (m, h) {
       if (h.length === 3) h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2];
       var k = parseInt(h.slice(0, 2), 16) + ',' + parseInt(h.slice(2, 4), 16) + ',' + parseInt(h.slice(4, 6), 16), v = M[k];
@@ -41,10 +43,27 @@
     if (s) { var n = mapWith(M, s); if (n !== s) el.setAttribute('style', n); }
     if (el.tagName === 'STYLE' && !el.hasAttribute('data-theme-css')) { var t = el.textContent, u = mapWith(M, t); if (u !== t) el.textContent = u; }
   }
+  // Pseudo-state rules (style-hover etc.) are inserted via CSSOM, so map them there too.
+  var SS = window.CSSStyleSheet && CSSStyleSheet.prototype, ir = SS && SS.insertRule;
+  if (ir) SS.insertRule = function (r, i) { return ir.call(this, mode === 'light' && typeof r === 'string' ? mapWith(FWD, r) : r, i); };
+  function fixSheets(M) {
+    var st = document.querySelectorAll('style');
+    for (var i = 0; i < st.length; i++) {
+      var el = st[i], sh = el.sheet;
+      if (!sh || el.hasAttribute('data-theme-css') || el.textContent.trim()) continue;
+      try {
+        for (var j = 0; j < sh.cssRules.length; j++) {
+          var t = sh.cssRules[j].cssText, u = mapWith(M, t);
+          if (u !== t) { sh.deleteRule(j); ir.call(sh, u, j); }
+        }
+      } catch (e) {}
+    }
+  }
   function sweep(M) {
     fixEl(root, M);
     var all = document.querySelectorAll('[style],style');
     for (var i = 0; i < all.length; i++) fixEl(all[i], M);
+    if (ir) fixSheets(M);
   }
   var mo = new MutationObserver(function (list) {
     if (mode !== 'light') return;

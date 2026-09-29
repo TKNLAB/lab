@@ -77,10 +77,7 @@ class Component extends DCLogic {
       ctx.beginPath();
       for (let x = 0; x < buf.length; x++) x ? ctx.lineTo(x, buf[x]) : ctx.moveTo(0, buf[0]);
       ctx.lineJoin = 'round';
-      ctx.shadowColor = 'rgba(241,212,154,0.9)'; ctx.shadowBlur = 10;
-      ctx.strokeStyle = 'rgba(230,182,103,0.55)'; ctx.lineWidth = 2.5; ctx.stroke();
-      ctx.shadowBlur = 4; ctx.strokeStyle = '#f1d49a'; ctx.lineWidth = 1.2; ctx.stroke();
-      ctx.shadowBlur = 0;
+      ctx.shadowBlur = 0; ctx.strokeStyle = '#f1d49a'; ctx.lineWidth = 1.2; ctx.stroke();
     };
     const size = () => {
       dpr = window.devicePixelRatio || 1; W = Math.round(c.clientWidth); H = c.clientHeight;
@@ -109,15 +106,15 @@ class Component extends DCLogic {
   }
   componentWillUnmount() { cancelAnimationFrame(this._raf); this._ro && this._ro.disconnect(); this._io && this._io.disconnect(); }
   renderVals() {
-    const touch = typeof window !== 'undefined' && window.matchMedia && (window.matchMedia('(hover: none)').matches || window.matchMedia('(pointer: coarse)').matches || window.matchMedia('(any-pointer: coarse)').matches);
-    const rb = touch || !!(this.state && (this.state.rb || this.state.rbTapped));
+    const rb = !!(this.state && (this.state.rb || this.state.rbTapped));
+    const tap = () => { this.setState({ rbTapped: true }); clearTimeout(this._rbT); this._rbT = setTimeout(() => this.setState({ rbTapped: false, rb: false }), 4000); };
     return {
       piDept: ((window.LAB_CONTENT || {}).pi || {}).dept || '[DEPARTMENT]',
       rbOn: () => this.setState({ rb: true }), rbOff: () => this.setState({ rb: false }),
       rbEnter: e => { if (e.pointerType === 'mouse') this.setState({ rb: true }); },
       rbLeave: e => { if (e.pointerType === 'mouse') this.setState({ rb: false }); },
-      rbDown: e => { if (e.pointerType !== 'mouse' && !rb) this.setState({ rbTapped: true }); },
-      rbClick: e => { if (!rb) { e.preventDefault(); this.setState({ rbTapped: true }); } },
+      rbDown: e => { this._rbHidden = !rb; },
+      rbClick: e => { if (this._rbHidden || (this._rbHidden == null && !rb)) { e.preventDefault(); tap(); } this._rbHidden = null; },
       rbOpacity: rb ? 1 : 0.5, rbShift: rb ? '0px' : '-4px', rbNameOpacity: rb ? 1 : 0,
       traceRef: this.traceRef,
       toTop: () => {
