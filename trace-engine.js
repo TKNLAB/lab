@@ -263,12 +263,12 @@
     function size() {
       var bb = c.getBoundingClientRect(); st.dpr = Math.min(window.devicePixelRatio || 1, 2);
       st.W = Math.max(1, bb.width); st.H = Math.max(1, bb.height);
-      c.width = Math.round(st.W * st.dpr); c.height = Math.round(st.H * st.dpr); c.__sized = true; if (f.key) st.k = f.key(); paint();
+      c.width = Math.round(st.W * st.dpr); c.height = Math.round(st.H * st.dpr); c.__sized = true; st.k = f.key ? f.key() : null; paint();
     }
     function tick(now) {
       if (c.__gen !== gen || !c.isConnected) return;
       var dt = st.last ? Math.min(0.05, (now - st.last) / 1000) : 0; st.last = now;
-      if (st.vis && st.W > 1) { st.t += dt; var bw = c.clientWidth, bh = c.clientHeight; if (Math.abs(bw - st.W) > 1 || Math.abs(bh - st.H) > 1) size(); else if (!f.key) paint(); else { var k = f.key(); if (k !== st.k) { st.k = k; paint(); } } }
+      if (st.vis && st.W > 1) { st.t += dt; var bw = c.clientWidth, bh = c.clientHeight; if (Math.abs(bw - st.W) > 1 || Math.abs(bh - st.H) > 1 || c.width !== Math.round(st.W * st.dpr) || c.height !== Math.round(st.H * st.dpr)) size(); else if (!f.key) paint(); else { var k = f.key(); if (k !== st.k) { st.k = k; paint(); } } }
       requestAnimationFrame(tick);
     }
     if (window.ResizeObserver) new ResizeObserver(size).observe(c); else window.addEventListener('resize', size);

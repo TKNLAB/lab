@@ -14,7 +14,7 @@
       <div style="flex:1 1 calc((620px - 100%) * 999);display:flex;flex-direction:column;gap:24px;">
         <a href="Nayak Lab.dc.html" aria-label="TKN — Ion Channel &amp; Receptor Biology, home" style="display:inline-flex;flex-direction:column;align-items:flex-start;gap:14px;text-decoration:none;align-self:flex-start;border-radius:6px;">
           <span style="position:relative;display:block;height:60px;width:146px;flex:none;">
-            <img src="assets/logos/tkn-logo-reversed.webp" width="480" height="196" decoding="async" fetchpriority="high" alt="TKN" style="width:100%;height:100%;display:block;-webkit-mask-image:linear-gradient(90deg,#000 14.2%,transparent 14.2%,transparent 18.2%,#000 18.2%);mask-image:linear-gradient(90deg,#000 14.2%,transparent 14.2%,transparent 18.2%,#000 18.2%);">
+            <img src="assets/logos/tkn-logo-small.webp" width="320" height="131" decoding="async" fetchpriority="high" alt="TKN" style="width:100%;height:100%;display:block;-webkit-mask-image:linear-gradient(90deg,#000 14.2%,transparent 14.2%,transparent 18.2%,#000 18.2%);mask-image:linear-gradient(90deg,#000 14.2%,transparent 14.2%,transparent 18.2%,#000 18.2%);">
             <canvas data-tkn-ions="" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none;"></canvas>
           </span>
           <span style="font-family:Georgia,'Times New Roman',serif;font-size:12.5px;letter-spacing:0.16em;text-transform:uppercase;color:#c3cad6;">Ion Channel &amp; Receptor Biology</span>
@@ -23,7 +23,7 @@
       </div>
       <div aria-hidden="true" style="flex:0 1 calc((620px - 100%) * 999);max-width:420px;height:1px;background:rgba(255,255,255,0.07);"></div>
       <a href="https://home.iitd.ac.in/" target="_blank" rel="noopener" style="flex:1 1 calc((620px - 100%) * 999);display:flex;align-items:center;gap:14px;text-decoration:none;color:inherit;">
-        <img src="./iit_delhi_logo_white-mrrkilot-zz90.png" alt="IIT Delhi" style="height:68px;width:68px;object-fit:contain;flex:none;">
+        <img src="assets/logos/iit-delhi.webp" alt="IIT Delhi" style="height:68px;width:68px;object-fit:contain;flex:none;">
         <div style="font-size:18px;font-weight:500;letter-spacing:-0.01em;line-height:1.35;color:#e8ecf3;">Indian Institute of<br>Technology Delhi</div>
       </a>
     </div>
@@ -51,7 +51,7 @@
   <div style="border-top:1px solid rgba(255,255,255,0.06);">
     <div style="max-width:1360px;margin:0 auto;padding:14px clamp(20px,5vw,40px);display:flex;align-items:center;gap:8px 24px;font-family:'Geist Mono',monospace;font-size:11.5px;line-height:1.6;color:#7d889c;">
       <div style="flex:1;min-width:0;display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 24px;">
-        <span style="display:inline-flex;flex-wrap:wrap;align-items:center;gap:0 6px;min-width:0;max-width:100%;">© 2026&nbsp;Nayak&nbsp;Group&nbsp;· IIT&nbsp;Delhi&nbsp;·<a href="People.dc.html#rakesh-barwar" aria-label="Made with love by Rakesh Barwar" onMouseEnter="{{ rbOn }}" onMouseLeave="{{ rbOff }}" onFocus="{{ rbOn }}" onBlur="{{ rbOff }}" style="display:inline-flex;align-items:center;gap:6px;min-height:32px;color:#7d889c;text-decoration:none;opacity:{{ rbOpacity }};transition:opacity .3s;">made&nbsp;with&nbsp;♥&nbsp;by<img src="assets/rb.png" alt="" width="18" height="18" style="width:18px;height:18px;display:block;flex:none;"><span style="display:inline-block;white-space:nowrap;opacity:{{ rbNameOpacity }};transform:translateX({{ rbShift }});transition:opacity .3s ease,transform .3s ease;color:#f1d49a;">Rakesh&nbsp;Barwar</span></a></span>
+        <span style="display:inline-flex;flex-wrap:wrap;align-items:center;gap:0 6px;min-width:0;max-width:100%;">© 2026&nbsp;Nayak&nbsp;Group&nbsp;· IIT&nbsp;Delhi&nbsp;·<a href="People.dc.html#rakesh-barwar" aria-label="Made with love by Rakesh Barwar" onPointerEnter="{{ rbOn }}" onPointerLeave="{{ rbOff }}" onFocus="{{ rbOn }}" onBlur="{{ rbOff }}" style="display:inline-flex;align-items:center;gap:6px;min-height:32px;color:#7d889c;text-decoration:none;opacity:{{ rbOpacity }};transition:opacity .3s;">made&nbsp;with&nbsp;♥&nbsp;by<img src="assets/rb.png" alt="" width="18" height="18" style="width:18px;height:18px;display:block;flex:none;"><span style="display:inline-block;white-space:nowrap;opacity:{{ rbNameOpacity }};transform:translateX({{ rbShift }});transition:opacity .3s ease,transform .3s ease;color:#f1d49a;">Rakesh&nbsp;Barwar</span></a></span>
       </div>
       <button onClick="{{ toTop }}" aria-label="Back to top" style="flex:none;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 8px;margin-right:-8px;border:none;background:transparent;cursor:pointer;font-family:'Geist Mono',monospace;font-size:11.5px;letter-spacing:0.08em;text-transform:uppercase;color:#aab3c3;transition:color .15s;" style-hover="color:#f1d49a;">Top<span aria-hidden="true" style="font-size:13px;">↑</span></button>
     </div>
@@ -109,7 +109,7 @@ class Component extends DCLogic {
   }
   componentWillUnmount() { cancelAnimationFrame(this._raf); this._ro && this._ro.disconnect(); this._io && this._io.disconnect(); }
   renderVals() {
-    const touch = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(hover: none)').matches;
+    const touch = typeof window !== 'undefined' && window.matchMedia && (window.matchMedia('(hover: none)').matches || window.matchMedia('(pointer: coarse)').matches);
     const rb = touch || !!(this.state && this.state.rb);
     return {
       piDept: ((window.LAB_CONTENT || {}).pi || {}).dept || '[DEPARTMENT]',

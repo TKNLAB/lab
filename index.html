@@ -19,7 +19,9 @@
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" type="image/png" href="assets/logos/tkn-favicon.png">
+<link rel="icon" type="image/svg+xml" href="assets/logos/tkn-favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/logos/tkn-favicon-32.png">
+<link rel="apple-touch-icon" href="assets/logos/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&amp;family=Geist+Mono:wght@400;500&amp;family=Newsreader:ital,opsz,wght@1,6..72,400&amp;display=swap" rel="stylesheet">
@@ -96,49 +98,46 @@ img{max-width:100%;}
 
 
   <section style="max-width:1360px;margin:0 auto;padding:clamp(80px,10vw,136px) clamp(20px,5vw,40px) 0;">
-    <div data-reveal="" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:10px 64px;align-items:end;margin-bottom:clamp(16px,2.4vw,32px);">
-      <h2 style="font-weight:500;font-size:clamp(30px,4.4vw,60px);line-height:1.02;letter-spacing:-0.035em;">Bind, then <span style="font-family:'Newsreader',serif;font-style:italic;font-weight:400;color:#f1d49a;">gate</span>.</h2>
-      <p style="font-size:15px;line-height:1.55;color:#8792a6;max-width:520px;font-weight:300;text-wrap:pretty;">Agonists open channels because they bind the open state more tightly than the closed state. Drag the concentration and see how binding and gating combine.</p>
+    <div data-reveal="" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:14px 64px;align-items:end;margin-bottom:clamp(18px,2.2vw,28px);">
+      <h2 style="font-weight:500;font-size:clamp(32px,4.4vw,60px);line-height:1.02;letter-spacing:-0.035em;">Bind, then <span style="font-family:'Newsreader',serif;font-style:italic;font-weight:400;color:#f1d49a;">gate</span>.</h2>
+      <p style="font-size:15.5px;line-height:1.65;color:#8792a6;max-width:520px;font-weight:300;text-wrap:pretty;">Agonists open channels because they bind the open state more tightly than the closed state. Drag the concentration and see how binding and gating combine.</p>
     </div>
-    <div ref="{{ bgRef }}" style="background:#0d1422;border:1px solid rgba(255,255,255,0.07);border-radius:20px;padding:clamp(14px,2.2vw,32px);display:flex;flex-direction:column;gap:clamp(14px,2vw,24px);contain:layout paint;">
-      <div style="display:flex;flex-wrap:wrap;gap:14px 40px;align-items:flex-end;">
-        <label style="flex:1 1 300px;min-width:0;display:flex;flex-direction:column;gap:6px;">
-          <span style="display:flex;justify-content:space-between;gap:12px;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#7d889c;"><span>[ACh]</span><span style="color:#f1d49a;letter-spacing:0.04em;">{{ achText }}</span></span>
+    <div ref="{{ bgRef }}" style="background:#0d1422;border:1px solid rgba(255,255,255,0.07);border-radius:20px;padding:clamp(16px,2vw,28px);display:flex;flex-direction:column;gap:clamp(16px,2vw,24px);">
+      <div style="display:flex;flex-wrap:wrap;gap:20px 40px;align-items:flex-end;">
+        <label style="flex:1 1 300px;min-width:0;display:flex;flex-direction:column;gap:10px;">
+          <span style="display:flex;justify-content:space-between;gap:12px;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#7d889c;"><span>[ACh]</span><span style="color:#f1d49a;letter-spacing:0.04em;text-transform:none;">{{ achText }}</span></span>
           <input type="range" min="-2" max="4" step="0.01" value="{{ achLog }}" onInput="{{ onAch }}" onChange="{{ onAch }}" aria-label="ACh concentration, log scale from 10 nM to 10 mM" aria-valuetext="{{ achText }}" style="width:100%;height:32px;accent-color:#f1d49a;cursor:pointer;touch-action:pan-y;">
-          <sc-if value="{{ bgTall }}" hint-placeholder-val="{{ true }}"><span style="display:flex;justify-content:space-between;font-family:'Geist Mono',monospace;font-size:10.5px;color:#7d889c;"><span>10 nM</span><span>10 mM</span></span></sc-if>
+          <span style="display:flex;justify-content:space-between;font-family:'Geist Mono',monospace;font-size:10.5px;color:#7d889c;"><span>10 nM</span><span>10 mM</span></span>
         </label>
-        <div role="group" aria-label="Receptor" style="flex:1 1 520px;min-width:0;display:flex;gap:8px;">
+        <div role="group" aria-label="Receptor" style="flex:1 1 480px;min-width:0;display:flex;flex-direction:{{ bgBtnDir }};gap:8px;">
           <sc-for list="{{ bgModes }}" as="m" hint-placeholder-count="3">
-            <button type="button" onClick="{{ m.pick }}" aria-pressed="{{ m.on }}" style="flex:1 1 0;min-width:0;min-height:44px;padding:7px 12px;border-radius:14px;border:1px solid {{ m.border }};background:{{ m.bg }};color:{{ m.fg }};font-family:'Geist',sans-serif;font-size:13px;line-height:1.2;font-weight:500;cursor:pointer;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:2px;text-align:left;transition:background .2s,border-color .2s;">
-              <span>{{ m.label }}</span><sc-if value="{{ bgTall }}" hint-placeholder-val="{{ true }}"><span style="font-family:'Geist Mono',monospace;font-size:10px;opacity:0.75;">{{ m.note }}</span></sc-if>
+            <button type="button" onClick="{{ m.pick }}" aria-pressed="{{ m.on }}" style="flex:1 1 0;min-width:0;min-height:48px;padding:8px 14px;border-radius:14px;border:1px solid {{ m.border }};background:{{ m.bg }};color:{{ m.fg }};font-family:'Geist',sans-serif;font-size:13.5px;line-height:1.25;font-weight:500;cursor:pointer;display:flex;flex-direction:{{ bgBtnInner }};align-items:{{ bgBtnAlign }};justify-content:space-between;gap:4px 12px;text-align:left;transition:background .2s,border-color .2s;">
+              <span>{{ m.label }}</span><span style="font-family:'Geist Mono',monospace;font-size:10.5px;opacity:0.8;white-space:nowrap;">{{ m.note }}</span>
             </button>
           </sc-for>
         </div>
       </div>
-      <sc-if value="{{ bgNarrow }}" hint-placeholder-val="{{ false }}">
-        <div role="tablist" aria-label="Figure" style="display:flex;gap:6px;padding:3px;border-radius:999px;background:rgba(255,255,255,0.05);align-self:flex-start;">
-          <sc-for list="{{ bgTabs }}" as="t" hint-placeholder-count="2">
-            <button type="button" role="tab" aria-selected="{{ t.on }}" onClick="{{ t.pick }}" style="min-height:36px;padding:6px 16px;border-radius:999px;border:0;background:{{ t.bg }};color:{{ t.fg }};font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;">{{ t.label }}</button>
-          </sc-for>
+      <div style="display:grid;grid-template-columns:{{ bgCols }};gap:clamp(28px,4vw,56px);align-items:start;">
+        <div style="min-width:0;display:flex;flex-direction:column;gap:10px;">
+          <div style="font-family:'Geist Mono',monospace;font-size:10.5px;letter-spacing:0.12em;text-transform:uppercase;color:#7d889c;">State occupancy</div>
+          <canvas data-fig="bindgate" data-part="cube" data-ach="{{ achLog }}" data-e0f="{{ e0f }}" role="img" aria-label="Cyclic scheme of eight states with occupancy at the current ACh concentration" style="width:100%;height:{{ bgCubeH }};display:block;"></canvas>
         </div>
-      </sc-if>
-      <div style="display:grid;grid-template-columns:{{ bgCols }};gap:clamp(14px,3vw,48px);align-items:stretch;">
-        <canvas data-fig="bindgate" data-part="cube" data-ach="{{ achLog }}" data-e0f="{{ e0f }}" role="img" aria-label="Cyclic scheme of eight states with occupancy at the current ACh concentration" style="width:100%;height:{{ bgFigH }};display:{{ bgCubeDisp }};"></canvas>
-        <div style="display:flex;flex-direction:column;gap:{{ bgColGap }};min-width:0;">
-          <canvas data-fig="bindgate" data-part="plot" data-ach="{{ achLog }}" data-e0f="{{ e0f }}" role="img" aria-label="Open probability versus ACh concentration" style="width:100%;height:{{ bgPlotH }};display:{{ bgPlotDisp }};"></canvas>
-          <canvas data-fig="bindgate" data-part="strip" data-ach="{{ achLog }}" data-e0f="{{ e0f }}" aria-hidden="true" style="width:100%;height:{{ bgStripH }};display:{{ bgStripDisp }};"></canvas>
+        <div style="min-width:0;display:flex;flex-direction:column;gap:10px;">
+          <div style="font-family:'Geist Mono',monospace;font-size:10.5px;letter-spacing:0.12em;text-transform:uppercase;color:#7d889c;">Concentration–response</div>
+          <canvas data-fig="bindgate" data-part="plot" data-ach="{{ achLog }}" data-e0f="{{ e0f }}" role="img" aria-label="Open probability versus ACh concentration" style="width:100%;height:{{ bgPlotH }};display:block;"></canvas>
+          <canvas data-fig="bindgate" data-part="strip" data-ach="{{ achLog }}" data-e0f="{{ e0f }}" aria-hidden="true" style="width:100%;height:{{ bgStripH }};display:block;margin-top:10px;"></canvas>
         </div>
       </div>
-      <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;border-top:1px solid rgba(255,255,255,0.08);">
+      <div style="display:grid;grid-template-columns:{{ bgReadCols }};gap:0 16px;border-top:1px solid rgba(255,255,255,0.08);">
         <sc-for list="{{ bgReadouts }}" as="o" hint-placeholder-count="4">
-          <div style="padding:12px 4px 0 0;display:flex;flex-direction:column;gap:6px;min-width:0;">
-            <div style="font-family:'Geist Mono',monospace;font-size:10.5px;letter-spacing:0.08em;color:#7d889c;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ o.k }}</div>
-            <div style="font-family:'Geist Mono',monospace;font-size:clamp(16px,2.4vw,30px);line-height:1;letter-spacing:-0.02em;color:#f1d49a;font-variant-numeric:tabular-nums;white-space:nowrap;">{{ o.v }}</div>
+          <div style="padding:14px 0 2px;display:flex;flex-direction:column;gap:6px;min-width:0;">
+            <div style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.08em;color:#7d889c;">{{ o.k }}</div>
+            <div style="font-family:'Geist Mono',monospace;font-size:clamp(22px,2.4vw,30px);line-height:1;letter-spacing:-0.02em;color:#f1d49a;font-variant-numeric:tabular-nums;white-space:nowrap;">{{ o.v }}</div>
           </div>
         </sc-for>
       </div>
     </div>
-    <div style="margin-top:10px;font-family:'Geist Mono',monospace;font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:#7d889c;">Simulated · equilibrium two-site model; desensitisation not included</div>
+    <div style="margin-top:14px;font-family:'Geist Mono',monospace;font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:#7d889c;line-height:1.6;">Simulated · equilibrium two-site model; desensitisation not included</div>
   </section>
 
   <section style="max-width:1360px;margin:0 auto;padding:clamp(80px,10vw,136px) clamp(20px,5vw,40px) 0;">
@@ -149,7 +148,7 @@ img{max-width:100%;}
         <div data-scales-rows="" style="display:flex;flex-direction:column;gap:clamp(48px,7vw,80px);">
         <div data-step="0" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:24px clamp(32px,6vw,96px);align-items:center;">
           <div data-frame="" style="position:relative;width:100%;max-width:640px;aspect-ratio:1586/992;border-radius:20px;overflow:hidden;background:#0b1220;border:1px solid rgba(255,255,255,0.07);">
-            <div data-art="" style="position:absolute;inset:0;"><img decoding="async" src="assets/scales/00-overview.jpg" alt="Brain function across scales: organ, network, cells, molecules and atoms" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+            <div data-art="" style="position:absolute;inset:0;"><img decoding="async" src="assets/scales/0home.webp" alt="Brain function across scales: organ, network, cells, molecules and atoms" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
           </div>
           <div data-text="" style="display:flex;flex-direction:column;gap:16px;">
             <div style="font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.2em;color:#e6b667;text-transform:uppercase;">00 · Across scales</div>
@@ -158,7 +157,7 @@ img{max-width:100%;}
         </div>
         <div data-step="1" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:24px clamp(32px,6vw,96px);align-items:center;">
           <div data-frame="" style="position:relative;width:100%;max-width:640px;aspect-ratio:1586/992;border-radius:20px;overflow:hidden;background:#0b1220;border:1px solid rgba(255,255,255,0.07);">
-            <div data-art="" style="position:absolute;inset:0;"><img decoding="async" loading="lazy" src="assets/scales/01-brain.jpg" alt="Human brain with glowing neural pathways" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+            <div data-art="" style="position:absolute;inset:0;"><img decoding="async" loading="lazy" src="assets/scales/1organ.webp" alt="Human brain with glowing neural pathways" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
           </div>
           <div data-text="" style="display:flex;flex-direction:column;gap:16px;">
             <div style="font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.2em;color:#e6b667;text-transform:uppercase;">01 · Organ</div>
@@ -167,7 +166,7 @@ img{max-width:100%;}
         </div>
         <div data-step="2" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:24px clamp(32px,6vw,96px);align-items:center;">
           <div data-frame="" style="position:relative;width:100%;max-width:640px;aspect-ratio:1586/992;border-radius:20px;overflow:hidden;background:#0b1220;border:1px solid rgba(255,255,255,0.07);">
-            <div data-art="" style="position:absolute;inset:0;"><img decoding="async" loading="lazy" src="assets/scales/02-network.jpg" alt="Neurons connected by a synapse, with vesicles crossing the cleft" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+            <div data-art="" style="position:absolute;inset:0;"><img decoding="async" loading="lazy" src="assets/scales/2network.webp" alt="Neurons connected by a synapse, with vesicles crossing the cleft" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
           </div>
           <div data-text="" style="display:flex;flex-direction:column;gap:16px;">
             <div style="font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.2em;color:#e6b667;text-transform:uppercase;">02 · Network</div>
@@ -176,7 +175,7 @@ img{max-width:100%;}
         </div>
         <div data-step="3" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:24px clamp(32px,6vw,96px);align-items:center;">
           <div data-frame="" style="position:relative;width:100%;max-width:640px;aspect-ratio:1586/992;border-radius:20px;overflow:hidden;background:#0b1220;border:1px solid rgba(255,255,255,0.07);">
-            <div data-art="" style="position:absolute;inset:0;"><img decoding="async" loading="lazy" src="assets/scales/03-cell.jpg" alt="Neuron with a zoomed inset of its membrane, ion channels passing ions through" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+            <div data-art="" style="position:absolute;inset:0;"><img decoding="async" loading="lazy" src="assets/scales/3cell.webp" alt="Neuron with a zoomed inset of its membrane, ion channels passing ions through" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
           </div>
           <div data-text="" style="display:flex;flex-direction:column;gap:16px;">
             <div style="font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.2em;color:#e6b667;text-transform:uppercase;">03 · Cell</div>
@@ -185,7 +184,7 @@ img{max-width:100%;}
         </div>
         <div data-step="4" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:24px clamp(32px,6vw,96px);align-items:center;">
           <div data-frame="" style="position:relative;width:100%;max-width:640px;aspect-ratio:1586/992;border-radius:20px;overflow:hidden;background:#0b1220;border:1px solid rgba(255,255,255,0.07);">
-            <div data-art="" style="position:absolute;inset:0;"><img decoding="async" loading="lazy" src="assets/scales/04-receptor.jpg" alt="Pentameric receptor spanning a lipid membrane, subunits around a glowing central pore with bound ligands" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+            <div data-art="" style="position:absolute;inset:0;"><img decoding="async" loading="lazy" src="assets/scales/4channel.webp" alt="Pentameric receptor spanning a lipid membrane, subunits around a glowing central pore with bound ligands" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
           </div>
           <div data-text="" style="display:flex;flex-direction:column;gap:16px;">
             <div style="font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.2em;color:#e6b667;text-transform:uppercase;">04 · Molecule</div>
@@ -194,7 +193,7 @@ img{max-width:100%;}
         </div>
         <div data-step="5" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:24px clamp(32px,6vw,96px);align-items:center;">
           <div data-frame="" style="position:relative;width:100%;max-width:640px;aspect-ratio:1586/992;border-radius:20px;overflow:hidden;background:#0b1220;border:1px solid rgba(255,255,255,0.07);">
-            <div data-art="" style="position:absolute;inset:0;"><img decoding="async" loading="lazy" src="assets/scales/05-residues.jpg" alt="Ligand in the binding site, surrounded by aromatic side chains" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+            <div data-art="" style="position:absolute;inset:0;"><img decoding="async" loading="lazy" src="assets/scales/5atoms.webp" alt="Ligand in the binding site, surrounded by aromatic side chains" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
           </div>
           <div data-text="" style="display:flex;flex-direction:column;gap:16px;">
             <div style="font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.2em;color:#e6b667;text-transform:uppercase;">05 · Atom</div>
@@ -203,7 +202,7 @@ img{max-width:100%;}
         </div>
         <div data-step="6" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:24px clamp(32px,6vw,96px);align-items:center;">
           <div data-frame="" style="position:relative;width:100%;max-width:640px;aspect-ratio:1586/992;border-radius:20px;overflow:hidden;background:#0b1220;border:1px solid rgba(255,255,255,0.07);">
-            <div data-art="" style="position:absolute;inset:0;background:#0b1220;"><img decoding="async" loading="lazy" src="assets/scales/06-patch-clamp-bg.jpg" alt="" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;"><img decoding="async" loading="lazy" src="assets/scales/06-patch-clamp.jpg" alt="Patch-clamp rig in the lab: upright microscope with micromanipulators on an anti-vibration table" style="position:relative;width:100%;height:100%;object-fit:contain;display:block;"></div>
+            <div data-art="" style="position:absolute;inset:0;background:#0b1220;"><img decoding="async" loading="lazy" src="assets/scales/6patchclampriginlab-bg.webp" alt="" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;"><img decoding="async" loading="lazy" src="assets/scales/6patchclampriginlab.webp" alt="Patch-clamp rig in the lab: upright microscope with micromanipulators on an anti-vibration table" style="position:relative;width:100%;height:100%;object-fit:contain;display:block;"></div>
           </div>
           <div data-text="" style="display:flex;flex-direction:column;gap:16px;">
             <div style="font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.2em;color:#e6b667;text-transform:uppercase;">06 · In the lab</div>
@@ -274,7 +273,7 @@ img{max-width:100%;}
     <div data-reveal="" style="display:flex;flex-wrap:wrap;gap:clamp(28px,4vw,56px);align-items:center;margin-bottom:clamp(40px,5vw,64px);">
       <div style="width:min(100%,220px);flex:none;display:flex;flex-direction:column;gap:14px;">
         <div style="position:relative;border-radius:18px;overflow:hidden;width:100%;aspect-ratio:4/5;background:#0d1422;border:1px solid rgba(255,255,255,0.06);">
-          <img src="assets/people/tapan-nayak.jpg" alt="Dr. Tapan Kumar Nayak" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+          <img src="assets/people/tapan-nayak.webp" alt="Dr. Tapan Kumar Nayak" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
         </div>
         <div style="display:flex;flex-direction:column;gap:6px;padding:0 2px;">
           <div style="font-size:18px;font-weight:500;letter-spacing:-0.02em;">Dr. Tapan Kumar Nayak</div>
@@ -371,19 +370,10 @@ class Component extends DCLogic {
     const go = () => { if (!window.LAB_CONTENT) { this._t = setTimeout(go, 40); return; } this.forceUpdate(); };
     go();
     this.initScales();
-    this._vp = () => { if (this._vpRaf) return; this._vpRaf = requestAnimationFrame(() => { this._vpRaf = 0; const vw = innerWidth, vh = (window.visualViewport && visualViewport.height) || innerHeight; if (Math.abs(vw - this.state.vw) > 1 || Math.abs(vh - this.state.vh) > 60) this.setState({ vw, vh, bgRest: 0 }); }); };
+    this._vp = () => { if (this._vpRaf) return; this._vpRaf = requestAnimationFrame(() => { this._vpRaf = 0; const vw = innerWidth, vh = (window.visualViewport && visualViewport.height) || innerHeight; if (Math.abs(vw - this.state.vw) > 1) this.setState({ vw, vh }); }); };
     addEventListener('resize', this._vp); addEventListener('orientationchange', this._vp); this._vp();
-    this._bgT = setTimeout(() => this.measureBg(), 300); if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => this.measureBg());
   }
-  componentDidUpdate() { if (window.TE && window.TE.reduce) window.TE.seek(0); this.measureBg(); }
-  measureBg() {
-    const card = this.bgRef.current; if (!card) return;
-    const sec = card.closest('section'), h = sec && sec.querySelector('h2'), cap = card.nextElementSibling, figs = card.querySelectorAll('canvas[data-fig]');
-    if (!h || !cap || !figs.length) return;
-    const span = cap.getBoundingClientRect().bottom - h.getBoundingClientRect().top;
-    const fig = parseFloat(figs[0].style.height) || 0, rest = Math.round(span - (this.state.vw < 1040 && this.state.vh < 700 ? fig : fig));
-    if (rest > 100 && Math.abs(rest - (this.state.bgRest || 0)) > 3) this.setState({ bgRest: rest });
-  }
+  componentDidUpdate() { if (window.TE && window.TE.reduce) window.TE.seek(0); }
   componentWillUnmount() { removeEventListener('resize', this._vp); removeEventListener('orientationchange', this._vp); cancelAnimationFrame(this._achRaf); clearTimeout(this._t); if (this._scOff) this._scOff(); }
   // "From atoms to who we are": sticky zoom sequence on wide screens; plain stack on narrow screens or with reduced motion.
   initScales() {
@@ -465,19 +455,19 @@ class Component extends DCLogic {
     const conc = a => a < 1 ? sig(a * 1000) + ' nM' : a >= 1000 ? sig(a / 1000) + ' mM' : sig(a) + ' µM';
     const P = po(A), sup = { '-': '⁻', 0: '⁰', 1: '¹', 2: '²', 3: '³', 4: '⁴', 5: '⁵', 6: '⁶', 7: '⁷', 8: '⁸', 9: '⁹' };
     const poText = P >= 0.001 ? P.toFixed(3) : (() => { const e = Math.floor(Math.log10(P)); return (P / 10 ** e).toFixed(1) + '×10' + String(e).split('').map(c => sup[c]).join(''); })();
-    const narrow = this.state.vw < 1040, vh = this.state.vh, short = vh < 700;
-    const modes = [['wt', 'Wild type', 'E₀ = 7×10⁻⁷'], ['gof', narrow ? 'Gain of function' : 'Gain-of-function mutant', 'E₀ × 10'], ['lof', narrow ? 'Loss of function' : 'Loss-of-function mutant', 'E₀ ÷ 10']];
-    // Everything (heading, controls, figures, readouts) must fit one screen below the 64px nav.
-    const chrome = this.state.bgRest || ((narrow ? (this.state.vw < 520 ? 560 : (this.state.vw < 760 ? 500 : 470)) : 430) - (short ? 60 : 0)), fig = Math.round(Math.max(120, Math.min(narrow ? 420 : 540, vh - 64 - 12 - chrome)));
-    const view = this.state.bgView === 'strip' && !short ? 'cube' : this.state.bgView;
+    const vw = this.state.vw, narrow = vw < 860, phone = vw < 600;
+    const sci = v => { if (v >= 0.01 && v < 1000) return v >= 10 ? String(Math.round(v)) : String(+v.toPrecision(2)); let e = Math.floor(Math.log10(v)), m = +(v / 10 ** e).toPrecision(2); if (m >= 10) { m = +(m / 10).toPrecision(2); e++; } return m + '×10' + String(e).split('').map(c => sup[c]).join(''); };
+    const modes = [['wt', 'Wild type', 'E₀ = 7×10⁻⁷'], ['gof', 'Gain-of-function mutant', 'E₀ × 10'], ['lof', 'Loss-of-function mutant', 'E₀ ÷ 10']];
     return {
       achLog: this.state.achLog, achText: conc(A), e0f: f,
       onAch: e => { this._achNext = +e.target.value; if (!this._achRaf) this._achRaf = requestAnimationFrame(() => { this._achRaf = 0; if (this._achNext !== this.state.achLog) this.setState({ achLog: this._achNext }); }); },
-      bgRef: this.bgRef, bgNarrow: narrow,
-      bgFigH: fig + 'px', bgPlotH: (narrow ? fig : Math.max(100, fig - (short ? 68 : 92))) + 'px', bgStripH: (narrow && short ? fig : short ? 56 : 80) + 'px', bgCols: narrow ? 'minmax(0,1fr)' : 'minmax(0,1.1fr) minmax(0,1fr)',
-      bgCubeDisp: !narrow || view === 'cube' ? 'block' : 'none', bgPlotDisp: !narrow || view === 'plot' ? 'block' : 'none', bgColGap: narrow && short ? '0px' : '12px',
-      bgTall: !short, bgStripDisp: narrow && short && view !== 'strip' ? 'none' : 'block',
-      bgTabs: [['cube', 'Scheme'], ['plot', 'Po curve']].concat(short ? [['strip', 'Trace']] : []).map(([id, label]) => { const on = view === id; return { label, on, pick: () => this.setState({ bgView: id }), bg: on ? '#f1d49a' : 'transparent', fg: on ? '#070c16' : '#aab3c3' }; }),
+      bgRef: this.bgRef,
+      bgCols: narrow ? 'minmax(0,1fr)' : 'minmax(0,1.1fr) minmax(0,1fr)',
+      bgCubeH: phone ? 'min(calc((100vw - 64px) * 1.15), 460px)' : narrow ? 'clamp(260px, min(52vw, calc(100svh - 380px)), 440px)' : 'clamp(240px, calc(100svh - 500px), 520px)',
+      bgPlotH: phone ? 'calc((100vw - 64px) * 0.72)' : narrow ? 'clamp(200px, min(40vw, calc(100svh - 420px)), 360px)' : 'clamp(130px, calc(100svh - 614px), 406px)',
+      bgStripH: narrow ? '96px' : '84px',
+      bgReadCols: phone ? 'repeat(2,minmax(0,1fr))' : 'repeat(4,minmax(0,1fr))',
+      bgBtnDir: phone ? 'column' : 'row', bgBtnInner: phone ? 'row' : 'column', bgBtnAlign: phone ? 'center' : 'flex-start',
       bgModes: modes.map(([id, label, note]) => { const on = this.state.bgMode === id; return { label, note, on, pick: () => this.setState({ bgMode: id }), bg: on ? '#f1d49a' : 'transparent', fg: on ? '#070c16' : '#e8ecf3', border: on ? '#f1d49a' : 'rgba(255,255,255,0.16)' }; }),
       bgReadouts: [{ k: '[ACh]', v: conc(A) }, { k: 'Po', v: poText }, { k: 'EC50', v: conc(10 ** ((lo + hi) / 2)) }, { k: 'E₂ = E₀(Kd/Jd)²', v: sig(E2) }],
     };

@@ -18,7 +18,7 @@ window.LAB_CONTENT = {
 
   /* PRINCIPAL INVESTIGATOR — title and department, used in the nav, footer,
      Home, People, Teaching and Join pages and the map link.                   */
-  "pi": { "title": "[TITLE]", "dept": "[DEPARTMENT]" },
+  "pi": { "title": "Associate Professor", "dept": "KSBS" },
 
   /* PEOPLE ------------------------------------------------------------------
      status: "current"  → shows in "Lab Group"

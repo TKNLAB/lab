@@ -19,7 +19,9 @@
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" type="image/png" href="assets/logos/tkn-favicon.png">
+<link rel="icon" type="image/svg+xml" href="assets/logos/tkn-favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/logos/tkn-favicon-32.png">
+<link rel="apple-touch-icon" href="assets/logos/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&amp;family=Geist+Mono:wght@400;500&amp;family=Newsreader:ital,opsz,wght@1,6..72,400&amp;display=swap" rel="stylesheet">
@@ -56,7 +58,7 @@ img{max-width:100%;}
   <section style="max-width:1360px;margin:0 auto;padding:clamp(56px,7vw,96px) clamp(20px,5vw,40px) 0;">
     <div data-reveal="" style="display:flex;flex-wrap:wrap;gap:clamp(28px,4vw,56px);align-items:stretch;">
       <div style="flex:none;width:min(100%,300px);min-height:340px;position:relative;border-radius:18px;overflow:hidden;border:3px solid transparent;background:linear-gradient(#0d1422,#0d1422) padding-box,linear-gradient(145deg,rgba(241,212,154,0.75),rgba(241,212,154,0.4)) border-box;">
-        <img src="assets/people/tapan-nayak.jpg" alt="Dr. Tapan Kumar Nayak" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+        <img src="assets/people/tapan-nayak.webp" alt="Dr. Tapan Kumar Nayak" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
         <div style="position:absolute;inset:auto 0 0 0;padding:18px 20px;background:linear-gradient(180deg,transparent,rgba(7,12,22,0.94));">
           <div style="font-family:'Geist Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#e6b667;">Principal Investigator</div>
         </div>
@@ -84,7 +86,7 @@ img{max-width:100%;}
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(max(min(100%,280px),calc((100% - 48px) / 4)),1fr));gap:16px;align-items:stretch;">
       <sc-for list="{{ people }}" as="m" hint-placeholder-count="8">
         <sc-if value="{{ m.isRb }}" hint-placeholder-val="{{ false }}">
-        <article id="{{ m.anchor }}" data-reveal="16" data-reveal-delay="{{ m.delay }}" tabindex="0" role="button" aria-pressed="{{ m.rbPressed }}" aria-label="Rakesh Barwar. Press to turn the card over." onMouseEnter="{{ m.rbEnter }}" onMouseLeave="{{ m.rbLeave }}" onClick="{{ m.rbClick }}" onKeyDown="{{ m.rbKey }}" style="display:grid;perspective:1400px;border-radius:20px;scroll-margin-top:90px;cursor:pointer;outline:none;-webkit-tap-highlight-color:transparent;" style-focus="outline:2px solid #f1d49a;outline-offset:4px;">
+        <article id="{{ m.anchor }}" data-reveal="16" data-reveal-delay="{{ m.delay }}" tabindex="0" role="button" aria-pressed="{{ m.rbPressed }}" aria-label="Rakesh Barwar. Press to turn the card over." onPointerEnter="{{ m.rbEnter }}" onPointerLeave="{{ m.rbLeave }}" onPointerDown="{{ m.rbDown }}" onClick="{{ m.rbClick }}" onKeyDown="{{ m.rbKey }}" style="display:grid;perspective:1400px;border-radius:20px;scroll-margin-top:90px;cursor:pointer;outline:none;-webkit-tap-highlight-color:transparent;" style-focus="outline:2px solid #f1d49a;outline-offset:4px;">
           <div style="display:grid;transform-style:preserve-3d;transition:{{ m.rbTrans }};transform:rotateY({{ m.rbRot }});">
             <div aria-hidden="{{ m.rbFrontHidden }}" style="grid-area:1/1;position:relative;-webkit-backface-visibility:hidden;backface-visibility:hidden;opacity:{{ m.rbFrontOp }};background:#0d1422;border:1px solid rgba(255,255,255,0.06);border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:18px;transition:border-color .25s,background .25s,opacity .4s ease;" style-hover="border-color:rgba(241,212,154,0.35);background:#101a2c;">
               <span aria-hidden="true" style="position:absolute;top:16px;right:18px;font-size:15px;line-height:1;color:#e6b667;opacity:0.35;">↻</span>
@@ -284,9 +286,10 @@ class Component extends DCLogic {
       rbRot: rm ? '0deg' : (f ? '180deg' : '0deg'), rbBackT: rm ? 'none' : 'rotateY(180deg)',
       rbTrans: rm ? 'none' : 'transform .9s cubic-bezier(.22,.72,.2,1)',
       rbFrontOp: rm ? (f ? 0 : 1) : 1, rbBackOp: rm ? (f ? 1 : 0) : 1,
-      rbEnter: () => { if (!this.rbHover()) return; clearTimeout(this._rbHt); this._rbHt = setTimeout(() => this.rbFlip(true), 140); },
-      rbLeave: () => { if (!this.rbHover()) return; clearTimeout(this._rbHt); this.rbFlip(false); },
-      rbClick: () => { if (!this.rbHover()) this.rbFlip(!this.state.rbFlip); },
+      rbEnter: (e) => { if (e.pointerType !== 'mouse') return; clearTimeout(this._rbHt); this._rbHt = setTimeout(() => this.rbFlip(true), 140); },
+      rbLeave: (e) => { if (e.pointerType !== 'mouse') return; clearTimeout(this._rbHt); this.rbFlip(false); },
+      rbDown: (e) => { this._rbPt = e.pointerType; },
+      rbClick: () => { const pt = this._rbPt; this._rbPt = ''; if (pt !== 'mouse') this.rbFlip(!this.state.rbFlip); },
       rbKey: (e) => {
         if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') { e.preventDefault(); this.rbFlip(!this.state.rbFlip); }
         else if (e.key === 'Escape') this.rbFlip(false);
