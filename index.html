@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="flat-links" content="1">
 <script src="./support.js"></script>
+<script src="./theme.js"></script>
 </head>
 <body>
 <x-dc>
@@ -117,7 +118,7 @@ img{max-width:100%;}
           </sc-for>
         </div>
       </div>
-      <div style="display:grid;grid-template-columns:{{ bgCols }};gap:clamp(28px,4vw,56px);align-items:start;">
+      <div style="display:grid;grid-template-columns:{{ bgCols }};gap:clamp(18px,4vw,56px);align-items:start;">
         <div style="min-width:0;display:flex;flex-direction:column;gap:10px;">
           <div style="font-family:'Geist Mono',monospace;font-size:10.5px;letter-spacing:0.12em;text-transform:uppercase;color:#7d889c;">State occupancy</div>
           <canvas data-fig="bindgate" data-part="cube" data-ach="{{ achLog }}" data-e0f="{{ e0f }}" role="img" aria-label="Cyclic scheme of eight states with occupancy at the current ACh concentration" style="width:100%;height:{{ bgCubeH }};display:block;"></canvas>
@@ -463,11 +464,11 @@ class Component extends DCLogic {
       onAch: e => { this._achNext = +e.target.value; if (!this._achRaf) this._achRaf = requestAnimationFrame(() => { this._achRaf = 0; if (this._achNext !== this.state.achLog) this.setState({ achLog: this._achNext }); }); },
       bgRef: this.bgRef,
       bgCols: narrow ? 'minmax(0,1fr)' : 'minmax(0,1.1fr) minmax(0,1fr)',
-      bgCubeH: phone ? 'min(calc((100vw - 64px) * 1.15), 460px)' : narrow ? 'clamp(260px, min(52vw, calc(100svh - 380px)), 440px)' : 'clamp(240px, calc(100svh - 500px), 520px)',
-      bgPlotH: phone ? 'calc((100vw - 64px) * 0.72)' : narrow ? 'clamp(200px, min(40vw, calc(100svh - 420px)), 360px)' : 'clamp(130px, calc(100svh - 614px), 406px)',
-      bgStripH: narrow ? '96px' : '84px',
+      bgCubeH: phone ? 'clamp(180px, calc((100svh - 450px) * 0.6), 320px)' : narrow ? 'clamp(260px, min(52vw, calc(100svh - 380px)), 440px)' : 'clamp(240px, calc(100svh - 500px), 520px)',
+      bgPlotH: phone ? 'clamp(100px, calc((100svh - 450px) * 0.4), 220px)' : narrow ? 'clamp(200px, min(40vw, calc(100svh - 420px)), 360px)' : 'clamp(130px, calc(100svh - 614px), 406px)',
+      bgStripH: phone ? '44px' : narrow ? '96px' : '84px',
       bgReadCols: phone ? 'repeat(2,minmax(0,1fr))' : 'repeat(4,minmax(0,1fr))',
-      bgBtnDir: phone ? 'column' : 'row', bgBtnInner: phone ? 'row' : 'column', bgBtnAlign: phone ? 'center' : 'flex-start',
+      bgBtnDir: 'row', bgBtnInner: 'column', bgBtnAlign: 'flex-start',
       bgModes: modes.map(([id, label, note]) => { const on = this.state.bgMode === id; return { label, note, on, pick: () => this.setState({ bgMode: id }), bg: on ? '#f1d49a' : 'transparent', fg: on ? '#070c16' : '#e8ecf3', border: on ? '#f1d49a' : 'rgba(255,255,255,0.16)' }; }),
       bgReadouts: [{ k: '[ACh]', v: conc(A) }, { k: 'Po', v: poText }, { k: 'EC50', v: conc(10 ** ((lo + hi) / 2)) }, { k: 'E₂ = E₀(Kd/Jd)²', v: sig(E2) }],
     };

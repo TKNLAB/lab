@@ -43,7 +43,7 @@ window.LAB_CONTENT = {
       "past": "Past:\nMSc Biochemistry, Institute of Sciences, Banaras Hindu University (2021\u20132023)\nBSc (Hons.) Biochemistry, University of Delhi (2018\u20132021)" },
     { "status": "current", "img": "", "name": "Gauri Saini", "role": "Ph.D. Scholar", "bio": "", "past": "" },
     { "status": "current", "img": "assets/people/rakesh.webp", "name": "Rakesh Barwar", "role": "Ph.D. Scholar",
-      "bio": "Investigating how the human two-pore channel 2 (hsTPC2) senses luminal pH and how this controls its gating, combining computational structural biology, site-directed mutagenesis and patch-clamp electrophysiology.",
+      "bio": "Works on TPC2, an ion channel of the endolysosome \u2014 asking how the channel reads the chemistry of the compartment it sits in, and how that reading is turned into opening and closing. Builds the structural models, makes the mutants, and records what they do.",
       "past": "Past:\nMSc Biotech, Maharshi Dayanand University - Rohtak, Haryana" },
     { "status": "current", "img": "", "name": "Jaweria Mariam", "role": "Ph.D. Scholar", "bio": "", "past": "" },
     { "status": "current", "img": "", "name": "Tanish Gupta", "role": "Ph.D. Scholar", "bio": "", "past": "" },

@@ -51,7 +51,7 @@
   <div style="border-top:1px solid rgba(255,255,255,0.06);">
     <div style="max-width:1360px;margin:0 auto;padding:14px clamp(20px,5vw,40px);display:flex;align-items:center;gap:8px 24px;font-family:'Geist Mono',monospace;font-size:11.5px;line-height:1.6;color:#7d889c;">
       <div style="flex:1;min-width:0;display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 24px;">
-        <span style="display:inline-flex;flex-wrap:wrap;align-items:center;gap:0 6px;min-width:0;max-width:100%;">© 2026&nbsp;Nayak&nbsp;Group&nbsp;· IIT&nbsp;Delhi&nbsp;·<a href="People.dc.html#rakesh-barwar" aria-label="Made with love by Rakesh Barwar" onPointerEnter="{{ rbOn }}" onPointerLeave="{{ rbOff }}" onFocus="{{ rbOn }}" onBlur="{{ rbOff }}" style="display:inline-flex;align-items:center;gap:6px;min-height:32px;color:#7d889c;text-decoration:none;opacity:{{ rbOpacity }};transition:opacity .3s;">made&nbsp;with&nbsp;♥&nbsp;by<img src="assets/rb.png" alt="" width="18" height="18" style="width:18px;height:18px;display:block;flex:none;"><span style="display:inline-block;white-space:nowrap;opacity:{{ rbNameOpacity }};transform:translateX({{ rbShift }});transition:opacity .3s ease,transform .3s ease;color:#f1d49a;">Rakesh&nbsp;Barwar</span></a></span>
+        <span style="display:inline-flex;flex-wrap:wrap;align-items:center;gap:0 6px;min-width:0;max-width:100%;">© 2026&nbsp;Nayak&nbsp;Group&nbsp;· IIT&nbsp;Delhi&nbsp;·<a href="People.dc.html#rakesh-barwar" aria-label="Made with love by Rakesh Barwar" onPointerEnter="{{ rbEnter }}" onPointerLeave="{{ rbLeave }}" onPointerDown="{{ rbDown }}" onClick="{{ rbClick }}" onFocus="{{ rbOn }}" onBlur="{{ rbOff }}" style="display:inline-flex;flex-wrap:wrap;max-width:100%;align-items:center;gap:0 6px;-webkit-tap-highlight-color:transparent;min-height:32px;color:#7d889c;text-decoration:none;opacity:{{ rbOpacity }};transition:opacity .3s;">made&nbsp;with&nbsp;♥&nbsp;by<img src="assets/rb.png" alt="" width="18" height="18" style="width:18px;height:18px;display:block;flex:none;"><span style="display:inline-block;white-space:nowrap;opacity:{{ rbNameOpacity }};transform:translateX({{ rbShift }});transition:opacity .3s ease,transform .3s ease;color:#f1d49a;">Rakesh&nbsp;Barwar</span></a></span>
       </div>
       <button onClick="{{ toTop }}" aria-label="Back to top" style="flex:none;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 8px;margin-right:-8px;border:none;background:transparent;cursor:pointer;font-family:'Geist Mono',monospace;font-size:11.5px;letter-spacing:0.08em;text-transform:uppercase;color:#aab3c3;transition:color .15s;" style-hover="color:#f1d49a;">Top<span aria-hidden="true" style="font-size:13px;">↑</span></button>
     </div>
@@ -109,11 +109,15 @@ class Component extends DCLogic {
   }
   componentWillUnmount() { cancelAnimationFrame(this._raf); this._ro && this._ro.disconnect(); this._io && this._io.disconnect(); }
   renderVals() {
-    const touch = typeof window !== 'undefined' && window.matchMedia && (window.matchMedia('(hover: none)').matches || window.matchMedia('(pointer: coarse)').matches);
-    const rb = touch || !!(this.state && this.state.rb);
+    const touch = typeof window !== 'undefined' && window.matchMedia && (window.matchMedia('(hover: none)').matches || window.matchMedia('(pointer: coarse)').matches || window.matchMedia('(any-pointer: coarse)').matches);
+    const rb = touch || !!(this.state && (this.state.rb || this.state.rbTapped));
     return {
       piDept: ((window.LAB_CONTENT || {}).pi || {}).dept || '[DEPARTMENT]',
       rbOn: () => this.setState({ rb: true }), rbOff: () => this.setState({ rb: false }),
+      rbEnter: e => { if (e.pointerType === 'mouse') this.setState({ rb: true }); },
+      rbLeave: e => { if (e.pointerType === 'mouse') this.setState({ rb: false }); },
+      rbDown: e => { if (e.pointerType !== 'mouse' && !rb) this.setState({ rbTapped: true }); },
+      rbClick: e => { if (!rb) { e.preventDefault(); this.setState({ rbTapped: true }); } },
       rbOpacity: rb ? 1 : 0.5, rbShift: rb ? '0px' : '-4px', rbNameOpacity: rb ? 1 : 0,
       traceRef: this.traceRef,
       toTop: () => {
