@@ -3,9 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="flat-links" content="1">
 <script src="./support.js"></script>
-<script src="./theme.js"></script>
+<script src="./js/theme.js"></script>
 </head>
 <body>
 <x-dc>
@@ -36,11 +35,11 @@ a:hover{color:inherit;}
 img{max-width:100%;}
 @media (prefers-reduced-motion:reduce){*{transition-duration:.01ms !important;}}
 </style>
-<script src="./content.js"></script>
-<script src="./home-fx.js"></script>
-<script src="./trace-engine.js"></script>
-<script src="./figs-join.js"></script>
-<script src="./flatlinks.js"></script>
+<script src="./data/content.js"></script>
+<script src="./js/site-fx.js"></script>
+<script src="./js/trace-engine.js"></script>
+<script src="./js/figures/join.js"></script>
+<script src="./js/tap-fix.js"></script>
 </helmet>
 <div style="font-family:'Geist',sans-serif;color:#e8ecf3;background:#070c16;min-height:100vh;overflow-x:clip;">
   <dc-import name="SiteNav" active="join" hint-size="100%,64px" style="position:sticky;top:0;z-index:200;"></dc-import>
@@ -48,7 +47,7 @@ img{max-width:100%;}
   <section id="main" style="position:relative;overflow:hidden;border-bottom:1px solid rgba(255,255,255,0.07);">
     <canvas data-fig="join" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;display:block;"></canvas>
     <div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,#070c16 30%,rgba(7,12,22,0.6) 48%,rgba(7,12,22,0) 58%),linear-gradient(180deg,transparent 80%,#070c16);"></div>
-    <div data-hero-cap="" style="position:absolute;right:clamp(20px,5vw,40px);left:clamp(20px,5vw,40px);text-align:right;bottom:16px;font-family:'Geist Mono',monospace;font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:#7d889c;pointer-events:none;">Simulated · seal test, from pipette to gigaseal to whole-cell</div>
+    <div data-hero-cap="" style="position:absolute;right:clamp(20px,5vw,40px);left:clamp(20px,5vw,40px);text-align:right;bottom:16px;font-family:'Geist Mono',monospace;font-size:10.5px;letter-spacing:0.02em;color:#7d889c;pointer-events:none;">Simulated · seal test, from pipette to gigaseal to whole-cell</div>
     <div style="position:relative;max-width:1360px;margin:0 auto;padding:clamp(72px,10vw,136px) clamp(20px,5vw,40px) clamp(56px,7vw,88px);">
       <div style="font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.2em;color:#e6b667;text-transform:uppercase;margin-bottom:22px;">Join us · Contact</div>
       <h1 style="font-weight:500;font-size:clamp(38px,6vw,84px);line-height:1;letter-spacing:-0.04em;max-width:1000px;text-wrap:balance;margin-bottom:26px;">Come record some <span style="font-family:'Newsreader',serif;font-style:italic;font-weight:400;color:#f1d49a;letter-spacing:-0.02em;">channels</span> with us.</h1>
@@ -106,12 +105,12 @@ img{max-width:100%;}
         </div>
         <div>
           <div style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#7d889c;margin-bottom:8px;">Address</div>
-          <p style="font-size:15.5px;line-height:1.7;color:#aab3c3;font-weight:300;margin-bottom:12px;">{{ piDept }}<br>Indian Institute of Technology Delhi<br>Hauz Khas, New Delhi 110016, India</p>
+          <p style="font-size:15.5px;line-height:1.7;color:#aab3c3;font-weight:300;margin-bottom:12px;">307, KSBS<br>Academic Complex East<br>IIT Delhi, Hauz Khas<br>New Delhi 110016, India</p>
           <a href="{{ mapUrl }}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;min-height:44px;font-family:'Geist Mono',monospace;font-size:11.5px;letter-spacing:0.1em;text-transform:uppercase;color:#f1d49a;" style-hover="color:#fff;">Open in Maps ↗</a>
         </div>
         <div style="display:flex;align-items:center;gap:14px;padding-top:22px;border-top:1px solid rgba(255,255,255,0.07);margin-top:auto;">
           <img src="assets/logos/iit-delhi.webp" alt="IIT Delhi" style="height:48px;width:48px;object-fit:contain;">
-          <span style="font-size:14px;color:#c3cad6;line-height:1.4;">Indian Institute of Technology Delhi</span>
+          <span style="font-size:14px;color:#c3cad6;line-height:1.4;">Indian Institute of<br>Technology, Delhi</span>
         </div>
       </div>
     </div>

@@ -3,9 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="flat-links" content="1">
 <script src="./support.js"></script>
-<script src="./theme.js"></script>
+<script src="./js/theme.js"></script>
 </head>
 <body>
 <x-dc>
@@ -36,11 +35,11 @@ a:hover{color:inherit;}
 img{max-width:100%;}
 @media (prefers-reduced-motion:reduce){*{transition-duration:.01ms !important;}}
 </style>
-<script src="./content.js"></script>
-<script src="./home-fx.js"></script>
-<script src="./trace-engine.js"></script>
-<script src="./figs-people.js"></script>
-<script src="./flatlinks.js"></script>
+<script src="./data/content.js"></script>
+<script src="./js/site-fx.js"></script>
+<script src="./js/trace-engine.js"></script>
+<script src="./js/figures/people.js"></script>
+<script src="./js/tap-fix.js"></script>
 </helmet>
 <div style="font-family:'Geist',sans-serif;color:#e8ecf3;background:#070c16;min-height:100vh;overflow-x:clip;">
   <dc-import name="SiteNav" active="people" hint-size="100%,64px" style="position:sticky;top:0;z-index:200;"></dc-import>
@@ -48,7 +47,7 @@ img{max-width:100%;}
   <section id="main" style="position:relative;overflow:hidden;border-bottom:1px solid rgba(255,255,255,0.07);">
     <canvas data-fig="people" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;display:block;"></canvas>
     <div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,#070c16 30%,rgba(7,12,22,0.6) 48%,rgba(7,12,22,0) 58%),linear-gradient(180deg,transparent 80%,#070c16);"></div>
-    <div data-hero-cap="" style="position:absolute;right:clamp(20px,5vw,40px);bottom:16px;font-family:'Geist Mono',monospace;font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:#7d889c;pointer-events:none;">Simulated · three channels in one patch; current steps in unitary multiples</div>
+    <div data-hero-cap="" style="position:absolute;right:clamp(20px,5vw,40px);bottom:16px;font-family:'Geist Mono',monospace;font-size:10.5px;letter-spacing:0.02em;color:#7d889c;pointer-events:none;">Simulated · three independent channels, <i>P</i><sub>o</sub> = 0.2; binomial levels (<i>E</i><sub>rev</sub> = 0 mV)</div>
     <div style="position:relative;max-width:1360px;margin:0 auto;padding:clamp(72px,10vw,136px) clamp(20px,5vw,40px) clamp(56px,7vw,88px);">
       <div style="font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.2em;color:#e6b667;text-transform:uppercase;margin-bottom:22px;">People</div>
       <h1 style="font-weight:500;font-size:clamp(38px,6vw,84px);line-height:1;letter-spacing:-0.04em;margin-bottom:26px;">The <span style="font-family:'Newsreader',serif;font-style:italic;font-weight:400;color:#f1d49a;letter-spacing:-0.02em;">team</span></h1>
@@ -67,13 +66,15 @@ img{max-width:100%;}
       <div style="flex:999 1 440px;display:flex;flex-direction:column;justify-content:center;gap:20px;min-width:0;">
         <h2 style="font-weight:500;font-size:clamp(32px,4.4vw,56px);line-height:1;letter-spacing:-0.035em;">Dr. Tapan Kumar <span style="font-family:'Newsreader',serif;font-style:italic;font-weight:400;color:#f1d49a;">Nayak</span></h2>
         <div style="font-size:15.5px;color:#aab3c3;">{{ piTitle }} · {{ piDept }}, IIT Delhi</div>
-        <p style="font-size:16px;line-height:1.7;color:#8792a6;font-weight:300;max-width:720px;">Tapan completed his Ph.D. in Biophysics at IISc Bangalore (2010) and an MSc in Life Sciences at JNU, New Delhi. He spent eight years at SUNY Buffalo as a postdoctoral associate and research assistant professor, studying the energetics of acetylcholine receptor activation with Anthony Auerbach, before joining IIT Delhi in 2018.</p>
-        <p style="font-size:16px;line-height:1.7;color:#8792a6;font-weight:300;max-width:720px;">His work combines single-channel electrophysiology, mutational analysis, molecular docking and dynamics to quantify how binding energy is converted into receptor conformational change — and to translate that understanding into allosteric therapeutics.</p>
+        <p style="font-size:16px;line-height:1.7;color:#8792a6;font-weight:300;max-width:720px;">Dr. Tapan completed his Ph.D. in Biophysics at IISc Bangalore (2010). He spent eight years at SUNY Buffalo as a postdoctoral associate and research assistant professor, studying the energetics of acetylcholine receptor activation with Anthony Auerbach, before joining IIT Delhi in 2018.</p>
+        <p style="font-size:16px;line-height:1.7;color:#8792a6;font-weight:300;max-width:720px;">His lab combines electrophysiology, biophysics and structural approaches to measure the kinetics, energetics and structural dynamics of ion channels, along with the network properties of neurons. The aim is to quantify how binding energy is converted into receptor conformational change, and to translate that understanding into allosteric therapeutics.</p>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
           <span style="font-family:'Geist Mono',monospace;font-size:12px;color:#c3cad6;border:1px solid rgba(255,255,255,0.12);padding:7px 13px;border-radius:999px;">Ph.D. IISc Bangalore</span>
           <span style="font-family:'Geist Mono',monospace;font-size:12px;color:#c3cad6;border:1px solid rgba(255,255,255,0.12);padding:7px 13px;border-radius:999px;">SUNY Buffalo</span>
           <span style="font-family:'Geist Mono',monospace;font-size:12px;color:#c3cad6;border:1px solid rgba(255,255,255,0.12);padding:7px 13px;border-radius:999px;">AHA Fellow</span>
           <a href="assets/docs/tapan-nayak-biosketch.pdf" target="_blank" style="font-family:'Geist Mono',monospace;font-size:12px;color:#070c16;background:#f1d49a;padding:7px 13px;border-radius:999px;transition:box-shadow .18s;" style-hover="box-shadow:0 0 0 5px rgba(241,212,154,0.14);">Biosketch ↓</a>
+          <a href="https://www.linkedin.com/in/tapan-k-nayak/" target="_blank" rel="noopener" style="font-family:'Geist Mono',monospace;font-size:12px;color:#f1d49a;border:1px solid rgba(241,212,154,0.5);padding:7px 13px;border-radius:999px;transition:box-shadow .18s;" style-hover="box-shadow:0 0 0 5px rgba(241,212,154,0.14);">LinkedIn ↗</a>
+          <a href="mailto:tapannayak@bioschool.iitd.ac.in" style="font-family:'Geist Mono',monospace;font-size:12px;color:#f1d49a;border:1px solid rgba(241,212,154,0.5);padding:7px 13px;border-radius:999px;transition:box-shadow .18s;" style-hover="box-shadow:0 0 0 5px rgba(241,212,154,0.14);">Email</a>
         </div>
       </div>
     </div>
@@ -105,6 +106,22 @@ img{max-width:100%;}
                 <div style="flex:1 1 130px;min-width:0;display:flex;flex-direction:column;gap:8px;">
                   <h3 style="font-weight:500;font-size:18px;letter-spacing:-0.015em;line-height:1.25;text-wrap:balance;">{{ m.name }}</h3>
                   <div data-rb-role="" style="font-family:'Geist Mono',monospace;font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:#e6b667;line-height:1.4;">{{ m.role }}</div>
+                  <sc-if value="{{ m.hasLinks }}" hint-placeholder-val="{{ true }}">
+                    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:2px;">
+                      <sc-if value="{{ m.noEmail }}" hint-placeholder-val="{{ true }}">
+                      <span title="Not added yet" style="font-family:'Geist Mono',monospace;font-size:10.5px;letter-spacing:0.06em;color:#7d889c;border:1px dashed rgba(255,255,255,0.18);padding:5px 10px;border-radius:999px;">Email</span>
+                      </sc-if>
+                      <sc-if value="{{ m.hasEmail }}" hint-placeholder-val="{{ false }}">
+                        <a href="{{ m.mailto }}" onClick="{{ m.stop }}" onPointerDown="{{ m.stop }}" style="font-family:'Geist Mono',monospace;font-size:10.5px;letter-spacing:0.06em;color:#f1d49a;border:1px solid rgba(241,212,154,0.4);padding:5px 10px;border-radius:999px;text-decoration:none;transition:box-shadow .18s;" style-hover="box-shadow:0 0 0 4px rgba(241,212,154,0.12);">Email</a>
+                      </sc-if>
+                      <sc-if value="{{ m.noLi }}" hint-placeholder-val="{{ true }}">
+                      <span title="Not added yet" style="font-family:'Geist Mono',monospace;font-size:10.5px;letter-spacing:0.06em;color:#7d889c;border:1px dashed rgba(255,255,255,0.18);padding:5px 10px;border-radius:999px;">LinkedIn</span>
+                      </sc-if>
+                      <sc-if value="{{ m.hasLi }}" hint-placeholder-val="{{ false }}">
+                        <a href="{{ m.linkedin }}" target="_blank" rel="noopener" onClick="{{ m.stop }}" onPointerDown="{{ m.stop }}" style="font-family:'Geist Mono',monospace;font-size:10.5px;letter-spacing:0.06em;color:#f1d49a;border:1px solid rgba(241,212,154,0.4);padding:5px 10px;border-radius:999px;text-decoration:none;transition:box-shadow .18s;" style-hover="box-shadow:0 0 0 4px rgba(241,212,154,0.12);">LinkedIn ↗</a>
+                      </sc-if>
+                    </div>
+                  </sc-if>
                 </div>
               </div>
               <p style="font-size:14px;color:#98a2b4;font-weight:300;line-height:1.65;text-wrap:pretty;">{{ m.bio }}</p>
@@ -127,6 +144,22 @@ img{max-width:100%;}
                 <div style="flex:1 1 130px;min-width:0;display:flex;flex-direction:column;gap:8px;">
                   <h3 style="font-weight:500;font-size:18px;letter-spacing:-0.015em;line-height:1.25;text-wrap:balance;">{{ m.name }}</h3>
                   <div data-rb-role="" style="font-family:'Geist Mono',monospace;font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:#e6b667;line-height:1.4;">{{ m.role }}</div>
+                  <sc-if value="{{ m.hasLinks }}" hint-placeholder-val="{{ true }}">
+                    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:2px;">
+                      <sc-if value="{{ m.noEmail }}" hint-placeholder-val="{{ true }}">
+                      <span title="Not added yet" style="font-family:'Geist Mono',monospace;font-size:10.5px;letter-spacing:0.06em;color:#7d889c;border:1px dashed rgba(255,255,255,0.18);padding:5px 10px;border-radius:999px;">Email</span>
+                      </sc-if>
+                      <sc-if value="{{ m.hasEmail }}" hint-placeholder-val="{{ false }}">
+                        <a href="{{ m.mailto }}" onClick="{{ m.stop }}" onPointerDown="{{ m.stop }}" style="font-family:'Geist Mono',monospace;font-size:10.5px;letter-spacing:0.06em;color:#f1d49a;border:1px solid rgba(241,212,154,0.4);padding:5px 10px;border-radius:999px;text-decoration:none;transition:box-shadow .18s;" style-hover="box-shadow:0 0 0 4px rgba(241,212,154,0.12);">Email</a>
+                      </sc-if>
+                      <sc-if value="{{ m.noLi }}" hint-placeholder-val="{{ true }}">
+                      <span title="Not added yet" style="font-family:'Geist Mono',monospace;font-size:10.5px;letter-spacing:0.06em;color:#7d889c;border:1px dashed rgba(255,255,255,0.18);padding:5px 10px;border-radius:999px;">LinkedIn</span>
+                      </sc-if>
+                      <sc-if value="{{ m.hasLi }}" hint-placeholder-val="{{ false }}">
+                        <a href="{{ m.linkedin }}" target="_blank" rel="noopener" onClick="{{ m.stop }}" onPointerDown="{{ m.stop }}" style="font-family:'Geist Mono',monospace;font-size:10.5px;letter-spacing:0.06em;color:#f1d49a;border:1px solid rgba(241,212,154,0.4);padding:5px 10px;border-radius:999px;text-decoration:none;transition:box-shadow .18s;" style-hover="box-shadow:0 0 0 4px rgba(241,212,154,0.12);">LinkedIn ↗</a>
+                      </sc-if>
+                    </div>
+                  </sc-if>
                 </div>
               </div>
               <p style="font-size:14px;color:#98a2b4;font-weight:300;line-height:1.65;text-wrap:pretty;">{{ m.bio }}</p>
@@ -154,6 +187,22 @@ img{max-width:100%;}
             <div style="flex:1 1 130px;min-width:0;display:flex;flex-direction:column;gap:8px;">
               <h3 style="font-weight:500;font-size:18px;letter-spacing:-0.015em;line-height:1.25;text-wrap:balance;">{{ m.name }}</h3>
               <div style="font-family:'Geist Mono',monospace;font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:#e6b667;line-height:1.4;">{{ m.role }}</div>
+                  <sc-if value="{{ m.hasLinks }}" hint-placeholder-val="{{ true }}">
+                    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:2px;">
+                      <sc-if value="{{ m.noEmail }}" hint-placeholder-val="{{ true }}">
+                      <span title="Not added yet" style="font-family:'Geist Mono',monospace;font-size:10.5px;letter-spacing:0.06em;color:#7d889c;border:1px dashed rgba(255,255,255,0.18);padding:5px 10px;border-radius:999px;">Email</span>
+                      </sc-if>
+                      <sc-if value="{{ m.hasEmail }}" hint-placeholder-val="{{ false }}">
+                        <a href="{{ m.mailto }}" onClick="{{ m.stop }}" onPointerDown="{{ m.stop }}" style="font-family:'Geist Mono',monospace;font-size:10.5px;letter-spacing:0.06em;color:#f1d49a;border:1px solid rgba(241,212,154,0.4);padding:5px 10px;border-radius:999px;text-decoration:none;transition:box-shadow .18s;" style-hover="box-shadow:0 0 0 4px rgba(241,212,154,0.12);">Email</a>
+                      </sc-if>
+                      <sc-if value="{{ m.noLi }}" hint-placeholder-val="{{ true }}">
+                      <span title="Not added yet" style="font-family:'Geist Mono',monospace;font-size:10.5px;letter-spacing:0.06em;color:#7d889c;border:1px dashed rgba(255,255,255,0.18);padding:5px 10px;border-radius:999px;">LinkedIn</span>
+                      </sc-if>
+                      <sc-if value="{{ m.hasLi }}" hint-placeholder-val="{{ false }}">
+                        <a href="{{ m.linkedin }}" target="_blank" rel="noopener" onClick="{{ m.stop }}" onPointerDown="{{ m.stop }}" style="font-family:'Geist Mono',monospace;font-size:10.5px;letter-spacing:0.06em;color:#f1d49a;border:1px solid rgba(241,212,154,0.4);padding:5px 10px;border-radius:999px;text-decoration:none;transition:box-shadow .18s;" style-hover="box-shadow:0 0 0 4px rgba(241,212,154,0.12);">LinkedIn ↗</a>
+                      </sc-if>
+                    </div>
+                  </sc-if>
             </div>
           </div>
           <sc-if value="{{ m.hasBio }}" hint-placeholder-val="{{ false }}">
@@ -205,6 +254,22 @@ img{max-width:100%;}
             <div style="flex:1 1 130px;min-width:0;display:flex;flex-direction:column;gap:8px;">
               <h3 style="font-weight:500;font-size:18px;letter-spacing:-0.015em;line-height:1.25;text-wrap:balance;">{{ m.name }}</h3>
               <div style="font-family:'Geist Mono',monospace;font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:#e6b667;line-height:1.4;">{{ m.role }}</div>
+                  <sc-if value="{{ m.hasLinks }}" hint-placeholder-val="{{ true }}">
+                    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:2px;">
+                      <sc-if value="{{ m.noEmail }}" hint-placeholder-val="{{ true }}">
+                      <span title="Not added yet" style="font-family:'Geist Mono',monospace;font-size:10.5px;letter-spacing:0.06em;color:#7d889c;border:1px dashed rgba(255,255,255,0.18);padding:5px 10px;border-radius:999px;">Email</span>
+                      </sc-if>
+                      <sc-if value="{{ m.hasEmail }}" hint-placeholder-val="{{ false }}">
+                        <a href="{{ m.mailto }}" onClick="{{ m.stop }}" onPointerDown="{{ m.stop }}" style="font-family:'Geist Mono',monospace;font-size:10.5px;letter-spacing:0.06em;color:#f1d49a;border:1px solid rgba(241,212,154,0.4);padding:5px 10px;border-radius:999px;text-decoration:none;transition:box-shadow .18s;" style-hover="box-shadow:0 0 0 4px rgba(241,212,154,0.12);">Email</a>
+                      </sc-if>
+                      <sc-if value="{{ m.noLi }}" hint-placeholder-val="{{ true }}">
+                      <span title="Not added yet" style="font-family:'Geist Mono',monospace;font-size:10.5px;letter-spacing:0.06em;color:#7d889c;border:1px dashed rgba(255,255,255,0.18);padding:5px 10px;border-radius:999px;">LinkedIn</span>
+                      </sc-if>
+                      <sc-if value="{{ m.hasLi }}" hint-placeholder-val="{{ false }}">
+                        <a href="{{ m.linkedin }}" target="_blank" rel="noopener" onClick="{{ m.stop }}" onPointerDown="{{ m.stop }}" style="font-family:'Geist Mono',monospace;font-size:10.5px;letter-spacing:0.06em;color:#f1d49a;border:1px solid rgba(241,212,154,0.4);padding:5px 10px;border-radius:999px;text-decoration:none;transition:box-shadow .18s;" style-hover="box-shadow:0 0 0 4px rgba(241,212,154,0.12);">LinkedIn ↗</a>
+                      </sc-if>
+                    </div>
+                  </sc-if>
             </div>
           </div>
           <sc-if value="{{ m.hasBio }}" hint-placeholder-val="{{ false }}">
@@ -231,7 +296,7 @@ img{max-width:100%;}
         <h3 style="font-weight:500;font-size:clamp(26px,3vw,38px);letter-spacing:-0.03em;margin-bottom:10px;">There's room for one more bench.</h3>
         <p style="font-size:15.5px;color:#aab3c3;font-weight:300;">PhD, postdoc and project positions are open through the year.</p>
       </div>
-      <a href="Join.dc.html" style="font-size:14.5px;font-weight:500;color:#070c16;background:#f1d49a;padding:14px 26px;border-radius:999px;white-space:nowrap;transition:transform .18s,box-shadow .18s;" style-hover="transform:translateY(-2px);box-shadow:0 0 0 6px rgba(241,212,154,0.14);">Join the lab →</a>
+      <a href="join.html" style="font-size:14.5px;font-weight:500;color:#070c16;background:#f1d49a;padding:14px 26px;border-radius:999px;white-space:nowrap;transition:transform .18s,box-shadow .18s;" style-hover="transform:translateY(-2px);box-shadow:0 0 0 6px rgba(241,212,154,0.14);">Join the lab →</a>
     </div>
   </section>
 
@@ -381,7 +446,8 @@ class Component extends DCLogic {
       name: p.name, role: p.role, img: p.img || '', hasImg: !!p.img, noImg: !p.img, initials: initials.toUpperCase(),
       bio, hasBio: !!bio, long, clamped: long && !ex, full: !long || ex, expanded: ex ? 'true' : 'false', toggleLabel: ex ? 'Show less' : 'Read more',
       toggle: () => this.setState(s => ({ open: { ...s.open, [anchor]: !s.open[anchor] } })),
-      pastLines, hasPast: pastLines.length > 0, delay: (i % 4) * 70, anchor,
+      pastLines, hasPast: pastLines.length > 0,
+      mailto: p.email ? 'mailto:' + p.email : '', linkedin: p.linkedin || '', hasEmail: !!p.email, hasLi: !!p.linkedin, hasLinks: true, noEmail: !p.email, noLi: !p.linkedin, stop: e => e.stopPropagation(), delay: (i % 4) * 70, anchor,
       ...this.rbVals(p, pre),
     };
   }
