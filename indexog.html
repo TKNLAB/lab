@@ -210,7 +210,7 @@ img{max-width:100%;}
           </div>
         </div>
         </div>
-        <blockquote data-scales-q="" style="margin-top:clamp(64px,9vw,120px);font-family:'Newsreader',serif;font-style:italic;font-weight:400;font-size:clamp(30px,4.4vw,60px);line-height:1.15;letter-spacing:-0.015em;color:#e8ecf3;max-width:1100px;text-wrap:balance;">“Higher-order brain function emerges from the biophysical properties of <span style="color:#f1d49a;">ion channels and receptors</span>.”</blockquote>
+        <blockquote data-scales-q="" style="margin-top:clamp(64px,9vw,120px);font-family:'Newsreader',serif;font-style:italic;font-weight:400;font-size:clamp(30px,4.4vw,60px);line-height:1.15;letter-spacing:-0.015em;color:#e8ecf3;max-width:1100px;text-wrap:balance;">“Higher-order brain function emerges from the biophysical properties of ion channels and receptors.”</blockquote>
       </div>
     </div>
   </section>
@@ -322,6 +322,7 @@ img{max-width:100%;}
     <div data-reveal="">
       <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;margin-bottom:24px;">
         <div style="font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.2em;color:#e6b667;text-transform:uppercase;">Lab updates</div>
+      
       </div>
       <sc-for list="{{ news }}" as="n" hint-placeholder-count="4">
         <div style="display:grid;grid-template-columns:minmax(76px,auto) 1fr;gap:20px;padding:20px 0;border-top:1px solid rgba(255,255,255,0.08);">
@@ -374,71 +375,77 @@ class Component extends DCLogic {
   }
   componentDidUpdate() { if (window.TE && window.TE.reduce) window.TE.seek(0); }
   componentWillUnmount() { removeEventListener('resize', this._vp); removeEventListener('orientationchange', this._vp); cancelAnimationFrame(this._achRaf); clearTimeout(this._t); if (this._scOff) this._scOff(); }
-  // "From atoms to who we are": horizontal highlights gallery (native scroll-snap, autoplay with progress pill).
+  // "From atoms to who we are": sticky zoom sequence on wide screens; plain stack on narrow screens or with reduced motion.
   initScales() {
     const track = this.scalesRef.current;
     if (!track) { this._t2 = setTimeout(() => this.initScales(), 60); return; }
-    const wrap = track.querySelector('[data-scales-rows]'), dots = track.querySelector('[data-scales-dots]'), rows = [...track.querySelectorAll('[data-step]')], N = rows.length;
-    if (!wrap || !dots || N < 2) { this._t2 = setTimeout(() => this.initScales(), 60); return; }
-    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches, DUR = 5000;
-    if (!document.getElementById('scales-sb')) { const st = document.createElement('style'); st.id = 'scales-sb'; st.textContent = '[data-scales-rows]::-webkit-scrollbar{display:none}'; document.head.appendChild(st); }
-    const pad = 'max(clamp(20px,5vw,40px), calc(50vw - 640px))';
-    wrap.style.cssText = 'display:flex;gap:clamp(16px,2vw,28px);overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;scrollbar-width:none;margin:0 calc(50% - 50vw);padding:0 ' + pad + ';scroll-padding:0 ' + pad + ';' + (reduce ? '' : 'scroll-behavior:smooth;');
-    const labels = rows.map(r => { const m = r.querySelector('[data-text] > div'); const t = m ? m.textContent : ''; return (t.split('·')[1] || t).trim(); });
-    rows.forEach(row => {
-      row.style.cssText = 'flex:0 0 min(1200px, 78vw);height:clamp(440px, calc(100svh - 300px), 780px);box-sizing:border-box;padding:clamp(20px,3.5vw,48px);display:flex;flex-direction:column;align-items:center;justify-content:space-between;gap:clamp(16px,2.5vh,28px);border-radius:clamp(20px,2.4vw,32px);background:#0d1422;border:1px solid rgba(255,255,255,0.06);scroll-snap-align:center;transition:opacity .6s ease;';
-      const fr = row.querySelector('[data-frame]'); if (fr) { fr.style.maxWidth = 'none'; fr.style.flex = 'none'; fr.style.aspectRatio = 'auto'; fr.style.border = '0'; fr.style.borderRadius = '16px'; fr.style.margin = 'auto 0'; }
-      const tx = row.querySelector('[data-text]'); if (tx) { tx.style.gap = '10px'; tx.style.alignItems = 'center'; tx.style.textAlign = 'center'; tx.style.flex = 'none'; }
-      const h3 = row.querySelector('h3'); if (h3) { h3.style.fontSize = 'clamp(20px,2.2vw,32px)'; h3.style.maxWidth = '720px'; }
-    });
-    dots.removeAttribute('aria-hidden');
-    dots.style.cssText = 'display:flex;justify-content:center;align-items:center;gap:12px;margin-top:clamp(24px,4vh,40px);';
-    const pill = document.createElement('div');
-    pill.style.cssText = 'display:flex;align-items:center;gap:10px;height:52px;padding:0 20px;border-radius:999px;background:rgba(255,255,255,0.07);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);';
-    const dotEls = rows.map((_, j) => {
-      const b = document.createElement('button'); b.type = 'button'; b.setAttribute('aria-label', labels[j] || 'Step ' + (j + 1));
-      b.style.cssText = 'position:relative;height:8px;width:8px;padding:0;border:0;border-radius:999px;background:rgba(255,255,255,0.32);overflow:hidden;cursor:pointer;transition:width .45s cubic-bezier(.3,.7,.2,1),background .3s;';
-      const f = document.createElement('span'); f.style.cssText = 'position:absolute;left:0;top:0;bottom:0;width:0;background:#f1d49a;border-radius:999px;';
-      b.appendChild(f); b.onclick = () => { user(); go(j); }; pill.appendChild(b); return { b, f };
-    });
-    const btn = document.createElement('button'); btn.type = 'button';
-    btn.style.cssText = 'width:52px;height:52px;flex:none;display:grid;place-items:center;border:0;border-radius:50%;background:rgba(255,255,255,0.07);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);color:#e8ecf3;cursor:pointer;';
-    wrap.after(dots); dots.innerHTML = ''; dots.appendChild(pill); dots.appendChild(btn);
-    const ICON = { pause: '<svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><rect x="2" y="1" width="3.5" height="12" rx="1"/><rect x="8.5" y="1" width="3.5" height="12" rx="1"/></svg>', play: '<svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><path d="M3 1.5v11a.6.6 0 0 0 .9.5l9-5.5a.6.6 0 0 0 0-1l-9-5.5a.6.6 0 0 0-.9.5z"/></svg>', replay: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M2.5 8a5.5 5.5 0 1 0 1.8-4.1"/><path d="M2.5 2v3h3"/></svg>' };
-    let idx = 0, playing = !reduce, ended = false, el = 0, last = 0, inView = false, raf = 0, lock = 0, sraf = 0;
-    const paint = () => {
-      rows.forEach((r, j) => { r.style.opacity = j === idx ? '1' : '0.55'; r.style.cursor = j === idx ? 'default' : 'pointer'; });
-      dotEls.forEach((d, j) => { const a = j === idx; d.b.style.width = a ? '44px' : '8px'; d.b.style.background = a ? 'rgba(255,255,255,0.32)' : 'rgba(255,255,255,0.32)'; d.f.style.width = a ? (playing ? Math.min(100, el / DUR * 100) : 100) + '%' : '0%'; });
-      const k = ended ? 'replay' : playing ? 'pause' : 'play';
-      if (btn.__k !== k) { btn.innerHTML = ICON[k]; btn.setAttribute('aria-label', k === 'pause' ? 'Pause' : k === 'play' ? 'Play' : 'Replay'); btn.__k = k; }
+    const stage = track.querySelector('[data-scales-stage]'), wrap = track.querySelector('[data-scales-rows]'), hEl = track.querySelector('[data-scales-h]'), qEl = track.querySelector('[data-scales-q]'), dots = track.querySelector('[data-scales-dots]'), rows = [...track.querySelectorAll('[data-step]')], N = rows.length;
+    if (!stage || N < 2) { this._t2 = setTimeout(() => this.initScales(), 60); return; }
+    const mq = matchMedia('(min-width: 900px)'), reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const O = [[14.5, 23], [50, 40], [69, 52], [67, 48], [42, 40], [50, 50]], Z = [5.5, 5, 5, 5, 4, 1];
+    const cl = (v, a, b) => v < a ? a : v > b ? b : v, ease = u => u < 0.5 ? 4 * u * u * u : 1 - Math.pow(-2 * u + 2, 3) / 2;
+    const els = [track, stage, wrap, hEl, qEl, dots].concat(rows, rows.map(r => r.querySelector('[data-frame]')), rows.map(r => r.querySelector('[data-art]')), rows.map(r => r.querySelector('[data-text]')));
+    els.forEach(e => { if (e.__css0 == null) e.__css0 = e.style.cssText; });
+    let on = '', raf = 0, cur = -1, tgt = 0, last = 0, cache = null;
+    const set = (e, css) => { e.style.cssText = e.__css0 + ';' + css; };
+    const measure = () => { const r = track.getBoundingClientRect(), y = scrollY; cache = { top: r.top + y, total: Math.max(1, r.height - (innerHeight - 64)) }; };
+    const target = () => { if (!cache) measure(); const q = cl((64 - (cache.top - scrollY)) / cache.total, 0, 1) * (N - 1), i = Math.floor(q); return Math.min(N - 1, i + ease(cl((q - i - 0.25) / 0.75, 0, 1))); };
+    const parts = rows.map(row => ({ art: row.querySelector('[data-art]'), txt: row.querySelector('[data-text]'), fr: row.querySelector('[data-frame]'), o: '', v: '' }));
+    const render = p => {
+      if (dots) [...dots.children].forEach((b, j) => { const a = cl(1 - Math.abs(p - j), 0, 1); b.style.transform = 'scaleX(' + (1 + a * 3).toFixed(3) + ')'; b.style.background = a > 0.5 ? '#f1d49a' : 'rgba(255,255,255,0.22)'; });
+      parts.forEach((pt, j) => {
+        const d = p - j, art = pt.art, txt = pt.txt;
+        if (j && pt.fr && pt.fr.style.backgroundColor !== 'transparent') { pt.fr.style.background = 'transparent'; pt.fr.style.borderColor = 'transparent'; }
+        let o = null, sc = 1, op = 0;
+        if (d < 0 && j > 0 && d > -1) { o = O[j - 1]; sc = Math.pow(Z[j - 1], d); op = cl((1 + d - 0.25) / 0.6, 0, 1); }
+        else if (d >= 0 && d < 1) { if (j < N - 1) { o = O[j]; sc = Math.pow(Z[j], d); } op = 1 - cl((d - 0.2) / 0.6, 0, 1); }
+        const vis = op > 0.001 ? 'visible' : 'hidden';
+        if (vis !== pt.v) { art.style.visibility = vis; txt.style.visibility = vis === 'visible' || Math.abs(d) < 0.5 ? 'visible' : 'hidden'; pt.v = vis; }
+        if (vis === 'hidden') return;
+        const oc = o ? o[0] + '% ' + o[1] + '%' : '';
+        if (oc && oc !== pt.o) { art.style.transformOrigin = oc; pt.o = oc; }
+        art.style.transform = 'translate3d(0,0,0) scale(' + sc.toFixed(4) + ')'; art.style.opacity = op.toFixed(3);
+        const to = cl(1 - Math.abs(d) * 2.2, 0, 1);
+        txt.style.opacity = to.toFixed(3); txt.style.transform = 'translate3d(0,' + (-d * 24).toFixed(1) + 'px,0)';
+      });
     };
-    const step = () => (rows[1].offsetLeft - rows[0].offsetLeft) || 1;
-    const hEl = track.querySelector('[data-scales-h]'); if (hEl) hEl.style.marginBottom = 'clamp(20px,3vh,36px)';
-    let fitW = 0, fitH = 0;
-    const fit = () => { const cw = wrap.clientWidth; if (!fitH || Math.abs(cw - fitW) > 1 || Math.abs(innerHeight - fitH) > 140) { fitW = cw; fitH = innerHeight; } const vh = fitH; const avail = vh - 64 - (hEl ? hEl.offsetHeight + (parseFloat(getComputedStyle(hEl).marginBottom) || 0) : 0) - dots.offsetHeight - (parseFloat(getComputedStyle(dots).marginTop) || 0) - 40; const narrow = cw < 700, ch = Math.max(300, Math.min(780, avail)); rows.forEach(r => { r.style.height = narrow ? 'auto' : ch + 'px'; }); rows.forEach(r => { r.style.flexBasis = (cw < 700 ? Math.round(cw * 0.86) : Math.min(1200, Math.round(cw * 0.78))) + 'px'; }); const side = Math.max(0, (cw - rows[0].offsetWidth) / 2); wrap.style.paddingLeft = wrap.style.paddingRight = side + 'px'; wrap.style.scrollPadding = '0';
-      rows.forEach(row => { const fr = row.querySelector('[data-frame]'), tx = row.querySelector('[data-text]'); if (!fr) return; const cs = getComputedStyle(row), p = parseFloat(cs.paddingTop) || 0, g = parseFloat(cs.rowGap) || 0; const w = row.clientWidth - 2 * p, h = narrow ? Infinity : row.clientHeight - 2 * p - (tx ? tx.offsetHeight + g : 0); const fh = Math.max(120, Math.min(h, w / 1.6)); fr.style.height = fh + 'px'; fr.style.width = fh * 1.6 + 'px'; }); };
-    fit(); addEventListener('resize', fit); addEventListener('load', fit); if (document.fonts) document.fonts.ready.then(fit);
-    const go = i => { idx = i; el = 0; ended = false; lock = performance.now() + 900; wrap.scrollTo({ left: i * step(), behavior: reduce ? 'auto' : 'smooth' }); paint(); };
-    const user = () => { if (playing) { playing = false; paint(); } };
-    const tick = now => {
-      raf = 0; const dt = last ? Math.min(100, now - last) : 0; last = now;
-      if (playing && inView) {
-        el += dt;
-        if (el >= DUR) { if (idx < N - 1) go(idx + 1); else { playing = false; ended = true; } }
-        paint();
-      }
-      if (playing && inView) raf = requestAnimationFrame(tick); else last = 0;
+    const update = now => {
+      raf = 0; if (!on) return;
+      tgt = target();
+      if (cur < 0) cur = tgt;
+      const dt = Math.min(64, last ? now - last : 16); last = now;
+      cur += (tgt - cur) * (1 - Math.exp(-dt / 110));
+      if (Math.abs(tgt - cur) < 0.0008) cur = tgt;
+      render(cur);
+      if (cur !== tgt) raf = requestAnimationFrame(update); else last = 0;
     };
-    const kick = () => { if (!raf && playing && inView) raf = requestAnimationFrame(tick); };
-    btn.onclick = () => { if (ended) { ended = false; playing = true; go(0); } else { playing = !playing; if (playing && idx === N - 1 && el >= DUR) go(0); } paint(); kick(); };
-    const onScroll = () => { if (sraf) return; sraf = requestAnimationFrame(() => { sraf = 0; if (performance.now() < lock) return; user(); const i = Math.max(0, Math.min(N - 1, Math.round(wrap.scrollLeft / step()))); if (i !== idx) { idx = i; el = 0; ended = false; paint(); } }); };
-    rows.forEach((r, j) => { r.addEventListener('click', () => { if (j !== idx) { user(); go(j); } }); });
-    wrap.addEventListener('scroll', onScroll, { passive: true });
-    wrap.addEventListener('wheel', e => { if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) user(); }, { passive: true });
-    wrap.addEventListener('keydown', user);
-    const io = new IntersectionObserver(es => { inView = es[0].isIntersecting; kick(); }, { threshold: 0.45 }); io.observe(wrap);
-    paint();
-    this._scOff = () => { removeEventListener('resize', fit); io.disconnect(); cancelAnimationFrame(raf); wrap.removeEventListener('scroll', onScroll); clearTimeout(this._t2); };
+    const onScroll = () => { if (!raf) raf = requestAnimationFrame(update); };
+    const onResize = () => { measure(); onScroll(); };
+    const apply = () => {
+      const want = !reduce, wide = mq.matches, key = want ? (wide ? 'w' : 'n') : '';
+      if (key === on) return; on = key;
+      els.forEach(e => { e.style.cssText = e.__css0; });
+      if (!on) return;
+      set(track, 'height:calc(' + (N - 1) * 75 + 'vh + 100vh - 64px)');
+      set(stage, 'position:sticky;top:64px;height:calc(100vh - 64px);height:calc(100svh - 64px);padding:clamp(16px,3vh,32px) 0;box-sizing:border-box');
+      set(hEl, 'margin-bottom:clamp(12px,2.5vh,28px);font-size:' + 'clamp(28px,3.4vw,48px)');
+      set(wrap, 'display:block;position:relative;flex:1;min-height:0');
+      if (dots) { set(dots, 'display:flex;gap:6px;contain:layout;align-items:center;margin-bottom:clamp(8px,2vh,20px)'); if (!dots.children.length) rows.forEach((_, j) => { const b = document.createElement('span'); b.style.cssText = 'height:3px;width:8px;border-radius:2px;background:rgba(255,255,255,0.22);transform-origin:left center;margin-right:' + (j < N - 1 ? 18 : 0) + 'px;will-change:transform'; dots.appendChild(b); }); }
+      set(qEl, 'margin-top:clamp(12px,2.5vh,28px);font-size:' + 'clamp(21px,2.3vw,34px);line-height:1.22;max-width:34ch');
+      rows.forEach((row, j) => {
+        set(row, 'position:absolute;inset:0;' + (wide ? 'grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-content:center' : 'grid-template-columns:minmax(0,1fr);align-content:start;gap:16px'));
+        set(row.querySelector('[data-frame]'), (wide ? 'max-width:min(640px,calc((100vh - 380px) * 1.6))' : 'max-width:min(100%,calc((100svh - 520px) * 1.6))') + (j ? ';background:transparent;border-color:transparent' : ''));
+        set(row.querySelector('[data-art]'), 'will-change:transform,opacity;backface-visibility:hidden;contain:strict');
+        set(row.querySelector('[data-text]'), 'will-change:transform,opacity');
+        if (!wide) { const h3 = row.querySelector('h3'); if (h3) h3.style.fontSize = '22px'; }
+      });
+      cache = null; cur = -1; parts.forEach(pt => { pt.v = ''; pt.o = ''; }); onScroll();
+    };
+    addEventListener('resize', apply);
+    apply();
+    addEventListener('scroll', onScroll, { passive: true }); addEventListener('resize', onResize); addEventListener('load', onResize); new ResizeObserver(onResize).observe(document.body);
+    const onMq = () => apply(); mq.addEventListener ? mq.addEventListener('change', onMq) : mq.addListener(onMq);
+    this._scOff = () => { removeEventListener('scroll', onScroll); removeEventListener('resize', onResize); removeEventListener('resize', apply); mq.removeEventListener && mq.removeEventListener('change', onMq); clearTimeout(this._t2); };
   }
   bindGate() {
     const Kd = 100, Jd = 0.017, f = { wt: 1, gof: 10, lof: 0.1 }[this.state.bgMode], E0 = 7.4e-7 * f, A = Math.pow(10, this.state.achLog);
