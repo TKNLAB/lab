@@ -4,7 +4,7 @@
   if (window.TKNTheme) return;
   var KEY = 'tkn-theme';
   var P = [
-    ['7,12,22', '247,244,238'], ['13,20,34', '255,253,249'], ['11,18,32', '240,236,227'], ['16,26,44', '235,230,220'],
+    ['7,12,22', '247,244,238'], ['13,20,34', '255,253,249'], ['11,18,32', '240,236,227'], ['16,26,44', '251,248,242'],
     ['20,30,48', '229,223,211'], ['10,16,28', '243,239,232'], ['15,23,38', '238,233,224'], ['11,17,32', '241,237,229'],
     ['42,53,72', '212,205,192'], ['5,9,17', '246,243,237'],
     ['232,236,243', '20,26,38'], ['255,255,255', '12,17,28'], ['170,179,195', '72,81,100'], ['195,202,214', '54,62,79'],
@@ -34,11 +34,12 @@
   var css = document.createElement('style');
   css.setAttribute('data-theme-css', '');
   css.textContent = 'html[data-theme=light],html[data-theme=light] body{background:#f7f4ee !important;color-scheme:light;}' +
-    'html[data-theme=light] img[src*="assets/logos/"]{filter:invert(1) hue-rotate(180deg);}' +
+    'html[data-theme=light] img[src*="assets/logos/"]:not([data-theme-fixed] img){filter:invert(1) hue-rotate(180deg);}' +
     'html{transition:background-color .3s;}';
   (document.head || root).appendChild(css);
 
   function fixEl(el, M) {
+    if (el.closest && el.closest('[data-theme-fixed]')) return;
     var s = el.getAttribute && el.getAttribute('style');
     if (s) { var n = mapWith(M, s); if (n !== s) el.setAttribute('style', n); }
     if (el.tagName === 'STYLE' && !el.hasAttribute('data-theme-css')) { var t = el.textContent, u = mapWith(M, t); if (u !== t) el.textContent = u; }

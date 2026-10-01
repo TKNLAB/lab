@@ -142,9 +142,9 @@ img{max-width:100%;}
 
   <section style="max-width:1360px;margin:0 auto;padding:clamp(80px,10vw,136px) clamp(20px,5vw,40px) 0;">
     <div ref="{{ scalesRef }}" style="position:relative;">
-      <div data-scales-stage="" style="display:flex;flex-direction:column;">
+      <div style="display:flex;flex-direction:column;">
         <h2 data-scales-h="" style="font-weight:500;font-size:clamp(32px,4.4vw,60px);line-height:1.02;letter-spacing:-0.035em;margin-bottom:clamp(36px,5vw,56px);text-wrap:balance;">From atoms to <span style="font-family:'Newsreader',serif;font-style:italic;font-weight:400;color:#f1d49a;">who we are</span></h2>
-        <div data-scales-dots="" aria-hidden="true" style="display:none;"></div>
+        <div data-scales-dots="" style="display:none;"></div>
         <div data-scales-rows="" style="display:flex;flex-direction:column;gap:clamp(48px,7vw,80px);">
         <div data-step="0" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:24px clamp(32px,6vw,96px);align-items:center;">
           <div data-frame="" style="position:relative;width:100%;max-width:640px;aspect-ratio:1586/992;border-radius:20px;overflow:hidden;background:#0b1220;border:1px solid rgba(255,255,255,0.07);">
@@ -210,7 +210,7 @@ img{max-width:100%;}
           </div>
         </div>
         </div>
-        <blockquote data-scales-q="" style="margin-top:clamp(64px,9vw,120px);font-family:'Newsreader',serif;font-style:italic;font-weight:400;font-size:clamp(30px,4.4vw,60px);line-height:1.15;letter-spacing:-0.015em;color:#e8ecf3;max-width:1100px;text-wrap:balance;">“Higher-order brain function emerges from the biophysical properties of <span style="color:#f1d49a;">ion channels and receptors</span>.”</blockquote>
+        <blockquote style="margin-top:clamp(64px,9vw,120px);font-family:'Newsreader',serif;font-style:italic;font-weight:400;font-size:clamp(30px,4.4vw,60px);line-height:1.15;letter-spacing:-0.015em;color:#e8ecf3;max-width:1100px;text-wrap:balance;">“Higher-order brain function emerges from the biophysical properties of <span style="color:#f1d49a;">ion channels and receptors</span>.”</blockquote>
       </div>
     </div>
   </section>
@@ -382,8 +382,7 @@ class Component extends DCLogic {
     if (!wrap || !dots || N < 2) { this._t2 = setTimeout(() => this.initScales(), 60); return; }
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches, DUR = 5000;
     if (!document.getElementById('scales-sb')) { const st = document.createElement('style'); st.id = 'scales-sb'; st.textContent = '[data-scales-rows]::-webkit-scrollbar{display:none}'; document.head.appendChild(st); }
-    const pad = 'max(clamp(20px,5vw,40px), calc(50vw - 640px))';
-    wrap.style.cssText = 'display:flex;gap:clamp(16px,2vw,28px);overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;scrollbar-width:none;margin:0 calc(50% - 50vw);padding:0 ' + pad + ';scroll-padding:0 ' + pad + ';' + (reduce ? '' : 'scroll-behavior:smooth;');
+    wrap.style.cssText = 'display:flex;gap:clamp(16px,2vw,28px);overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;scrollbar-width:none;margin:0 calc(50% - 50vw);' + (reduce ? '' : 'scroll-behavior:smooth;');
     const labels = rows.map(r => { const m = r.querySelector('[data-text] > div'); const t = m ? m.textContent : ''; return (t.split('·')[1] || t).trim(); });
     rows.forEach(row => {
       row.style.cssText = 'flex:0 0 min(1200px, 78vw);height:clamp(440px, calc(100svh - 300px), 780px);box-sizing:border-box;padding:clamp(20px,3.5vw,48px);display:flex;flex-direction:column;align-items:center;justify-content:space-between;gap:clamp(16px,2.5vh,28px);border-radius:clamp(20px,2.4vw,32px);background:#0d1422;border:1px solid rgba(255,255,255,0.06);scroll-snap-align:center;transition:opacity .6s ease;';
@@ -391,7 +390,6 @@ class Component extends DCLogic {
       const tx = row.querySelector('[data-text]'); if (tx) { tx.style.gap = '10px'; tx.style.alignItems = 'center'; tx.style.textAlign = 'center'; tx.style.flex = 'none'; }
       const h3 = row.querySelector('h3'); if (h3) { h3.style.fontSize = 'clamp(20px,2.2vw,32px)'; h3.style.maxWidth = '720px'; }
     });
-    dots.removeAttribute('aria-hidden');
     dots.style.cssText = 'display:flex;justify-content:center;align-items:center;gap:12px;margin-top:clamp(24px,4vh,40px);';
     const pill = document.createElement('div');
     pill.style.cssText = 'display:flex;align-items:center;gap:10px;height:52px;padding:0 20px;border-radius:999px;background:rgba(255,255,255,0.07);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);';
@@ -408,14 +406,14 @@ class Component extends DCLogic {
     let idx = 0, playing = !reduce, ended = false, el = 0, last = 0, inView = false, raf = 0, lock = 0, sraf = 0;
     const paint = () => {
       rows.forEach((r, j) => { r.style.opacity = j === idx ? '1' : '0.55'; r.style.cursor = j === idx ? 'default' : 'pointer'; });
-      dotEls.forEach((d, j) => { const a = j === idx; d.b.style.width = a ? '44px' : '8px'; d.b.style.background = a ? 'rgba(255,255,255,0.32)' : 'rgba(255,255,255,0.32)'; d.f.style.width = a ? (playing ? Math.min(100, el / DUR * 100) : 100) + '%' : '0%'; });
+      dotEls.forEach((d, j) => { const a = j === idx; d.b.style.width = a ? '44px' : '8px'; d.f.style.width = a ? (playing ? Math.min(100, el / DUR * 100) : 100) + '%' : '0%'; });
       const k = ended ? 'replay' : playing ? 'pause' : 'play';
       if (btn.__k !== k) { btn.innerHTML = ICON[k]; btn.setAttribute('aria-label', k === 'pause' ? 'Pause' : k === 'play' ? 'Play' : 'Replay'); btn.__k = k; }
     };
     const step = () => (rows[1].offsetLeft - rows[0].offsetLeft) || 1;
     const hEl = track.querySelector('[data-scales-h]'); if (hEl) hEl.style.marginBottom = 'clamp(20px,3vh,36px)';
     let fitW = 0, fitH = 0;
-    const fit = () => { const cw = wrap.clientWidth; if (!fitH || Math.abs(cw - fitW) > 1 || Math.abs(innerHeight - fitH) > 140) { fitW = cw; fitH = innerHeight; } const vh = fitH; const avail = vh - 64 - (hEl ? hEl.offsetHeight + (parseFloat(getComputedStyle(hEl).marginBottom) || 0) : 0) - dots.offsetHeight - (parseFloat(getComputedStyle(dots).marginTop) || 0) - 40; const narrow = cw < 700, ch = Math.max(300, Math.min(780, avail)); rows.forEach(r => { r.style.height = narrow ? 'auto' : ch + 'px'; }); rows.forEach(r => { r.style.flexBasis = (cw < 700 ? Math.round(cw * 0.86) : Math.min(1200, Math.round(cw * 0.78))) + 'px'; }); const side = Math.max(0, (cw - rows[0].offsetWidth) / 2); wrap.style.paddingLeft = wrap.style.paddingRight = side + 'px'; wrap.style.scrollPadding = '0';
+    const fit = () => { const cw = wrap.clientWidth; if (!fitH || Math.abs(cw - fitW) > 1 || Math.abs(innerHeight - fitH) > 140) { fitW = cw; fitH = innerHeight; } const vh = fitH; const avail = vh - 64 - (hEl ? hEl.offsetHeight + (parseFloat(getComputedStyle(hEl).marginBottom) || 0) : 0) - dots.offsetHeight - (parseFloat(getComputedStyle(dots).marginTop) || 0) - 40; const narrow = cw < 700, ch = Math.max(300, Math.min(780, avail)); rows.forEach(r => { r.style.height = narrow ? 'auto' : ch + 'px'; }); rows.forEach(r => { r.style.flexBasis = (cw < 700 ? Math.round(cw * 0.86) : Math.min(1200, Math.round(cw * 0.78))) + 'px'; }); const side = Math.max(0, (cw - rows[0].offsetWidth) / 2); wrap.style.paddingLeft = wrap.style.paddingRight = side + 'px';
       rows.forEach(row => { const fr = row.querySelector('[data-frame]'), tx = row.querySelector('[data-text]'); if (!fr) return; const cs = getComputedStyle(row), p = parseFloat(cs.paddingTop) || 0, g = parseFloat(cs.rowGap) || 0; const w = row.clientWidth - 2 * p, h = narrow ? Infinity : row.clientHeight - 2 * p - (tx ? tx.offsetHeight + g : 0); const fh = Math.max(120, Math.min(h, w / 1.6)); fr.style.height = fh + 'px'; fr.style.width = fh * 1.6 + 'px'; }); };
     fit(); addEventListener('resize', fit); addEventListener('load', fit); if (document.fonts) document.fonts.ready.then(fit);
     const go = i => { idx = i; el = 0; ended = false; lock = performance.now() + 900; wrap.scrollTo({ left: i * step(), behavior: reduce ? 'auto' : 'smooth' }); paint(); };
