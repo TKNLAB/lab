@@ -105,7 +105,7 @@ window.LAB_CONTENT = {
      text: one sentence.                                                         */
   "news": [
     { "date": "2024", "tag": "Publication", "text": "Our paper on the mechanism of hydrophobic gating in the acetylcholine receptor pore is published in the Journal of General Physiology." },
-    { "date": "[CONFIRM 2022 OR 2023]", "tag": "Publication", "text": "Book chapter \u201cProtein engineering and design in ion channels and receptors\u201d published in Methods in Cell Biology." }
+    { "date": "2022", "tag": "Publication", "text": "Book chapter \u201cProtein engineering and design in ion channels and receptors\u201d published in Methods in Cell Biology." }
   ],
 
   /* RESEARCH THEMES — the seven Research-page cards, in order. Home shows 1, 3 and 7. */
