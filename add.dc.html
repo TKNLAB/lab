@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<title>Edit my profile · Nayak Lab</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/svg+xml" href="assets/logos/tkn-favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&amp;family=Geist+Mono:wght@400;500&amp;family=Newsreader:ital,opsz,wght@1,6..72,400&amp;display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#070c16;-webkit-font-smoothing:antialiased;}
+a{color:#f1d49a;text-decoration:none;}
+a:hover{color:#ffffff;}
+input,textarea,select,button{font:inherit;color:inherit;}
+::placeholder{color:#5d6779;}
+:focus-visible{outline:2px solid #f1d49a;outline-offset:3px;}
+</style>
+<script src="./js/theme.js"></script>
+<script src="./data/content.js"></script>
+</helmet>
+<div style="min-height:100vh;background:#070c16;color:#e8ecf3;font-family:'Geist',sans-serif;font-size:14px;">
+  <header style="border-bottom:1px solid rgba(255,255,255,0.08);">
+    <div style="max-width:1120px;margin:0 auto;padding:14px clamp(16px,4vw,32px);display:flex;flex-wrap:wrap;align-items:center;gap:12px 14px;">
+      <div style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#e6b667;margin-right:auto;">Nayak Lab · Edit my profile</div>
+      <button onClick="{{ toggleTheme }}" aria-label="{{ themeLabel }}" title="{{ themeLabel }}" style="min-height:40px;padding:0 14px;border-radius:999px;border:1px solid rgba(255,255,255,0.18);background:transparent;cursor:pointer;font-size:13px;" style-hover="background:rgba(255,255,255,0.06);">{{ themeText }}</button>
+      <a href="people.html" style="display:inline-flex;align-items:center;min-height:40px;padding:0 14px;font-size:13px;">People page ↗</a>
+    </div>
+  </header>
+
+  <main style="max-width:1120px;margin:0 auto;padding:clamp(28px,5vw,48px) clamp(16px,4vw,32px) 80px;display:flex;flex-direction:column;gap:28px;">
+    <div style="display:flex;flex-direction:column;gap:14px;max-width:680px;">
+      <h1 style="font-weight:500;font-size:clamp(30px,4.4vw,48px);line-height:1.05;letter-spacing:-0.035em;">Update your <span style="font-family:'Newsreader',serif;font-style:italic;font-weight:400;color:#f1d49a;letter-spacing:-0.02em;">profile</span></h1>
+      <p style="font-size:15px;line-height:1.65;color:#aab3c3;text-wrap:pretty;">Pick your name, edit your details and check the preview. When you're happy, download the update file and email it to the lab. Nothing on the website changes until it has been reviewed.</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:24px;align-items:start;">
+      <section style="background:#0d1422;border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:clamp(18px,3vw,26px);display:flex;flex-direction:column;gap:18px;min-width:0;">
+        <label style="display:flex;flex-direction:column;gap:6px;">
+          <span style="font-family:'Geist Mono',monospace;font-size:10.5px;letter-spacing:0.08em;text-transform:uppercase;color:#7d889c;">Who are you?</span>
+          <select value="{{ sel }}" onChange="{{ pick }}" style="width:100%;min-height:44px;padding:8px 11px;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:#0a101c;font-size:14.5px;">
+            <option value="">Choose your name…</option>
+            <sc-for list="{{ people }}" as="p" hint-placeholder-count="0"><option value="{{ p.v }}">{{ p.label }}</option></sc-for>
+            <option value="new">I'm new — add me</option>
+          </select>
+        </label>
+
+        <sc-if value="{{ picked }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:18px;">
+            <div style="display:flex;flex-wrap:wrap;align-items:center;gap:16px;">
+              <button onClick="{{ choosePhoto }}" title="Choose photo" style="width:96px;height:96px;flex:none;border-radius:999px;overflow:hidden;border:1px dashed rgba(255,255,255,0.22);background:#0a101c;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#7d889c;font-size:12px;">
+                <sc-if value="{{ hasImg }}" hint-placeholder-val="{{ false }}"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{{ img }}" alt="" style="width:100%;height:100%;object-fit:cover;object-position:center 22%;display:block;"></sc-if>
+                <sc-if value="{{ noImg }}" hint-placeholder-val="{{ true }}"><span>+ Photo</span></sc-if>
+              </button>
+              <div style="flex:1 1 180px;display:flex;flex-direction:column;gap:8px;min-width:0;">
+                <div style="display:flex;flex-wrap:wrap;gap:8px;">
+                  <button onClick="{{ choosePhoto }}" style="min-height:36px;padding:0 14px;border-radius:999px;border:1px solid rgba(241,212,154,0.45);background:transparent;color:#f1d49a;cursor:pointer;font-size:13px;" style-hover="background:rgba(241,212,154,0.1);">{{ photoBtn }}</button>
+                  <sc-if value="{{ hasImg }}" hint-placeholder-val="{{ false }}">
+                    <button onClick="{{ removePhoto }}" style="min-height:36px;padding:0 14px;border-radius:999px;border:1px solid rgba(255,255,255,0.14);background:transparent;cursor:pointer;font-size:13px;color:#c3cad6;" style-hover="background:rgba(255,255,255,0.06);">Remove photo</button>
+                  </sc-if>
+                </div>
+                <div style="font-size:12.5px;line-height:1.5;color:#7d889c;">A clear, front-facing photo works best. It is cropped to a circle; without one, your initials are shown.</div>
+              </div>
+            </div>
+
+            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;">
+              <sc-for list="{{ fields }}" as="f" hint-placeholder-count="6">
+                <label style="display:flex;flex-direction:column;gap:6px;min-width:0;grid-column:{{ f.span }};">
+                  <span style="display:flex;justify-content:space-between;gap:8px;font-family:'Geist Mono',monospace;font-size:10.5px;letter-spacing:0.08em;text-transform:uppercase;color:#7d889c;"><span>{{ f.label }}</span><span style="color:{{ f.countColor }};text-transform:none;letter-spacing:0;">{{ f.count }}</span></span>
+                  <sc-if value="{{ f.isText }}" hint-placeholder-val="{{ true }}">
+                    <input type="{{ f.type }}" value="{{ f.value }}" placeholder="{{ f.ph }}" onChange="{{ f.set }}" style="width:100%;min-height:44px;padding:8px 11px;border-radius:8px;border:1px solid {{ f.border }};background:#0a101c;font-size:14.5px;outline:none;" style-focus="border-color:#f1d49a;">
+                  </sc-if>
+                  <sc-if value="{{ f.isArea }}" hint-placeholder-val="{{ false }}">
+                    <textarea value="{{ f.value }}" placeholder="{{ f.ph }}" onChange="{{ f.set }}" rows="{{ f.rows }}" style="width:100%;padding:10px 11px;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:#0a101c;font-size:14.5px;line-height:1.55;resize:vertical;outline:none;" style-focus="border-color:#f1d49a;"></textarea>
+                  </sc-if>
+                  <sc-if value="{{ f.hasHelp }}" hint-placeholder-val="{{ false }}">
+                    <span style="font-size:12px;line-height:1.5;color:{{ f.helpColor }};">{{ f.help }}</span>
+                  </sc-if>
+                </label>
+              </sc-for>
+            </div>
+
+            <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;padding-top:6px;border-top:1px solid rgba(255,255,255,0.07);">
+              <button onClick="{{ submit }}" disabled="{{ submitDisabled }}" style="min-height:44px;padding:0 22px;border-radius:999px;border:none;background:#f1d49a;color:#070c16;font-weight:500;font-size:14px;cursor:pointer;opacity:{{ submitOpacity }};">Download update file</button>
+              <span style="font-size:13px;color:#8792a6;">{{ changeText }}</span>
+              <sc-if value="{{ canReset }}" hint-placeholder-val="{{ false }}">
+                <button onClick="{{ reset }}" style="margin-left:auto;min-height:36px;padding:0 12px;border:none;background:transparent;cursor:pointer;font-size:13px;color:#8792a6;" style-hover="color:#e8ecf3;">Undo my changes</button>
+              </sc-if>
+            </div>
+
+            <sc-if value="{{ done }}" hint-placeholder-val="{{ false }}">
+              <div role="status" style="background:#141e30;border:1px solid rgba(241,212,154,0.35);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:12px;line-height:1.6;">
+                <div style="font-weight:500;">Saved <code style="font-family:'Geist Mono',monospace;font-size:12.5px;color:#f1d49a;">{{ fileName }}</code> to your Downloads.</div>
+                <div style="color:#aab3c3;">Email it to <b style="color:#e8ecf3;font-weight:500;">{{ adminEmail }}</b> as an attachment. The button below starts the email; attach the file before sending.</div>
+                <div><a href="{{ mailto }}" style="display:inline-flex;align-items:center;min-height:40px;padding:0 18px;border-radius:999px;border:1px solid rgba(241,212,154,0.5);font-size:13.5px;" style-hover="background:rgba(241,212,154,0.1);">Write the email ↗</a></div>
+              </div>
+            </sc-if>
+          </div>
+        </sc-if>
+      </section>
+
+      <aside style="position:sticky;top:20px;display:flex;flex-direction:column;gap:10px;min-width:0;">
+        <div style="font-family:'Geist Mono',monospace;font-size:10.5px;letter-spacing:0.14em;text-transform:uppercase;color:#7d889c;">Preview · how your card will look</div>
+        <article style="background:#0d1422;border:1px solid rgba(255,255,255,0.06);border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:18px;">
+          <div style="display:flex;flex-wrap:wrap;align-items:center;gap:16px;">
+            <div style="width:104px;height:104px;flex:none;border-radius:999px;padding:3px;background:linear-gradient(145deg,rgba(241,212,154,0.75),rgba(241,212,154,0.4));">
+              <div style="width:100%;height:100%;border-radius:999px;overflow:hidden;background:#141e30;display:flex;align-items:center;justify-content:center;">
+                <sc-if value="{{ hasImg }}" hint-placeholder-val="{{ false }}"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{{ img }}" alt="" style="width:100%;height:100%;object-fit:cover;object-position:center 22%;display:block;"></sc-if>
+                <sc-if value="{{ noImg }}" hint-placeholder-val="{{ true }}"><span style="font-family:'Newsreader',serif;font-style:italic;font-size:36px;color:#e6b667;">{{ initials }}</span></sc-if>
+              </div>
+            </div>
+            <div style="flex:1 1 130px;min-width:0;display:flex;flex-direction:column;gap:8px;">
+              <h3 style="font-weight:500;font-size:18px;letter-spacing:-0.015em;line-height:1.25;text-wrap:balance;">{{ pvName }}</h3>
+              <div style="font-family:'Geist Mono',monospace;font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:#e6b667;line-height:1.4;">{{ pvRole }}</div>
+              <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:2px;">
+                <span style="font-family:'Geist Mono',monospace;font-size:10.5px;letter-spacing:0.06em;color:{{ emailColor }};border:1px {{ emailBorder }};padding:5px 10px;border-radius:999px;">Email</span>
+                <span style="font-family:'Geist Mono',monospace;font-size:10.5px;letter-spacing:0.06em;color:{{ liColor }};border:1px {{ liBorder }};padding:5px 10px;border-radius:999px;">{{ liLabel }}</span>
+              </div>
+            </div>
+          </div>
+          <sc-if value="{{ hasBio }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-direction:column;align-items:flex-start;gap:8px;">
+              <p style="font-size:14px;color:#98a2b4;font-weight:300;line-height:1.65;text-wrap:pretty;display:-webkit-box;-webkit-line-clamp:{{ clamp }};-webkit-box-orient:vertical;overflow:hidden;">{{ bio }}</p>
+              <sc-if value="{{ longBio }}" hint-placeholder-val="{{ false }}">
+                <button onClick="{{ toggleMore }}" style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#f1d49a;background:none;border:none;padding:6px 0;cursor:pointer;min-height:32px;" style-hover="color:#fff;">{{ moreLabel }}</button>
+              </sc-if>
+            </div>
+          </sc-if>
+          <sc-if value="{{ hasPast }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-top:auto;padding-top:16px;border-top:1px solid rgba(255,255,255,0.07);display:flex;flex-direction:column;gap:8px;">
+              <div style="font-family:'Geist Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#7d889c;">Previously</div>
+              <sc-for list="{{ pastLines }}" as="pl" hint-placeholder-count="1"><div style="font-size:12.5px;color:#aab3c3;line-height:1.5;">{{ pl }}</div></sc-for>
+            </div>
+          </sc-if>
+        </article>
+      </aside>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  static ADMIN = 'blz248667@iitd.ac.in';
+  static KEYS = ['name', 'role', 'email', 'linkedin', 'bio', 'past'];
+  state = { list: [], sel: '', orig: null, form: null, photo: '', removed: false, more: false, done: '', touched: false };
+
+  componentDidMount() {
+    const go = (n) => {
+      if (window.LAB_CONTENT) { this.setState({ list: (window.LAB_CONTENT.people || []).slice() }); return; }
+      if (n < 80) this._t = setTimeout(() => go(n + 1), 50);
+    };
+    go(0);
+  }
+  componentDidUpdate() { document.querySelectorAll('img[data-src]').forEach(im => { const s = im.getAttribute('data-src'); if (s && s.indexOf('{{') < 0 && im.getAttribute('src') !== s) im.setAttribute('src', s); }); }
+  componentWillUnmount() { clearTimeout(this._t); }
+
+  pick(v) {
+    if (this.dirty() && !confirm('Discard your changes?')) return;
+    this.load(v);
+  }
+  load(v) {
+    const p = v === 'new' ? { name: '', role: '', email: '', linkedin: '', bio: '', past: '', img: '', status: 'current' } : v === '' ? null : this.state.list[+v];
+    const form = p ? Object.fromEntries(Component.KEYS.map(k => [k, p[k] || ''])) : null;
+    this.setState({ sel: v, orig: p, form, photo: '', removed: false, done: '', more: false });
+  }
+  dirty() {
+    const { orig, form } = this.state;
+    return !!(orig && form) && this.changes().length > 0;
+  }
+  changes() {
+    const { orig, form, photo, removed } = this.state, out = [];
+    if (!orig || !form) return out;
+    Component.KEYS.forEach(k => { if ((form[k] || '').trim() !== (orig[k] || '').trim()) out.push(k); });
+    if (photo || (removed && orig.img)) out.push('photo');
+    return out;
+  }
+  async choosePhoto() {
+    const f = await new Promise(res => { const i = document.createElement('input'); i.type = 'file'; i.accept = 'image/*'; i.onchange = () => res((i.files || [])[0]); i.click(); });
+    if (!f) return;
+    try {
+      const bmp = await createImageBitmap(f), r = Math.min(1, 800 / Math.max(bmp.width, bmp.height)), c = document.createElement('canvas');
+      c.width = Math.round(bmp.width * r); c.height = Math.round(bmp.height * r);
+      c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height);
+      let url = c.toDataURL('image/webp', 0.85);
+      if (url.indexOf('image/webp') < 0) url = c.toDataURL('image/jpeg', 0.88);
+      this.setState({ photo: url, removed: false, done: '' });
+    } catch (e) { alert('Could not read that image. Try a JPG or PNG.'); }
+  }
+  slug(s) { return String(s || '').toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 40) || 'member'; }
+  valid() {
+    const f = this.state.form || {};
+    return !!f.name.trim() && this.emailOk(f.email) && this.liOk(f.linkedin);
+  }
+  emailOk(v) { return !v.trim() || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()); }
+  liOk(v) { return !v.trim() || /^https?:\/\/([a-z]+\.)?linkedin\.com\//i.test(v.trim()); }
+  submit() {
+    const { orig, form, photo, removed, sel } = this.state;
+    if (!this.valid() || !this.changes().length) return;
+    const clean = Object.fromEntries(Component.KEYS.map(k => [k, (form[k] || '').trim()]));
+    const out = { type: 'nayak-lab-profile', version: 1, submitted: new Date().toISOString(), match: sel === 'new' ? '' : (orig.name || ''), isNew: sel === 'new', fields: clean, photo: photo || '', removePhoto: !!(removed && !photo && orig.img) };
+    const name = 'profile-' + this.slug(clean.name) + '-' + new Date().toISOString().slice(0, 10).replace(/-/g, '') + '.json';
+    const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(out, null, 2)], { type: 'application/json' })); a.download = name;
+    document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+    this.setState({ done: name });
+  }
+  renderVals() {
+    const { list, sel, orig, form, photo, removed, more, done } = this.state, f = form || {};
+    const setF = (k) => (e) => { const v = e.target.value; this.setState(s => ({ form: { ...s.form, [k]: v }, done: '' })); };
+    const bio = (f.bio || '').trim(), past = String(f.past || '');
+    const emailBad = !this.emailOk(f.email || ''), liBad = !this.liOk(f.linkedin || '');
+    const field = (k, label, o) => ({
+      label, value: f[k] || '', ph: o.ph || '', type: o.type || 'text', rows: o.rows || 3, span: o.wide ? '1 / -1' : 'auto',
+      isText: !o.area, isArea: !!o.area, set: setF(k), count: o.count || '', countColor: o.countColor || '#5d6779',
+      help: o.bad ? o.badText : (o.help || ''), hasHelp: !!(o.bad || o.help), helpColor: o.bad ? '#e59a8f' : '#7d889c',
+      border: o.bad ? '#e59a8f' : 'rgba(255,255,255,0.12)',
+    });
+    const fields = form ? [
+      field('name', 'Name', { ph: 'As you want it shown', bad: !f.name.trim(), badText: 'Your name is required.' }),
+      field('role', 'Role', { ph: 'Ph.D. Scholar' }),
+      field('email', 'Email', { ph: 'name@iitd.ac.in', type: 'email', bad: emailBad, badText: 'This doesn’t look like an email address.' }),
+      field('linkedin', 'LinkedIn URL', { ph: 'https://www.linkedin.com/in/…', type: 'url', bad: liBad, badText: 'Paste the full link, starting https://www.linkedin.com/' }),
+      field('bio', 'Bio', { area: true, wide: true, rows: 5, ph: 'One or two sentences on what you work on.', count: bio.length + ' characters', countColor: bio.length > 190 ? '#e6b667' : '#5d6779', help: bio.length > 190 ? 'Longer than 190 characters: the card shows the first 4 lines with “Read more”.' : '' }),
+      field('past', 'Previously', { area: true, wide: true, rows: 3, ph: 'MSc Biotechnology, University of …  (2019–21)', help: 'One qualification or position per line.' }),
+    ] : [];
+    const img = photo || (removed || !orig ? '' : (orig.img || ''));
+    const w = (f.name || '').trim().split(/\s+/), initials = (((w[0] || '')[0] || '') + (w.length > 1 ? (w[w.length - 1][0] || '') : '')).toUpperCase() || '?';
+    const ch = this.changes(), long = bio.length > 190;
+    const on = (v) => !!(v || '').trim();
+    return {
+      people: list.map((p, i) => ({ v: String(i), label: (p.name || 'Unnamed') + (p.status === 'alumni' ? ' (alumni)' : '') })),
+      sel, pick: (e) => this.pick(e.target.value), picked: !!form, fields,
+      img, hasImg: !!img, noImg: !img, initials, photoBtn: img ? 'Change photo' : 'Add photo',
+      choosePhoto: () => this.choosePhoto(), removePhoto: () => this.setState({ photo: '', removed: true, done: '' }),
+      pvName: (f.name || '').trim() || 'Your name', pvRole: (f.role || '').trim() || 'Role',
+      emailColor: on(f.email) ? '#f1d49a' : '#7d889c', emailBorder: on(f.email) ? 'solid rgba(241,212,154,0.4)' : 'dashed rgba(255,255,255,0.18)',
+      liColor: on(f.linkedin) ? '#f1d49a' : '#7d889c', liBorder: on(f.linkedin) ? 'solid rgba(241,212,154,0.4)' : 'dashed rgba(255,255,255,0.18)', liLabel: on(f.linkedin) ? 'LinkedIn ↗' : 'LinkedIn',
+      bio, hasBio: !!bio, longBio: long, clamp: long && !more ? 4 : 'unset', moreLabel: more ? 'Show less' : 'Read more', toggleMore: () => this.setState({ more: !more }),
+      pastLines: past.split('\n').map(s => s.trim()).filter(s => s && !/^past:?$/i.test(s)), hasPast: past.split('\n').some(s => s.trim() && !/^past:?$/i.test(s.trim())),
+      submit: () => this.submit(), submitDisabled: !ch.length || !this.valid(), submitOpacity: ch.length && this.valid() ? 1 : 0.45,
+      changeText: !form ? '' : !ch.length ? 'No changes yet' : ch.length + ' change' + (ch.length > 1 ? 's' : '') + ': ' + ch.join(', '),
+      canReset: ch.length > 0, reset: () => { if (confirm('Undo all your changes?')) this.load(sel); },
+      done: !!done, fileName: done, adminEmail: Component.ADMIN,
+      mailto: 'mailto:' + Component.ADMIN + '?subject=' + encodeURIComponent('Website profile update: ' + ((f.name || '').trim())) + '&body=' + encodeURIComponent('Hi,\n\nMy updated website profile is attached (' + done + ').\n\nThanks,\n' + ((f.name || '').trim())),
+      themeText: (window.TKNTheme && TKNTheme.get() === 'light') ? '☾ Dark' : '☀ Light',
+      themeLabel: (window.TKNTheme && TKNTheme.get() === 'light') ? 'Switch to dark mode' : 'Switch to light mode',
+      toggleTheme: () => { if (window.TKNTheme) { TKNTheme.toggle(); this.forceUpdate(); } },
+    };
+  }
+}
+</script>
+</body>
+</html>
