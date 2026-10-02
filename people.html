@@ -29,6 +29,7 @@
 *{box-sizing:border-box;margin:0;padding:0;}
 body{background:#070c16;-webkit-font-smoothing:antialiased;}
 :focus-visible{outline:2px solid #f1d49a;outline-offset:3px;}
+article[role="button"]:focus,article[role="button"]:focus-visible{outline:none !important;}
 ::selection{background:#e0a53a;color:#070c16;}
 a{text-decoration:none;color:inherit;}
 a:hover{color:inherit;}
@@ -40,6 +41,7 @@ img{max-width:100%;}
 <script src="./js/trace-engine.js"></script>
 <script src="./js/figures/people.js"></script>
 <script src="./js/tap-fix.js"></script>
+<script src="./js/rb-sprite.js"></script>
 </helmet>
 <div style="font-family:'Geist',sans-serif;color:#e8ecf3;background:#070c16;min-height:100vh;overflow-x:clip;">
   <dc-import name="SiteNav" active="people" hint-size="100%,64px" style="position:sticky;top:0;z-index:200;"></dc-import>
@@ -89,7 +91,6 @@ img{max-width:100%;}
           <div style="display:grid;transform-style:preserve-3d;transition:{{ m.rbTrans }};transform:rotateY({{ m.rbRot }});">
             <div aria-hidden="{{ m.rbFrontHidden }}" style="grid-area:1/1;position:relative;-webkit-backface-visibility:hidden;backface-visibility:hidden;opacity:{{ m.rbFrontOp }};background:#0d1422;border:1px solid rgba(255,255,255,0.07);box-shadow:inset 0 1px 0 rgba(255,255,254,0.035),0 1px 1px rgba(0,0,0,0.22),0 12px 26px -16px rgba(0,0,0,0.5);border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:18px;overflow:hidden;isolation:isolate;transition:box-shadow .3s,opacity .4s ease;" style-hover="box-shadow:inset 0 1px 0 rgba(255,255,254,0.035),0 2px 3px rgba(0,0,0,0.22),0 20px 36px -18px rgba(0,0,0,0.6);">
               <div aria-hidden="true" style="position:absolute;inset:0;z-index:-1;pointer-events:none;border-radius:inherit;background:url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22180%22 height=%22180%22%3E%3Cfilter id=%22n%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%22.95%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3CfeColorMatrix values=%220 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.05 0%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23n)%22/%3E%3C/svg%3E') 0 0/180px 180px,url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22180%22 height=%22180%22%3E%3Cfilter id=%22n%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%22.95%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3CfeColorMatrix values=%220 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.06 0%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23n)%22/%3E%3C/svg%3E') 0 0/180px 180px,url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22320%22 height=%22320%22%3E%3Cfilter id=%22n%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%22.012 .18%22 numOctaves=%224%22 stitchTiles=%22stitch%22/%3E%3CfeColorMatrix values=%220 0 0 0 0.5 0 0 0 0 0.5 0 0 0 0 0.5 0 0 0 0.07 0%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23n)%22/%3E%3C/svg%3E') 0 0/320px 320px,radial-gradient(130% 110% at 30% 0%,rgba(255,255,254,0.025),transparent 55%),radial-gradient(150% 120% at 50% 40%,transparent 62%,rgba(0,0,0,0.12));"></div>
-              <span aria-hidden="true" style="position:absolute;top:16px;right:18px;font-size:15px;line-height:1;color:#e6b667;opacity:0.35;">↻</span>
               <div style="display:flex;flex-wrap:wrap;align-items:center;gap:16px;">
                 <div style="width:104px;height:104px;flex:none;border-radius:999px;padding:3px;background:linear-gradient(145deg,rgba(241,212,154,0.75),rgba(241,212,154,0.4));">
                   <div style="width:100%;height:100%;border-radius:999px;overflow:hidden;background:#141e30;display:flex;align-items:center;justify-content:center;">
@@ -124,7 +125,8 @@ img{max-width:100%;}
               </div>
               <p style="font-size:14px;color:#98a2b4;font-weight:300;line-height:1.65;text-wrap:pretty;">{{ m.bio }}</p>
               <sc-if value="{{ m.hasPast }}" hint-placeholder-val="{{ false }}">
-                <div style="margin-top:auto;padding-top:16px;border-top:1px solid rgba(255,255,255,0.07);display:flex;flex-direction:column;gap:8px;">
+                <div style="position:relative;margin-top:auto;padding-top:16px;border-top:1px solid rgba(255,255,255,0.07);display:flex;flex-direction:column;gap:8px;">
+                  <rb-sprite aria-hidden="true" title="Hi!" style="position:absolute;bottom:100%;right:0;margin-bottom:2px;display:block;width:30px;height:28.5px;filter:grayscale(1);"></rb-sprite>
                   <div style="font-family:'Geist Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#7d889c;">Previously</div>
                   <sc-for list="{{ m.pastLines }}" as="pl" hint-placeholder-count="1">
                     <div style="font-size:12.5px;color:#aab3c3;line-height:1.5;">{{ pl }}</div>
