@@ -124,20 +124,14 @@ class Component extends DCLogic {
     const all = C.publications || [];
     const yrs = [...new Set(all.map(p => p.year))];
     const q = this.state.q.trim().toLowerCase();
-    const yr0 = v => parseInt((String(v || '').match(/\d{4}/) || ['0'])[0], 10);
-    const yrs0 = [...new Set(all.map(p => yr0(p.year)))].sort((a, b) => b - a);
-    const solo = yrs0.slice(0, 2);
-    const bucket = p => { const y = yr0(p.year); return solo.includes(y) ? String(y) : 'g' + Math.floor(y / 5); };
-    const list = all.filter(p => (this.state.year === 'all' || bucket(p) === this.state.year) && (!q || [p.title, p.authors, p.venue].join(' ').toLowerCase().includes(q)));
+    const list = all.filter(p => (this.state.year === 'all' || p.year === this.state.year) && (!q || [p.title, p.authors, p.venue].join(' ').toLowerCase().includes(q)));
     list.forEach(p => { if (!map[p.year]) { map[p.year] = []; order.push(p.year); } map[p.year].push(p); });
     const yr = v => parseInt((String(v || '').match(/\d{4}/) || ['0'])[0], 10);
     order.sort((a, b) => yr(b) - yr(a));
-    const bk = [];
-    all.forEach(p => { const k = bucket(p); let b = bk.find(x => x.k === k); if (!b) bk.push(b = { k, lo: 9999, hi: 0 }); (String(p.year).match(/\d{4}/g) || []).forEach(s => { b.lo = Math.min(b.lo, +s); b.hi = Math.max(b.hi, +s); }); });
-    bk.sort((a, b) => b.hi - a.hi);
+    yrs.sort((a, b) => yr(b) - yr(a));
     const chip = (v, label) => { const on = this.state.year === v; return { label, on, bg: on ? '#f1d49a' : 'transparent', fg: on ? '#070c16' : '#c3cad6', bd: on ? '#f1d49a' : 'rgba(255,255,255,0.18)', pick: () => this.setState({ year: v }) }; };
     return {
-      chips: [chip('all', 'All')].concat(bk.map(b => chip(b.k, b.lo === b.hi ? String(b.lo) : b.lo + '–' + b.hi))),
+      chips: [chip('all', 'All')].concat(yrs.map(y => chip(y, String(y)))),
       q: this.state.q, onQ: e => this.setState({ q: e.target.value }),
       empty: all.length > 0 && list.length === 0,
       showOther: this.state.year === 'all' && !q,
