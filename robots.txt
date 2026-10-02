@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /add.dc.html
+
+Sitemap: https://channellab.iitd.ac.in/sitemap.xml

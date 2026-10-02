@@ -1,24 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Publications — Nayak Lab · IIT Delhi</title>
+<meta name="description" content="Peer-reviewed publications from the Nayak Lab on the energetics, allostery and gating of ion channels and receptors.">
+<meta property="og:title" content="Publications — Nayak Lab · IIT Delhi">
+<meta property="og:description" content="Ion Channel &amp; Receptor Biology Lab at IIT Delhi — how ion channels and receptors work, how mutations break them, and how drugs can fix them.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://channellab.iitd.ac.in/publications">
+<meta property="og:image" content="https://channellab.iitd.ac.in/assets/logos/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://channellab.iitd.ac.in/publications">
 <script src="./support.js"></script>
 <script src="./js/theme.js"></script>
 </head>
 <body>
 <x-dc>
 <helmet>
-<title>Publications — Nayak Lab · IIT Delhi</title>
-<meta name="description" content="Peer-reviewed publications from the Nayak Lab on the energetics, allostery and gating of ion channels and receptors.">
-<meta property="og:title" content="Publications — Nayak Lab · IIT Delhi">
-<meta property="og:description" content="Ion Channel &amp; Receptor Biology Lab at IIT Delhi — how ion channels and receptors work, how mutations break them, and how drugs can fix them.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://[SITE-URL]/publications.html">
-<meta property="og:image" content="https://[SITE-URL]/assets/logos/og-image.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/svg+xml" href="assets/logos/tkn-favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/logos/tkn-favicon-32.png">
 <link rel="apple-touch-icon" href="assets/logos/apple-touch-icon.png">
@@ -56,6 +57,17 @@ img{max-width:100%;}
   </section>
 
   <section style="max-width:1360px;margin:0 auto;padding:clamp(56px,7vw,96px) clamp(20px,5vw,40px) 0;">
+    <div style="display:flex;flex-wrap:wrap;gap:16px 24px;align-items:center;justify-content:space-between;margin-bottom:clamp(24px,3vw,36px);">
+      <div role="group" aria-label="Filter by year" style="display:flex;flex-wrap:wrap;gap:8px;">
+        <sc-for list="{{ chips }}" as="c" hint-placeholder-count="6">
+          <button type="button" onClick="{{ c.pick }}" aria-pressed="{{ c.on }}" style="font-family:'Geist Mono',monospace;font-size:12px;min-height:44px;padding:0 16px;border-radius:999px;cursor:pointer;border:1px solid {{ c.bd }};background:{{ c.bg }};color:{{ c.fg }};transition:border-color .15s;">{{ c.label }}</button>
+        </sc-for>
+      </div>
+      <input type="search" value="{{ q }}" onChange="{{ onQ }}" placeholder="Search title, author or journal" aria-label="Search publications" style="flex:0 1 340px;min-width:0;min-height:44px;font-family:'Geist',sans-serif;font-size:14.5px;color:#e8ecf3;background:transparent;border:1px solid rgba(255,255,255,0.18);border-radius:999px;padding:0 20px;outline:none;" style-focus="border-color:#f1d49a;">
+    </div>
+    <sc-if value="{{ empty }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:28px 0 36px;border-top:1px solid rgba(255,255,255,0.1);font-size:15.5px;color:#8792a6;">No publications match.</div>
+    </sc-if>
     <sc-for list="{{ groups }}" as="grp" hint-placeholder-count="4">
       <div data-reveal="" style="display:flex;flex-wrap:wrap;gap:12px 40px;padding:28px 0 36px;border-top:1px solid rgba(255,255,255,0.1);">
         <div style="flex:0 0 200px;">
@@ -76,7 +88,8 @@ img{max-width:100%;}
       </div>
     </sc-for>
 
-    <div data-reveal="" style="display:flex;flex-wrap:wrap;gap:12px 40px;padding:28px 0 36px;border-top:1px solid rgba(255,255,255,0.1);">
+    <sc-if value="{{ showOther }}" hint-placeholder-val="{{ true }}">
+    <div style="display:flex;flex-wrap:wrap;gap:12px 40px;padding:28px 0 36px;border-top:1px solid rgba(255,255,255,0.1);">
       <div style="flex:0 0 200px;">
         <div style="font-family:'Newsreader',serif;font-style:italic;font-size:clamp(26px,3vw,36px);line-height:1.1;color:#f1d49a;">Book chapter &amp; under review</div>
       </div>
@@ -89,6 +102,7 @@ img{max-width:100%;}
         </sc-for>
       </div>
     </div>
+    </sc-if>
 
     <div style="border-top:1px solid rgba(255,255,255,0.1);padding-top:36px;">
       <a href="assets/docs/tapan-nayak-biosketch.pdf" target="_blank" style="display:inline-flex;align-items:center;gap:10px;font-size:14.5px;font-weight:500;color:#fff;border:1px solid rgba(255,255,255,0.18);padding:14px 26px;border-radius:999px;transition:background .18s;" style-hover="background:rgba(255,255,255,0.07);">Download full biosketch (PDF) ↓</a>
@@ -103,13 +117,24 @@ img{max-width:100%;}
 class Component extends DCLogic {
   componentDidMount() { const go = () => { if (!window.LAB_CONTENT) { this._t = setTimeout(go, 40); return; } this.forceUpdate(); }; go(); }
   componentWillUnmount() { clearTimeout(this._t); }
+  state = { year: 'all', q: '' };
   renderVals() {
     const C = window.LAB_CONTENT || {};
     const order = [], map = {};
-    (C.publications || []).forEach(p => { if (!map[p.year]) { map[p.year] = []; order.push(p.year); } map[p.year].push(p); });
+    const all = C.publications || [];
+    const yrs = [...new Set(all.map(p => p.year))];
+    const q = this.state.q.trim().toLowerCase();
+    const list = all.filter(p => (this.state.year === 'all' || p.year === this.state.year) && (!q || [p.title, p.authors, p.venue].join(' ').toLowerCase().includes(q)));
+    list.forEach(p => { if (!map[p.year]) { map[p.year] = []; order.push(p.year); } map[p.year].push(p); });
     const yr = v => parseInt((String(v || '').match(/\d{4}/) || ['0'])[0], 10);
     order.sort((a, b) => yr(b) - yr(a));
+    yrs.sort((a, b) => yr(b) - yr(a));
+    const chip = (v, label) => { const on = this.state.year === v; return { label, on, bg: on ? '#f1d49a' : 'transparent', fg: on ? '#070c16' : '#c3cad6', bd: on ? '#f1d49a' : 'rgba(255,255,255,0.18)', pick: () => this.setState({ year: v }) }; };
     return {
+      chips: [chip('all', 'All')].concat(yrs.map(y => chip(y, String(y)))),
+      q: this.state.q, onQ: e => this.setState({ q: e.target.value }),
+      empty: all.length > 0 && list.length === 0,
+      showOther: this.state.year === 'all' && !q,
       groups: order.map(y => ({ year: y, items: map[y], count: map[y].length + (map[y].length === 1 ? ' paper' : ' papers') })),
       other: C.publicationsOther || [],
     };
