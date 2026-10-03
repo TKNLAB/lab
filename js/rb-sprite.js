@@ -59,7 +59,7 @@
         if (!this._vis || document.hidden) return;
         this._t++;
         if (this._wave > 0) this._wave--;
-        else if (this._t % 45 === 0) this._wave = 12;
+        else if (this._t % 20 === 0) this._wave = 12;
         this.draw();
       }, 170);
     }
