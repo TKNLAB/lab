@@ -11,7 +11,7 @@
   <div aria-hidden="true" style="position:absolute;inset:0;background:rgba(7,12,22,0.78);backdrop-filter:blur(16px) saturate(1.4);-webkit-backdrop-filter:blur(16px) saturate(1.4);pointer-events:none;"></div>
   <a href="#main" style="position:absolute;left:-9999px;top:10px;z-index:10;font-size:14px;font-weight:500;color:#070c16;background:#f1d49a;padding:10px 16px;border-radius:999px;text-decoration:none;" style-focus="left:16px;">Skip to content</a>
   <div style="position:relative;max-width:1360px;margin:0 auto;padding:0 clamp(16px,4vw,40px);height:64px;display:flex;align-items:center;justify-content:space-between;gap:20px;">
-    <a href="/" aria-label="Tapan Kumar Nayak Lab — home" style="display:flex;align-items:center;gap:14px;flex:0 1 auto;min-width:0;text-decoration:none;border-radius:8px;">
+    <a href="index.html" aria-label="Tapan Kumar Nayak Lab — home" style="display:flex;align-items:center;gap:14px;flex:0 1 auto;min-width:0;text-decoration:none;border-radius:8px;">
       <span style="position:relative;display:block;height:34px;width:83px;flex:none;">
         <img src="assets/logos/tkn-logo-cut.png" width="320" height="131" decoding="async" fetchpriority="high" alt="TKN" style="width:100%;height:100%;display:block;">
         <canvas data-tkn-ions="" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none;"></canvas>
@@ -49,7 +49,7 @@
         <button onClick="{{ closeMenu }}" aria-label="Close menu" style="width:48px;height:48px;margin-right:-8px;border:none;background:transparent;border-radius:12px;cursor:pointer;color:#e8ecf3;font-size:28px;line-height:1;display:flex;align-items:center;justify-content:center;" style-hover="background:rgba(255,255,255,0.07);">×</button>
       </div>
       <nav aria-label="Main" style="display:flex;flex-direction:column;padding:clamp(20px,4vw,36px) clamp(16px,4vw,40px);flex:1;">
-        <a href="/" style="display:flex;justify-content:space-between;align-items:center;min-height:64px;font-size:clamp(28px,7vw,40px);font-weight:500;letter-spacing:-0.03em;color:#e8ecf3;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.07);">Home<span style="font-family:'Geist Mono',monospace;font-size:12px;color:#7d889c;">00</span></a>
+        <a href="index.html" style="display:flex;justify-content:space-between;align-items:center;min-height:64px;font-size:clamp(28px,7vw,40px);font-weight:500;letter-spacing:-0.03em;color:#e8ecf3;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.07);">Home<span style="font-family:'Geist Mono',monospace;font-size:12px;color:#7d889c;">00</span></a>
         <sc-for list="{{ links }}" as="l" hint-placeholder-count="6">
           <a href="{{ l.href }}" style="display:flex;justify-content:space-between;align-items:center;min-height:64px;font-size:clamp(28px,7vw,40px);font-weight:500;letter-spacing:-0.03em;color:{{ l.color }};text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.07);">{{ l.label }}<span style="font-family:'Geist Mono',monospace;font-size:12px;color:#7d889c;">{{ l.n }}</span></a>
         </sc-for>
@@ -92,11 +92,11 @@ class Component extends DCLogic {
   renderVals() {
     const a = this.props.active || '';
     const piDept = ((window.LAB_CONTENT || {}).pi || {}).dept || '[DEPARTMENT]';
-    const L = [['research', 'Research', '/research'], ['publications', 'Publications', '/publications'], ['people', 'People', '/people'], ['teaching', 'Teaching', '/teaching'], ['gallery', 'Gallery', '/gallery'], ['join', 'Join us', '/join']];
+    const L = [['research', 'Research', 'research.html'], ['publications', 'Publications', 'publications.html'], ['people', 'People', 'people.html'], ['teaching', 'Teaching', 'teaching.html'], ['gallery', 'Gallery', 'gallery.html'], ['join', 'Join us', 'join.html']];
     const w = this.state.w, mobile = w < 1180, brand = w < 400 ? 'Nayak Lab' :  w < 600 ? 'Nayak Lab / IIT Delhi' : 'Tapan Kumar Nayak Lab / IIT Delhi';
     return {
       links: L.map(([k, label, href], i) => ({ label, href, on: k === a, off: k !== a, n: '0' + (i + 1), color: k === a ? '#f1d49a' : '#e8ecf3' })),
-      deskLinks: [{ label: 'Home', href: '/', on: a === '', off: a !== '' }, ...L.map(([k, label, href]) => ({ label, href, on: k === a, off: k !== a }))],
+      deskLinks: [{ label: 'Home', href: 'index.html', on: a === '', off: a !== '' }, ...L.map(([k, label, href]) => ({ label, href, on: k === a, off: k !== a }))],
       piDept, brand, brand2: w < 400, desktop: !mobile, mobile, open: mobile && this.state.open, expanded: this.state.open ? 'true' : 'false',
       btnRef: this.btnRef, drawerRef: this.drawerRef,
       openMenu: () => this.open(),

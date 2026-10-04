@@ -7,8 +7,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&family=Newsreader:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
-<link rel="icon" href="/assets/logos/tkn-favicon.svg" type="image/svg+xml">
-<script>try{document.documentElement.setAttribute("data-theme",localStorage.getItem("tkn-theme")==="dark"?"dark":"light")}catch(e){}</script>
+<link rel="icon" href="assets/logos/tkn-favicon.svg" type="image/svg+xml">
+<script>document.documentElement.setAttribute("data-theme","light")</script>
 <style>
 :root{
   box-sizing:border-box;
@@ -410,7 +410,7 @@ body.simple .adv{display:none!important}
         </div></details>
       <button class="iconbtn" id="helpBtn" title="How to use (?)">Help</button>
       <button class="iconbtn" id="themeBtn" title="Switch light / dark" aria-label="Switch light / dark"><svg class="ic-moon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M20.5 14.2A8.5 8.5 0 1 1 9.8 3.5a7 7 0 0 0 10.7 10.7z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"></path></svg><svg class="ic-sun" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.7"></circle><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"></path></svg><span class="t-dark">Dark</span><span class="t-light">Light</span></button>
-      <a class="iconbtn homebtn" href="/" aria-label="Lab home" title="Lab home"><img class="logo-l" src="assets/logos/tkn-logo-dark.png" alt="TKN"><img class="logo-d" src="assets/logos/tkn-logo-cut.png" alt="TKN"><span class="go" aria-hidden="true">↗</span></a>
+      <a class="iconbtn homebtn" href="index.html" aria-label="Lab home" title="Lab home"><img class="logo-l" src="assets/logos/tkn-logo-dark.png" alt="TKN"><img class="logo-d" src="assets/logos/tkn-logo-cut.png" alt="TKN"><span class="go" aria-hidden="true">↗</span></a>
     </div>
     <input type="file" id="fileIn" accept=".json,application/json" hidden>
   </header>
@@ -2518,9 +2518,8 @@ function wire() {
   }));
   $("themeBtn").addEventListener("click", () => {
     const root = document.documentElement, next = root.getAttribute("data-theme") === "light" ? "dark" : "light";
-    root.setAttribute("data-theme", next); try { localStorage.setItem("tkn-theme", next); } catch (e) { } readColors(); if (!$("pane-chan").hidden) buildChanPane(); drawAnalysis(); dirty = true;
+    root.setAttribute("data-theme", next); readColors(); if (!$("pane-chan").hidden) buildChanPane(); drawAnalysis(); dirty = true;
   });
-  window.addEventListener("storage", e => { if (e.key === "tkn-theme") { document.documentElement.setAttribute("data-theme", e.newValue === "dark" ? "dark" : "light"); readColors(); dirty = true; } });
   const setLessons = on => { document.body.classList.toggle("lessons-on", on); $("lessons").hidden = !on; $("lessonsBtn").setAttribute("aria-pressed", on); try { localStorage.setItem("hhsim-lessons", on ? "1" : "0"); } catch (e) { } dirty = true; };
   $("lessonsBtn").addEventListener("click", () => setLessons($("lessons").hidden));
   $("lessonsClose").addEventListener("click", () => setLessons(false));

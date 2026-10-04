@@ -3,43 +3,38 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>HHsim web: Hodgkin–Huxley neuron and axon lab</title>
+<title>HHsim · Hodgkin–Huxley neuron lab · TKN Lab, IIT Delhi</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&family=Newsreader:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/logos/tkn-favicon.svg" type="image/svg+xml">
+<script>try{document.documentElement.setAttribute("data-theme",localStorage.getItem("tkn-theme")==="light"?"light":"dark")}catch(e){}</script>
 <style>
 :root{
   box-sizing:border-box;
   padding-top:env(safe-area-inset-top,0px);
   padding-bottom:env(safe-area-inset-bottom,0px);
-  --font:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
-  --font-c:"IBM Plex Sans Condensed","IBM Plex Sans",system-ui,"Arial Narrow",sans-serif;
-  /* light: chart-recorder paper */
-  --page:#e9eef2; --panel:#ffffff; --panel2:#f4f7f9; --line:#d3dce3; --line2:#c2ced8;
-  --ink:#16222e; --muted:#5b6b7a; --faint:#8796a4;
-  --screen:#fbfdfe; --grid:#e3ebf0; --grid2:#cfdbe3; --axis:#7d8f9e;
-  --vm:#cf3a2f; --stim:#6b4bd6; --t1:#a87d00; --t2:#1d8f4c; --t3:#0a8399;
-  --run:#1f8a4c; --stop:#c43b30; --nudge:#b88400; --accent:#2f5f8a;
-  --chip:#edf2f6; --focus:#2f6fb3; --c6:#c25e14; --c7:#b8327a; --c8:#4f6b12;
-  --shadow:0 1px 0 rgba(22,34,46,.06);
+  --font:"Geist",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --font-c:var(--font); --mono:"Geist Mono",ui-monospace,monospace; --serif:"Newsreader",Georgia,serif;
+  color-scheme:dark;
+  --page:#0d1015; --screen:#090b0f; --panel:#12161c; --panel2:#151a21; --line:#1f252e; --line2:#2d3540;
+  --ink:#e9edf2; --ink2:#b4bcc8; --muted:#8c96a4; --faint:#5f6876;
+  --grid:#151a21; --grid2:#252c36; --axis:#5f6876;
+  --vm:#ff6b5e; --stim:#b49bff; --t1:#ffb547; --t2:#3fd6a0; --t3:#5aa9ff;
+  --run:#3fd6a0; --stop:#ff6b5e; --nudge:#ffb547; --accent:#5aa9ff;
+  --chip:#1a2029; --focus:#5aa9ff; --c6:#ff8f4d; --c7:#ff7ac0; --c8:#b6d97a;
+  --cta:#b49bff; --cta-ink:#0d1015; --hi:#7db8ff; --hi2:#e9edf2; --hi-soft:rgba(90,169,255,.14); --hi-line:rgba(90,169,255,.4);
+  --shadow:none;
 }
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --page:#141c25; --panel:#1b2530; --panel2:#212d3a; --line:#2b3947; --line2:#37485a;
-    --ink:#dce5ec; --muted:#93a4b4; --faint:#6c7e8f;
-    --screen:#0c1a1e; --grid:#16292e; --grid2:#1f3a40; --axis:#5f7d86;
-    --vm:#ff6257; --stim:#a68bff; --t1:#f2cf4a; --t2:#50d47f; --t3:#3fcde3;
-    --run:#3fbf73; --stop:#ef5b4f; --nudge:#e6b33a; --accent:#8db8de;
-    --chip:#24313f; --focus:#8db8de; --shadow:none; --c6:#ff9a4d; --c7:#ff6fb5; --c8:#a8cf45;
-  }
-}
-:root[data-theme="dark"]{
-    --page:#141c25; --panel:#1b2530; --panel2:#212d3a; --line:#2b3947; --line2:#37485a;
-    --ink:#dce5ec; --muted:#93a4b4; --faint:#6c7e8f;
-    --screen:#0c1a1e; --grid:#16292e; --grid2:#1f3a40; --axis:#5f7d86;
-    --vm:#ff6257; --stim:#a68bff; --t1:#f2cf4a; --t2:#50d47f; --t3:#3fcde3;
-    --run:#3fbf73; --stop:#ef5b4f; --nudge:#e6b33a; --accent:#8db8de;
-    --chip:#24313f; --focus:#8db8de; --shadow:none; --c6:#ff9a4d; --c7:#ff6fb5; --c8:#a8cf45;
+:root[data-theme="light"]{
+  color-scheme:light;
+  --page:#f3f5f8; --screen:#ffffff; --panel:#ffffff; --panel2:#f8f9fb; --line:#e2e6ec; --line2:#cfd5de;
+  --ink:#141922; --ink2:#3a4352; --muted:#5b6575; --faint:#8b94a3;
+  --grid:#eef1f5; --grid2:#d6dce4; --axis:#8b94a3;
+  --vm:#d1362a; --stim:#6b4bd6; --t1:#c27400; --t2:#0f8a63; --t3:#1f6fd1;
+  --run:#0f8a63; --stop:#d1362a; --nudge:#a86400; --accent:#1f6fd1;
+  --chip:#eef1f5; --focus:#1f6fd1; --c6:#c25e14; --c7:#b0397c; --c8:#5a7a14;
+  --cta:#6b4bd6; --cta-ink:#ffffff; --hi:#1f5fb8; --hi2:#141922; --hi-soft:rgba(31,111,209,.09); --hi-line:rgba(31,111,209,.35);
 }
 *,*::before,*::after{box-sizing:inherit}
 html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
@@ -174,7 +169,7 @@ textarea,.txt{width:100%;padding:6px 8px;border:1px solid var(--line2);border-ra
 .foot{margin-top:16px;color:var(--faint);font-size:12.5px;line-height:1.5}
 .foot a{color:var(--muted)}
 .vconly[hidden],.cconly[hidden]{display:none!important}
-.zoombar{position:absolute;left:60px;top:8px;display:flex;gap:3px;opacity:.85}
+.zoombar{position:absolute;left:84px;top:8px;display:flex;gap:3px;opacity:.85}
 .zoombar:hover{opacity:1}
 .zoombar button{min-width:28px;height:24px;border:1px solid var(--line2);background:var(--panel);color:var(--ink);border-radius:6px;font:500 13px var(--font-c);cursor:pointer;padding:0 7px}
 .zoombar button[hidden]{display:none}
@@ -245,46 +240,175 @@ dialog.help .bd h3{font:600 14.5px var(--font-c);margin:14px 0 4px}
 dialog.help .bd p{margin:4px 0}
 dialog.help kbd{font:12px var(--font);border:1px solid var(--line2);border-bottom-width:2px;border-radius:4px;padding:0 5px;background:var(--chip)}
 .keys{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:13.5px}
+
+/* ---------- TKN restyle (1a dark / 1c light) ---------- */
+body{font:15px/1.5 var(--font);letter-spacing:-.003em}
+a{color:var(--hi)} a:hover{color:var(--hi2)}
+.wrap{max-width:1760px;padding:14px clamp(12px,2.2vw,32px) 32px}
+.top{padding:6px 0 16px;margin-bottom:18px;gap:12px 20px;border-bottom:1px solid var(--line)}
+.brand{gap:14px;align-items:baseline}
+.brand h1{font:500 25px/1 var(--font);letter-spacing:-.035em}
+.brand h1 i{font-family:var(--serif);font-style:italic;font-weight:400;color:var(--hi2)}
+.brand .eyebrow{font:400 11px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+@media (max-width:640px){.brand .eyebrow{display:none}}
+.seg{border:1px solid var(--line);border-radius:999px;padding:3px;gap:2px;background:var(--panel)}
+.seg button{border-radius:999px;padding:6px 14px;font:500 13px var(--font);color:var(--muted)}
+.seg button:hover{color:var(--ink)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--page)}
+.seg.level{border-color:var(--hi-line);background:transparent}
+.seg.level button{font:400 11px var(--mono);letter-spacing:.1em;text-transform:uppercase;padding:6px 11px}
+.seg.level button[aria-pressed="true"]{background:var(--hi-soft);color:var(--hi2)}
+.toplinks{display:flex;align-items:center;gap:4px 16px;flex-wrap:wrap}
+.iconbtn{border:0;background:transparent;padding:6px 2px;border-radius:4px;font:400 13.5px var(--font);color:var(--muted)}
+.iconbtn:hover{color:var(--ink)}
+.iconbtn[aria-pressed="true"]{color:var(--hi2);border:0}
+.rig{grid-template-columns:minmax(0,1fr) 380px;gap:16px}
+body.lessons-on .rig{grid-template-columns:330px minmax(0,1fr) 380px}
+@media (max-width:1380px){body.lessons-on .rig{grid-template-columns:minmax(0,1fr) 360px}body.lessons-on .scope{grid-column:1;grid-row:1}body.lessons-on .lessons{grid-column:1;grid-row:2;position:static;max-height:none}body.lessons-on .side{grid-column:2;grid-row:1/span 2}}
+@media (max-width:1060px){.rig,body.lessons-on .rig{grid-template-columns:minmax(0,1fr)}body.lessons-on .scope,body.lessons-on .lessons,body.lessons-on .side{grid-column:1;grid-row:auto}.scope{order:1}body.lessons-on .lessons{order:2}.side{order:3}}
+.scope{background:var(--screen);border:1px solid var(--line);border-radius:14px}
+.controls{background:transparent;padding:14px 16px;gap:8px;border-bottom:1px solid var(--line)}
+.btn{border-radius:999px;border:1px solid var(--line2);background:transparent;padding:7px 14px;font:500 13.5px var(--font);color:var(--ink)}
+.controls .btn{padding:7px 14px}
+.btn:hover{border-color:var(--muted)}
+.btn.stim{background:var(--cta);border-color:var(--cta);color:var(--cta-ink);font-weight:500;padding:8px 18px}
+.btn.stim small{font:400 11.5px var(--mono);opacity:.75}
+.btn.on{background:var(--ink);border-color:var(--ink);color:var(--page)}
+.btn[aria-pressed="true"].tog{background:var(--hi-soft);border-color:var(--hi-line);color:var(--ink)}
+.btn.tog[aria-pressed="true"] .led{background:var(--hi)}
+.speed{font:400 12px var(--mono);letter-spacing:.04em;color:var(--muted)}
+input[type=range]{accent-color:var(--hi)}
+.toggle input{accent-color:var(--hi)}
+#cvMain{height:clamp(280px,46vh,480px)}
+#cvSub{height:clamp(160px,24vh,250px)}
+.subbar,.statusline,.reflist{background:transparent;font-family:var(--font)}
+.subbar select,select{background:var(--page);border-color:var(--line2);border-radius:6px;font:13px var(--font)}
+.statusline{font:400 12.5px var(--mono);letter-spacing:.02em}
+.statusline b{font:500 12.5px var(--mono);color:var(--ink)}
+.statusline .msg{font-family:var(--font);color:var(--hi2)}
+.ro{border-left:0;padding-left:0;gap:3px}
+.ro span,.mgrid div span{font:400 10.5px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.ro b{font:400 19px var(--mono);letter-spacing:-.02em;color:var(--ink)}
+.metrics .mh{font:400 10.5px var(--mono);letter-spacing:.12em;text-transform:uppercase}
+.metrics .mh b{color:var(--hi)}
+.mgrid div{font-family:var(--font)}
+.mgrid b,.kv .v,.ion .e,.cursorbox .val{font-family:var(--mono);font-weight:400}
+.num input[type=number],.ion input,.ptab input,.vcrow input[type=number],.btgrid input,.fi input,.ans-in,textarea,.txt{background:var(--page);border-color:var(--line2);font-family:var(--mono);font-size:13px}
+.memview h3{font:400 10.5px var(--mono);letter-spacing:.12em;text-transform:uppercase}
+.vtabs button{border-radius:999px;font:500 12.5px var(--font)}
+.vtabs button[aria-pressed="true"]{background:var(--ink);color:var(--page);border-color:var(--ink)}
+.side{background:var(--panel);border-radius:14px}
+.tabs{background:transparent;gap:18px;padding:0 18px;border-radius:14px 14px 0 0}
+.tabs{scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}
+.tabs button{flex:0 0 auto;padding:15px 0 12px;font:400 13.5px var(--font)}
+.tabs button[aria-selected="true"]{border-bottom-color:var(--hi);color:var(--ink)}
+.pane{padding:16px 18px 22px}
+.pane h2,.lessonpane h2{font:400 11px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--hi);margin:20px 0 8px}
+.pane h2:first-child{margin-top:4px}
+.pane p.note,.lessonpane p.note{font-size:13.5px;line-height:1.55}
+.card{border-radius:10px;background:transparent}
+.card.stimcard{border-left:1px solid var(--line)}
+.card h3{font:500 14px var(--font)}
+.formula,.eq{font-family:var(--mono);font-size:12.5px;background:var(--chip)}
+.exp{border-radius:10px}
+.exp summary{font:500 14px var(--font)}
+.exp .ans,.lessonpane .ans{border-left:0;background:var(--chip);border-radius:8px;padding:10px 12px;font-size:14px;line-height:1.6}
+.card.chal.done h3 .n{color:var(--page)}
+.zoombar button{border-radius:999px;background:var(--screen);font:500 12px var(--mono)}
+.tip{background:var(--panel);font:12px var(--mono);border-radius:8px}
+.menu .pop{background:var(--panel);border-radius:10px}
+.menu .pop button{font:13.5px var(--font)}
+dialog.help{border-radius:14px}
+dialog.help .hd h2{font:400 24px var(--serif)}
+dialog.help .bd h3{font:400 11px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--hi);margin:18px 0 6px}
+.foot{max-width:900px;font-size:12.5px;color:var(--faint)}
+body.simple .adv{display:none!important}
+/* lessons column */
+.lessons{background:var(--panel2);border:1px solid var(--line);border-radius:14px;padding:20px 22px 20px;position:sticky;top:calc(env(safe-area-inset-top,0px) + 10px);max-height:calc(100vh - 24px);overflow-y:auto}
+.lessons[hidden]{display:none}
+.lx-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.lx-head span{font:400 11px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.lessonpane .seg.wide{display:flex;margin-bottom:18px}
+.lessonpane .seg.wide button{flex:1;padding:6px 8px;font-size:12.5px}
+.lessonpane h2.lx-group{margin:22px 0 6px}
+.lessonpane .exp{border:0;border-top:1px solid var(--line);border-radius:0;margin:0;background:transparent}
+.lessonpane .exp:last-of-type{border-bottom:1px solid var(--line)}
+.lessonpane .exp summary{padding:11px 2px;gap:12px;font:400 14.5px/1.35 var(--font);align-items:baseline}
+.lessonpane .exp summary:hover{color:var(--hi)}
+.lessonpane .exp summary .n{font:400 11px var(--mono);color:var(--faint);min-width:20px;flex:none}
+.lessonpane .exp summary::after{content:"+";margin-left:auto;font:400 15px var(--mono);color:var(--faint)}
+.lessonpane .exp[open] summary{background:transparent;border-bottom:0;font-weight:500}
+.lessonpane .exp[open] summary::after{content:"−"}
+.lessonpane .exp[open] summary .n{color:var(--hi)}
+.lessonpane .exp.ran summary .n{color:var(--run)}
+.lessonpane .exp .body{padding:0 2px 16px 34px;font-size:14px;line-height:1.6;color:var(--ink2)}
+.lessonpane .exp .body b{color:var(--ink);font-weight:500}
+.lessonpane .exp .mini{margin:2px 0 10px}
+.lx-count{font:400 11px var(--mono);color:var(--faint);letter-spacing:.06em}
+.lx-eyebrow{font:400 11px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--hi)}
+.lessonpane h2.lx-title{font:400 29px/1.12 var(--serif);letter-spacing:-.01em;text-transform:none;color:var(--ink);margin:10px 0 16px;text-wrap:balance}
+.lx-body{font-size:15px;line-height:1.65;color:var(--ink2);text-wrap:pretty}
+.lx-body p{margin:0 0 10px} .lx-body ol{margin:6px 0 12px;padding-left:20px} .lx-body li{margin:6px 0}
+.lx-body b{color:var(--ink);font-weight:500}
+.lx-row{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+.lx-nav{display:flex;justify-content:space-between;gap:10px;margin-top:20px;padding-top:14px;border-top:1px solid var(--line)}
+.lx-nav button{border:0;background:transparent;padding:4px 0;font:400 13.5px var(--font);color:var(--muted);cursor:pointer;text-align:left;max-width:48%}
+.lx-nav button:last-child{text-align:right;color:var(--ink)}
+.lx-nav button:disabled{opacity:.35;cursor:default}
+.lx-jump{width:100%;margin-top:14px}
+.lx-model{margin-top:18px;border-top:1px solid var(--line);padding-top:12px}
+.lx-model summary{cursor:pointer;font:400 11px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header class="top">
     <div class="brand">
-      <h1>HH<i>sim</i> web</h1>
-      <p>Hodgkin–Huxley neuron lab: current clamp, voltage clamp and axon</p>
+      <h1>HH<i>sim</i></h1>
+      <span class="eyebrow">Hodgkin–Huxley neuron lab · TKN</span>
     </div>
     <div class="seg" role="group" aria-label="Recording mode">
       <button id="modeCC" aria-pressed="true">Current clamp</button>
       <button id="modeVC" aria-pressed="false">Voltage clamp</button>
       <button id="modeAX" aria-pressed="false">Axon</button>
     </div>
-    <button class="iconbtn" id="soundBtn" aria-pressed="false" title="Play a click for every spike, like a lab audio monitor">Sound</button>
-    <details class="menu" id="setupMenu"><summary class="iconbtn">Setup</summary>
-      <div class="pop">
-        <button id="saveSetup">Save setup to a file</button>
-        <button id="loadSetup">Load a setup file</button>
-        <button id="copyLink" hidden>Copy a link to this setup</button>
-        <button id="resetAllBtn">Reset everything</button>
-      </div></details>
-    <button class="iconbtn" id="helpBtn" title="How to use (?)">Help</button>
-    <button class="iconbtn" id="themeBtn" title="Switch light / dark">Theme</button>
-    <a class="iconbtn" href="index.html" style="text-decoration:none">TKN Lab home</a>
+    <div class="seg level" id="levelSeg" role="group" aria-label="Detail level" title="Simple hides the advanced controls">
+      <button data-level="simple" aria-pressed="false">Simple</button>
+      <button data-level="full" aria-pressed="true">Full</button>
+    </div>
+    <div class="toplinks">
+      <button class="iconbtn" id="lessonsBtn" aria-pressed="true" title="Show or hide the guided lessons">Lessons</button>
+      <button class="iconbtn" id="soundBtn" aria-pressed="false" title="Play a click for every spike, like a lab audio monitor">Sound</button>
+      <details class="menu adv" id="setupMenu"><summary class="iconbtn">Setup</summary>
+        <div class="pop">
+          <button id="saveSetup">Save setup to a file</button>
+          <button id="loadSetup">Load a setup file</button>
+          <button id="copyLink" hidden>Copy a link to this setup</button>
+          <button id="resetAllBtn">Reset everything</button>
+        </div></details>
+      <button class="iconbtn" id="helpBtn" title="How to use (?)">Help</button>
+      <button class="iconbtn" id="themeBtn" title="Switch light / dark">Theme</button>
+      <a class="iconbtn" href="index.html" style="text-decoration:none">Lab home ↗</a>
+    </div>
     <input type="file" id="fileIn" accept=".json,application/json" hidden>
   </header>
 
   <div class="rig">
+    <aside class="lessons" id="lessons" aria-label="Lessons">
+      <div class="lx-head"><span>Lessons</span><button class="iconbtn" id="lessonsClose" title="Hide lessons">Hide</button></div>
+      <div class="lessonpane" id="pane-learn"></div>
+    </aside>
     <section class="scope" aria-label="Recording">
       <div class="controls">
         <button class="btn stim" id="stim1Btn" data-modes="cc ax" title="Apply stimulus 1 (key 1)"><span id="stim1Name">Stim 1</span> <small id="stim1Lbl"></small></button>
         <button class="btn stim" id="stim2Btn" data-modes="cc ax" title="Apply stimulus 2 (key 2)"><span id="stim2Name">Stim 2</span> <small id="stim2Lbl"></small></button>
         <button class="btn run" id="runBtn" title="Run continuously (Space)"><span class="dot"></span><span id="runLbl">Run</span></button>
-        <button class="btn nudge" id="nudgeBtn" data-modes="cc ax" title="Advance a little">Nudge</button>
+        <button class="btn nudge adv" id="nudgeBtn" data-modes="cc ax" title="Advance a little">Nudge</button>
         <button class="btn" id="clearBtn" title="Clear traces, keep parameters">Clear</button>
-        <button class="btn" id="storeBtn" data-modes="cc" title="Store the state at the cursor (or now) for Recall">Store</button>
-        <button class="btn" id="recallBtn" data-modes="cc" title="Return to the stored state (rest by default)">Recall</button>
+        <button class="btn adv" id="storeBtn" data-modes="cc" title="Store the state at the cursor (or now) for Recall">Store</button>
+        <button class="btn adv" id="recallBtn" data-modes="cc" title="Return to the stored state (rest by default)">Recall</button>
         <button class="btn" id="pinBtn" data-modes="cc" title="Keep the latest response as a dashed reference trace (P)">Pin trace</button>
-        <button class="btn tog" id="annotBtn" data-modes="cc" aria-pressed="true" title="Mark threshold, peak, half-width and AHP on the last spike"><span class="led"></span>Measure</button>
+        <button class="btn tog adv" id="annotBtn" data-modes="cc" aria-pressed="true" title="Mark threshold, peak, half-width and AHP on the last spike"><span class="led"></span>Measure</button>
         <span class="sp"></span>
         <label class="speed" data-modes="cc ax" title="Simulated milliseconds per real second">Speed
           <input type="range" id="speed" min="0" max="5" step="1" value="2"><span id="speedLbl"></span></label>
@@ -299,15 +423,15 @@ dialog.help kbd{font:12px var(--font);border:1px solid var(--line2);border-botto
           <button id="followBtn" data-modes="cc ax" title="Jump back to the live trace (or double-click the plot)">Live</button>
         </div>
       </div>
-      <div class="reflist" id="refList" data-modes="cc" hidden></div>
+      <div class="reflist adv" id="refList" data-modes="cc" hidden></div>
       <div class="subbar" id="subbarCC" data-modes="cc">
         <label><span class="sw" style="background:var(--t1)"></span><select id="sel1"></select></label>
         <label><span class="sw" style="background:var(--t2)"></span><select id="sel2"></select></label>
         <label><span class="sw" style="background:var(--t3)"></span><select id="sel3"></select></label>
         <span style="flex:1"></span>
         <label class="toggle"><input type="checkbox" id="autoScale" checked> Autoscale</label>
-        <button class="btn small" id="exportBtn">Export CSV</button>
-        <button class="btn small" id="pngBtn">Save image</button>
+        <button class="btn small adv" id="exportBtn">Export CSV</button>
+        <button class="btn small adv" id="pngBtn">Save image</button>
       </div>
       <div class="subbar" id="subbarVC" data-modes="vc" hidden>
         <label>Plot <select id="vcVar"></select></label>
@@ -337,7 +461,7 @@ dialog.help kbd{font:12px var(--font);border:1px solid var(--line2);border-botto
           <div class="ro"><span>g<sub>Na</sub> (µS)</span><b id="roGNa">—</b></div>
           <div class="ro"><span>g<sub>K</sub> (µS)</span><b id="roGK">—</b></div>
           <div class="ro"><span>I injected (nA)</span><b id="roI">—</b></div>
-          <div class="metrics">
+          <div class="metrics adv">
             <div class="mh"><b>Spike measurements</b><span id="spHead">No spike yet</span></div>
             <div class="mgrid">
               <div><span>Threshold</span><b id="spThr">—</b></div>
@@ -350,7 +474,7 @@ dialog.help kbd{font:12px var(--font);border:1px solid var(--line2);border-botto
               <div><span>Latency</span><b id="spLat">—</b></div>
             </div>
           </div>
-          <div class="cursorbox" id="cursorBox">
+          <div class="cursorbox adv" id="cursorBox">
             <span>Cursor</span><span class="val" id="curVal">Click a trace to place the cursor</span>
             <button class="btn" id="curPrevX" title="Previous peak or trough (Shift+←)">◂ extremum</button>
             <button class="btn" id="curPrev" title="One sample left (←)">◂</button>
@@ -373,7 +497,7 @@ dialog.help kbd{font:12px var(--font);border:1px solid var(--line2);border-botto
           <div class="vtabs" data-modes="cc vc" role="group" aria-label="View">
             <button data-v="gates" aria-pressed="true">Gates</button>
             <button data-v="currents" aria-pressed="false">Currents</button>
-            <button data-v="phase" aria-pressed="false" data-modes="cc">Phase plane</button>
+            <button data-v="phase" aria-pressed="false" data-modes="cc" class="adv">Phase plane</button>
           </div>
           <h3 data-modes="ax" hidden>Gates along the axon</h3>
           <canvas id="cvView" aria-label="Visualisation"></canvas>
@@ -386,18 +510,16 @@ dialog.help kbd{font:12px var(--font);border:1px solid var(--line2);border-botto
     <aside class="side" aria-label="Parameters">
       <div class="tabs" role="tablist">
         <button role="tab" aria-selected="true" data-tab="stim" id="tabStim">Stimuli</button>
-        <button role="tab" aria-selected="false" data-tab="mem">Membrane</button>
-        <button role="tab" aria-selected="false" data-tab="chan">Channels</button>
-        <button role="tab" aria-selected="false" data-tab="drug" id="tabDrug">Drugs</button>
-        <button role="tab" aria-selected="false" data-tab="an">Analysis</button>
-        <button role="tab" aria-selected="false" data-tab="learn">Learn</button>
+        <button role="tab" aria-selected="false" data-tab="mem" class="adv">Membrane</button>
+        <button role="tab" aria-selected="false" data-tab="chan" class="adv">Channels</button>
+        <button role="tab" aria-selected="false" data-tab="drug" id="tabDrug" class="adv">Drugs</button>
+        <button role="tab" aria-selected="false" data-tab="an" class="adv">Analysis</button>
       </div>
       <div class="pane" id="pane-stim"></div>
       <div class="pane" id="pane-mem" hidden></div>
       <div class="pane" id="pane-chan" hidden></div>
       <div class="pane" id="pane-drug" hidden></div>
       <div class="pane" id="pane-an" hidden></div>
-      <div class="pane" id="pane-learn" hidden></div>
     </aside>
   </div>
 
@@ -405,7 +527,7 @@ dialog.help kbd{font:12px var(--font);border:1px solid var(--line2);border-botto
 </div>
 
 <dialog class="help" id="helpDlg" aria-labelledby="helpTitle">
-  <div class="hd"><h2 id="helpTitle">How to use HHsim web</h2><button class="btn small" id="helpClose">Close</button></div>
+  <div class="hd"><h2 id="helpTitle">How to use HHsim</h2><button class="btn small" id="helpClose">Close</button></div>
   <div class="bd">
     <h3>Three ways to record</h3>
     <p><b>Current clamp</b> injects current and records voltage, like a sharp electrode. <b>Voltage clamp</b> holds the voltage and records the currents, like Hodgkin and Huxley's experiments. <b>Axon</b> joins thousands of patches into a cable so you can watch a spike travel.</p>
@@ -414,7 +536,7 @@ dialog.help kbd{font:12px var(--font);border:1px solid var(--line2);border-botto
     <h3>Reading the screen</h3>
     <p>Hover over any trace to read values; click to place a cursor. The lower-right panel shows the channels' gates, a live balance of currents, or the phase plane, all synchronised with the pointer or cursor. <b>Measure</b> marks threshold, peak, half-width and the after-hyperpolarisation. <b>Pin trace</b> keeps a response as a dashed reference so you can compare before and after a change.</p>
     <h3>Learning</h3>
-    <p>The <b>Learn</b> tab has guided experiments that set themselves up, and challenges that check your answers against the model. The <b>Analysis</b> tab measures whole relationships: threshold, strength–duration, f–I and refractory curves, and conduction velocity against diameter.</p>
+    <p>The <b>Lessons</b> column (button in the top bar) has guided experiments that set themselves up, and challenges that check your answers against the model. The <b>Analysis</b> tab measures whole relationships: threshold, strength–duration, f–I and refractory curves, and conduction velocity against diameter.</p>
     <h3>Keyboard</h3>
     <div class="keys"><kbd>1</kbd><span>Stim 1 (axon: stimulate)</span><kbd>2</kbd><span>Stim 2 (axon: both ends)</span><kbd>Space</kbd><span>Run or stop</span><kbd>← →</kbd><span>Move the cursor; with Shift, jump to the next peak or trough</span><kbd>P</kbd><span>Pin the latest response</span><kbd>?</kbd><span>This help</span></div>
     <h3>About the model</h3>
@@ -743,7 +865,7 @@ function readColors() {
     .forEach(k => COL[k] = cs.getPropertyValue(k).trim() || "#888");
 }
 function prep(cv) {
-  const dpr = Math.min(window.devicePixelRatio || 1, 2.5), w = cv.clientWidth, h = cv.clientHeight;
+  const dpr = Math.min(window.devicePixelRatio || 1, 2), w = cv.clientWidth, h = cv.clientHeight;
   if (cv.width !== Math.round(w * dpr) || cv.height !== Math.round(h * dpr)) { cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr); }
   const ctx = cv.getContext("2d"); ctx.setTransform(dpr, 0, 0, dpr, 0, 0); return { ctx, w, h };
 }
@@ -758,7 +880,7 @@ function niceRange(lo, hi, incl0) {
   const st = niceStep(hi - lo, 4); return [Math.floor(lo / st) * st, Math.ceil(hi / st) * st];
 }
 const fmt = (v, d = 2) => !isFinite(v) ? "—" : Math.abs(v) >= 1000 ? v.toFixed(0) : Math.abs(v) >= 100 ? v.toFixed(Math.min(d, 1)) : v.toFixed(d);
-function font(ctx, px, w = 400) { ctx.font = `${w} ${px}px "IBM Plex Sans Condensed", "IBM Plex Sans", system-ui, sans-serif`; }
+function font(ctx, px, w = 400) { ctx.font = `${w} ${(px * 0.94).toFixed(1)}px "Geist Mono", ui-monospace, monospace`; }
 
 // draw a series with per-pixel min/max decimation
 function drawSeries(ctx, tArr, arr, i0, i1, X, Y, color, lw, clip) {
@@ -1974,7 +2096,15 @@ function rebuildAll() {
 }
 function syncSpeed() { const ax = app.mode === "ax", idx = ax ? app.ax.speedIdx : app.speedIdx; $("speed").value = idx; $("speedLbl").textContent = (ax ? AX_SPEEDS : SPEEDS)[idx] + " ms/s"; }
 function setView(tab) { app.viewTab = tab; document.querySelectorAll(".vtabs button").forEach(b => b.setAttribute("aria-pressed", b.dataset.v === tab)); $("ppCtl").hidden = tab !== "phase"; $("memKey").hidden = tab !== "gates"; dirty = true; }
-function openTab(name) { const b = document.querySelector(`.tabs button[data-tab="${name}"]`); if (b) b.click(); }
+function openTab(name) { const b = document.querySelector(`.tabs button[data-tab="${name}"]`); if (!b) return; if (b.classList.contains("adv") && document.body.classList.contains("simple")) setLevel("full"); b.click(); }
+function setLevel(lv) {
+  lv = lv === "simple" ? "simple" : "full"; document.body.classList.toggle("simple", lv === "simple");
+  document.querySelectorAll("#levelSeg button").forEach(b => b.setAttribute("aria-pressed", b.dataset.level === lv));
+  try { localStorage.setItem("hhsim-level", lv); } catch (e) { }
+  const cur = document.querySelector('.tabs button[aria-selected="true"]'); if (lv === "simple" && cur && cur.classList.contains("adv")) openTab("stim");
+  if (lv === "simple" && app.viewTab === "phase") setView("gates");
+  dirty = true;
+}
 
 /* =====================================================================
    Guided experiments
@@ -2110,7 +2240,7 @@ const CHALLENGES = [
 function buildLearnPane() {
   const pane = $("pane-learn"); pane.innerHTML = "";
   const done = loadDone();
-  const seg = h("div", { class: "seg wide", role: "group" }, h("button", { "aria-pressed": app.learnTab !== "ch", onclick: () => { app.learnTab = "ex"; buildLearnPane(); } }, "Guided experiments"), h("button", { "aria-pressed": app.learnTab === "ch", onclick: () => { app.learnTab = "ch"; buildLearnPane(); } }, `Challenges (${CHALLENGES.filter(c => done[c.id]).length}/${CHALLENGES.length})`));
+  const seg = h("div", { class: "seg wide", role: "group", "aria-label": "Lesson type" }, h("button", { "aria-pressed": String(app.learnTab !== "ch"), onclick: () => { app.learnTab = "ex"; buildLearnPane(); } }, "Guided experiments"), h("button", { "aria-pressed": String(app.learnTab === "ch"), onclick: () => { app.learnTab = "ch"; buildLearnPane(); } }, `Challenges (${CHALLENGES.filter(c => done[c.id]).length}/${CHALLENGES.length})`));
   pane.append(seg);
   if (app.learnTab === "ch") {
     pane.append(h("p", { class: "note" }, "Work each one out with the simulator, then check your answer. Answers are compared with the model's exact value for the default membrane."));
@@ -2133,18 +2263,29 @@ function buildLearnPane() {
     pane.append(h("div", { class: "mini" }, h("button", { class: "btn small", onclick: () => { saveDone({}); buildLearnPane(); } }, "Reset progress")));
     return;
   }
-  pane.append(h("p", { class: "note" }, "Each experiment resets the simulator, sets it up and poses questions. Answer them before revealing the explanation."));
-  let n = 0;
+  let n = 0; const total = EXPERIMENTS.filter(e => !e.group).length;
+  pane.append(h("p", { class: "note" }, `${total} experiments. Each one resets the simulator and sets itself up. Answer the questions before you open the explanation.`));
   EXPERIMENTS.forEach(ex => {
-    if (ex.group) { pane.append(h("h2", {}, ex.group)); return; } n++;
+    if (ex.group) { pane.append(h("h2", { class: "lx-group" }, ex.group)); return; }
+    const i = ++n;
     const ans = h("div", { class: "ans", html: ex.ans }); ans.hidden = true;
     const rev = h("button", { class: "btn small", onclick: () => { ans.hidden = !ans.hidden; rev.textContent = ans.hidden ? "Show explanation" : "Hide explanation"; } }, "Show explanation");
-    pane.append(h("details", { class: "exp" }, h("summary", {}, h("span", { class: "n" }, String(n)), h("span", { html: ex.title })),
-      h("div", { class: "body" }, h("div", { class: "mini" }, h("button", { class: "btn on small", onclick: () => { ex.setup(); setMsg("Experiment ready"); } }, "Set up this experiment")), h("div", { html: ex.body }), rev, ans)));
+    const d = h("details", { class: "exp" + (app.exRan && app.exRan.has(i) ? " ran" : ""), open: app.exOpen === i },
+      h("summary", {}, h("span", { class: "n" }, String(i).padStart(2, "0")), h("span", { html: ex.title })),
+      h("div", { class: "body" },
+        h("div", { class: "mini" }, h("button", { class: "btn on small", onclick: () => { ex.setup(); (app.exRan = app.exRan || new Set()).add(i); d.classList.add("ran"); setMsg("Experiment " + i + " is set up"); } }, "Set up this experiment")),
+        h("div", { html: ex.body }), rev, ans));
+    d.addEventListener("toggle", () => { if (d.open) { app.exOpen = i; pane.querySelectorAll("details.exp[open]").forEach(o => { if (o !== d) o.open = false; }); } else if (app.exOpen === i) app.exOpen = null; });
+    pane.append(d);
   });
+  const model = h("details", { class: "lx-model" }, h("summary", {}, "The model"));
+  pane.append(model);
+  const pane0 = pane;
+  { const pane = model;
   pane.append(h("h2", {}, "The model"),
     h("div", { class: "eq", html: `C·dV/dt = −Σ I<sub>ion</sub> + I<sub>stim</sub><br>I<sub>Na</sub> = ḡ<sub>Na</sub>·m³h·(V − E<sub>Na</sub>)<br>I<sub>K</sub> = ḡ<sub>K</sub>·n⁴·(V − E<sub>K</sub>)<br>I<sub>leak</sub> = Σ g<sub>i</sub>(V − E<sub>i</sub>), i ∈ {Na, K, Cl}<br>dx/dt = φ[α<sub>x</sub>(V)(1 − x) − β<sub>x</sub>(V)·x],  φ = Q10<sup>(T − 6.3)/10</sup><br>E<sub>i</sub> = (RT/zF)·ln([i]<sub>o</sub>/[i]<sub>i</sub>)<br>Axon: C·∂V/∂t = (d/4R<sub>i</sub>)·∂²V/∂x² − Σ I<sub>ion</sub>` }),
     h("p", { class: "note" }, "Rate constants are the original Hodgkin–Huxley (1952) fits, written for absolute membrane potential. Conductances are given for a patch with 1 nF capacitance, so 1 µS here is 1 mS/cm² of membrane. Channel noise uses the Fox–Lu Langevin approximation."));
+  }
 }
 
 /* =====================================================================
@@ -2344,10 +2485,16 @@ function wire() {
     if (b.dataset.tab === "chan") buildChanPane(); if (b.dataset.tab === "mem") refreshDerived(); if (b.dataset.tab === "an") requestAnimationFrame(drawAnalysis);
   }));
   $("themeBtn").addEventListener("click", () => {
-    const root = document.documentElement, cur = root.getAttribute("data-theme") || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
-    root.setAttribute("data-theme", cur === "dark" ? "light" : "dark"); readColors(); if (!$("pane-chan").hidden) buildChanPane(); drawAnalysis(); dirty = true;
+    const root = document.documentElement, next = root.getAttribute("data-theme") === "light" ? "dark" : "light";
+    root.setAttribute("data-theme", next); try { localStorage.setItem("tkn-theme", next); } catch (e) { } readColors(); if (!$("pane-chan").hidden) buildChanPane(); drawAnalysis(); dirty = true;
   });
-  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => { readColors(); dirty = true; });
+  window.addEventListener("storage", e => { if (e.key === "tkn-theme") { document.documentElement.setAttribute("data-theme", e.newValue === "light" ? "light" : "dark"); readColors(); dirty = true; } });
+  const setLessons = on => { document.body.classList.toggle("lessons-on", on); $("lessons").hidden = !on; $("lessonsBtn").setAttribute("aria-pressed", on); try { localStorage.setItem("hhsim-lessons", on ? "1" : "0"); } catch (e) { } dirty = true; };
+  $("lessonsBtn").addEventListener("click", () => setLessons($("lessons").hidden));
+  $("lessonsClose").addEventListener("click", () => setLessons(false));
+  document.querySelectorAll("#levelSeg button").forEach(b => b.addEventListener("click", () => setLevel(b.dataset.level)));
+  let lv = "full", ls = "1"; try { lv = localStorage.getItem("hhsim-level") || "full"; ls = localStorage.getItem("hhsim-lessons") ?? "1"; } catch (e) { }
+  setLevel(lv); setLessons(ls === "1");
   $("soundBtn").addEventListener("click", () => {
     app.audio = !app.audio; $("soundBtn").setAttribute("aria-pressed", app.audio);
     if (app.audio) { try { actx = actx || new (window.AudioContext || window.webkitAudioContext)(); actx.resume(); setMsg("Sound on: each spike clicks"); } catch (e) { app.audio = false; $("soundBtn").setAttribute("aria-pressed", false); setMsg("Sound is not available in this browser"); } }
@@ -2361,7 +2508,7 @@ function wire() {
   let framed = true; try { framed = window.self !== window.top; } catch (e) { framed = true; }
   if (!framed && location.protocol.startsWith("http")) { $("copyLink").hidden = false; $("copyLink").addEventListener("click", async () => { closeMenu(); const url = location.href.split("#")[0] + "#setup=" + enc(setupJSON()); try { await navigator.clipboard.writeText(url); setMsg("Link copied: anyone opening it gets this exact setup"); } catch (e) { history.replaceState(null, "", url); setMsg("Link is in the address bar"); } }); }
   ["cvMain", "cvSub"].forEach(id => attachCanvas($(id)));
-  window.addEventListener("resize", () => { dirty = true; drawAnalysis(); });
+  let rzT = 0; window.addEventListener("resize", () => { dirty = true; clearTimeout(rzT); rzT = setTimeout(drawAnalysis, 150); });
   document.addEventListener("keydown", e => {
     const tag = (e.target.tagName || "").toLowerCase(); if (tag === "input" || tag === "select" || tag === "textarea" || e.metaKey || e.ctrlKey || e.altKey) return;
     if (e.key === "ArrowLeft" && app.cursor) { moveCursor(-1, e.shiftKey); e.preventDefault(); }
@@ -2384,7 +2531,7 @@ function frame(now) {
   if (app.mode === "ax" && app.ax.run !== "idle") { axAdvance(AX_SPEEDS[app.ax.speedIdx] * dtR); dirty = true; }
   if (dirty) {
     try { app.mode === "cc" ? drawCC() : app.mode === "vc" ? drawVC() : drawAxon(); drawView(); hoverTip(); } catch (err) { console.error(err); }
-    if (now - lastRO > 60) { try { refreshReadouts(); } catch (err) { console.error(err); } lastRO = now; }
+    if (now - lastRO > 60 || (app.run === "idle" && app.ax.run === "idle")) { try { refreshReadouts(); } catch (err) { console.error(err); } lastRO = now; }
     dirty = false;
   }
   requestAnimationFrame(frame);
