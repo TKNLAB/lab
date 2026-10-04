@@ -7,7 +7,7 @@
      Geometry measured from tkn-logo-reversed.png (pore centre x=16.14%, dot r=4.0% of height, pitch=18.14%). */
   function mountLogo(c) {
     if (c.__logo) return; c.__logo = true;
-    var ctx = c.getContext('2d', { alpha: true, desynchronized: true }), W = 0, H = 0, dpr = 1, phase = 0, last = 0, speed = 0.38, target = 0.38, born = performance.now();
+    var ctx = c.getContext('2d', { alpha: true }), W = 0, H = 0, dpr = 1, phase = 0, last = 0, speed = 0.38, target = 0.38, born = performance.now();
     var host = c.closest('a') || c.parentNode;
     var logoImg = c.parentNode.querySelector('img');
     if (logoImg && !(logoImg.complete && logoImg.naturalWidth)) { born = Infinity; var go = function () { born = performance.now(); }; logoImg.addEventListener('load', go, { once: true }); logoImg.addEventListener('error', go, { once: true }); }
