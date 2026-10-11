@@ -266,10 +266,9 @@ img{max-width:100%;}
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:16px;">
       <sc-for list="{{ research }}" as="r" hint-placeholder-count="3">
         <a href="{{ r.href }}" data-reveal="" data-reveal-delay="{{ r.delay }}" style="position:relative;background:#0d1422;border:1px solid rgba(255,255,255,0.07);border-radius:20px;padding:12px;display:flex;flex-direction:column;transition:border-color .25s,transform .3s cubic-bezier(.32,.72,0,1),background .25s;" style-hover="border-color:rgba(241,212,154,0.45);transform:translateY(-6px);background:#101a2c;">
-          <div style="position:relative;height:clamp(160px,16vw,200px);border-radius:12px;background:#0a101c;border:1px solid rgba(255,255,255,0.05);overflow:hidden;">
-            <canvas data-fig="{{ r.fig }}" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;display:block;"></canvas>
+          <div style="aspect-ratio:16/10;background:#fff;border-radius:12px;padding:12px;overflow:hidden;">
+            <img loading="lazy" src="{{ r.img }}" alt="{{ r.title }}" style="width:100%;height:100%;object-fit:contain;display:block;">
           </div>
-          <div style="font-family:'Geist Mono',monospace;font-size:10.5px;letter-spacing:0.06em;color:#7d889c;padding:8px 4px 0;">{{ r.cap }}</div>
           <div style="padding:22px 14px 16px;display:flex;flex-direction:column;gap:10px;flex:1;">
             <div style="display:flex;justify-content:space-between;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#7d889c;"><span style="color:#e6b667;">{{ r.tag }}</span><span>{{ r.num }}</span></div>
             <h3 style="font-weight:500;font-size:23px;letter-spacing:-0.02em;line-height:1.15;">{{ r.title }}</h3>

@@ -4,7 +4,7 @@
    This one file holds ALL the content that changes over time. Every page of
    the site reads from it. Edit it with Dashboard.dc.html (Chrome or Edge:
    "Open site folder" → edit → "Save to folder"), or by hand — keep the commas
-   and quotes intact. Last saved from the dashboard: 2026-10-11.
+   and quotes intact. Last saved from the dashboard: 2026-10-01.
    ============================================================================ */
 window.LAB_CONTENT = {
 
@@ -21,7 +21,7 @@ window.LAB_CONTENT = {
     {"status":"current","img":"assets/people/gauri-saini.webp","name":"Gauri Saini","role":"Ph.D. Scholar","email":"","linkedin":"","bio":"Neuropathic Pain Dissecting nicotinic, glutamatergic and TRP channel contributions to chronic pain.","past":""},
     {"status":"current","img":"assets/people/rakesh-barwar.webp","name":"Rakesh Barwar","role":"Ph.D. Scholar","email":"","linkedin":"https://www.linkedin.com/in/rakesh-barwar-47182a91/","bio":"Works on TPC2, an ion channel of the endolysosome, and the molecular mechanisms that control its opening and closing. Builds the structural models, makes the mutants and records what they do.","past":"Past:\nMSc Biotech, Maharshi Dayanand University - Rohtak, Haryana"},
     {"status":"current","img":"assets/people/jaweria-mariam.webp","name":"Jaweria Mariam","role":"Ph.D. Scholar","email":"","linkedin":"","bio":"Ligand-Binding Energetics Measuring how much of an agonist's binding energy is spent opening the channel.","past":""},
-    {"status":"current","img":"assets/people/tanish-gupta-2.webp","name":"Tanish Gupta","role":"Ph.D. Scholar","email":"blz258022@iitd.ac.in","linkedin":"","bio":"Work on cellular network electrical recording and profiling; interests in neuronal development, synaptogenesis, and cortical hierarchy. Research objectives to follow soon.\nLove to read, walk, clean, and think too much. \nHope to be of use, in general that is.","past":"Analog Design Engineer, Signalchip Innovations\nB. E. (Hons.) Electrical and Electronics Engineering, BITS Pilani K. K. Birla Goa Campus"},
+    {"status":"current","img":"assets/people/tanish-gupta.webp","name":"Tanish Gupta","role":"Ph.D. Scholar","email":"blz258022@iitd.ac.in","linkedin":"","bio":"Work on cellular network electrical recording and profiling; interests in neuronal development, synaptogenesis, and cortical hierarchy. Research objectives to follow soon.\nLove to read, walk, clean, and think too much. \nHope to be of use, in general that is.","past":"Past:\nAnalog Design Engineer, Signalchip Innovations\nB. E. (Hons.) Electrical and Electronics Engineering, BITS Pilani K. K. Birla Goa Campus"},
     {"status":"current","img":"assets/people/shyamolima.webp","name":"Shayamolima Gogoi","role":"Ph.D. Scholar","email":"","linkedin":"","bio":"Working on the role of ion channels in autophagy and neurodegeneration. Beyond research, enjoys books, TV shows and staying active through sports — a believer in being a ‘jack of all trades’ (and occasionally mastering a few).","past":"Past:\nIntegrated MSc in Systems Biology, University of Hyderabad (2020–2025)"},
     {"status":"alumni","img":"assets/people/sushanth.webp","name":"Sushanth Adusumilli","role":"Ph.D. Scholar","email":"","linkedin":"","bio":"Investigating the intracellular TRPML3 ion channel; experienced in patch-clamp and RNA-seq data analysis. Finds satisfaction in understanding new concepts and teaching others — console and PC gaming are a favourite way to unwind.","past":"Past:\nMS Biochemistry & Molecular Biology, University of Southern California (2016–18)"},
     {"status":"alumni","img":"assets/people/pradeepti.webp","name":"Pradeepti Kampani","role":"Ph.D. Scholar","email":"","linkedin":"","bio":"Studying allostery in a model GPCR — the muscarinic acetylcholine receptor with the GIRK channel as a reporter — using patch-clamp electrophysiology to capture the receptor’s millisecond conformational changes. An avid reader who enjoys time with family and friends.","past":"Past:\nMSc Biomedical Science, ACBR, University of Delhi (2014–16)"},
@@ -61,6 +61,10 @@ window.LAB_CONTENT = {
 
   /* LAB UPDATES (homepage) — newest first; the homepage shows the first 4. */
   "news": [
+    {"date":"2026","tag":"Preprint","text":"New preprint on bioRxiv: allosteric signal initiation and communication in neuromuscular acetylcholine receptors (Kampani & Nayak)."},
+    {"date":"2025","tag":"Preprint","text":"New preprint on bioRxiv: TRPML3 regulates neuronal gene expression in an in vitro model of autophagy and may mark familial neurodegenerative disorders."},
+    {"date":"2024","tag":"Preprint","text":"New preprint on bioRxiv: the role of surface negative charges in agonist binding to the ‘unliganded’ open state of the neuromuscular acetylcholine receptor."},
+    {"date":"2024","tag":"Book chapter","text":"Chapter “Genomic and transcriptomic applications in neural stem cell therapeutics” published in Computational Biology for Stem Cell Research (Academic Press)."},
     {"date":"2024","tag":"Publication","text":"Our paper on the mechanism of hydrophobic gating in the acetylcholine receptor pore is published in the Journal of General Physiology."},
     {"date":"2022","tag":"Publication","text":"Book chapter “Protein engineering and design in ion channels and receptors” published in Methods in Cell Biology."}
   ],
@@ -86,7 +90,7 @@ window.LAB_CONTENT = {
 
   /* GALLERY — in display order; the first is the big featured one. caption is shown under the photo and used as alt text. */
   "gallery": [
-    {"img":"assets/gallery/doodle-gauri.webp","caption":"doodle by gauri "},
+    {"img":"assets/gallery/whiteboard-doodle.webp","caption":"Ion Channel Receptor Biology Lab whiteboard doodle by Gauri"},
     {"img":"assets/gallery/group-photo-steps.webp","caption":"The group on the front steps"},
     {"img":"assets/gallery/group-photo-lab-room.webp","caption":"The group in the lab meeting room"},
     {"img":"assets/gallery/group-iit-delhi-main-building.webp","caption":"The group outside the IIT Delhi main building"},

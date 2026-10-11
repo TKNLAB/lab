@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Research — Nayak Lab · IIT Delhi</title>
+<meta name="description" content="Seven research themes: ligand-binding energetics, allostery, allosteric therapeutics, neuropathic pain, synaptic maturation, GPCRs and intracellular channels.">
+<meta property="og:title" content="Research — Nayak Lab · IIT Delhi">
+<meta property="og:description" content="Ion Channel &amp; Receptor Biology Lab at IIT Delhi — how ion channels and receptors work, how mutations break them, and how drugs can fix them.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://channellab.iitd.ac.in/research">
+<meta property="og:image" content="https://channellab.iitd.ac.in/assets/logos/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://channellab.iitd.ac.in/research">
+<script src="./support.js"></script>
+<script src="./js/theme.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="icon" type="image/svg+xml" href="assets/logos/tkn-favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/logos/tkn-favicon-32.png">
+<link rel="apple-touch-icon" href="assets/logos/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&amp;family=Geist+Mono:wght@400;500&amp;family=Newsreader:ital,opsz,wght@1,6..72,400&amp;display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#070c16;-webkit-font-smoothing:antialiased;}
+:focus-visible{outline:2px solid #f1d49a;outline-offset:3px;}
+::selection{background:#e0a53a;color:#070c16;}
+a{text-decoration:none;color:inherit;}
+a:hover{color:inherit;}
+img{max-width:100%;}
+@media (prefers-reduced-motion:reduce){*{transition-duration:.01ms !important;}}
+</style>
+<script src="./data/content.js"></script>
+<script src="./js/site-fx.js"></script>
+<script src="./js/trace-engine.js"></script>
+<script src="./js/figures/research-cards.js"></script>
+<script src="./js/figures/research.js"></script>
+<script src="./js/tap-fix.js"></script>
+</helmet>
+<div style="font-family:'Geist',sans-serif;color:#e8ecf3;background:#070c16;min-height:100vh;overflow-x:clip;">
+  <dc-import name="SiteNav" active="research" hint-size="100%,64px" style="position:sticky;top:0;z-index:200;"></dc-import>
+
+  <section id="main" style="position:relative;overflow:hidden;border-bottom:1px solid rgba(255,255,255,0.07);">
+    <canvas data-fig="research" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;display:block;"></canvas>
+    <div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,#070c16 30%,rgba(7,12,22,0.6) 48%,rgba(7,12,22,0) 58%),linear-gradient(180deg,transparent 80%,#070c16);"></div>
+    <div data-hero-cap="" style="position:absolute;right:clamp(20px,5vw,40px);bottom:16px;font-family:'Geist Mono',monospace;font-size:10.5px;letter-spacing:0.02em;color:#7d889c;pointer-events:none;">Simulated · TRPML3-overexpressing HEK293T, serum-starved · SN2 concentration–response, parameters illustrative</div>
+    <div style="position:relative;max-width:1360px;margin:0 auto;padding:clamp(72px,10vw,136px) clamp(20px,5vw,40px) clamp(56px,7vw,88px);">
+      <div style="font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.2em;color:#e6b667;text-transform:uppercase;margin-bottom:22px;">Research</div>
+      <h1 style="font-weight:500;font-size:clamp(38px,6vw,84px);line-height:1;letter-spacing:-0.04em;max-width:1000px;text-wrap:balance;margin-bottom:26px;">One principle, <span style="font-family:'Newsreader',serif;font-style:italic;font-weight:400;color:#f1d49a;letter-spacing:-0.02em;">seven questions</span>.</h1>
+      <p style="font-size:clamp(16px,1.5vw,18px);line-height:1.65;color:#aab3c3;max-width:620px;font-weight:300;">Across all our projects runs a single question: how does a signal at one site of a protein change what happens at another? We follow that question from the energetics of a single binding event to drug discovery, synapse development, pain and the channels inside our cells.</p>
+    </div>
+  </section>
+
+  <section style="max-width:1360px;margin:0 auto;padding:clamp(56px,7vw,96px) clamp(20px,5vw,40px) 0;">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:16px;">
+      <sc-for list="{{ research }}" as="r" hint-placeholder-count="7">
+        <a href="{{ r.href }}" onClick="{{ r.go }}" data-reveal="" data-reveal-delay="{{ r.delay }}" style="cursor:pointer;background:#0d1422;border:1px solid rgba(255,255,255,0.07);border-radius:20px;padding:12px;display:flex;flex-direction:column;transition:border-color .25s,transform .3s cubic-bezier(.32,.72,0,1),background .25s;" style-hover="border-color:rgba(241,212,154,0.45);transform:translateY(-6px);background:#101a2c;">
+          <div style="aspect-ratio:16/10;background:#fff;border-radius:12px;padding:12px;overflow:hidden;">
+            <img loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{{ r.img }}" alt="{{ r.title }}" style="width:100%;height:100%;object-fit:contain;display:block;">
+          </div>
+          <div style="position:relative;height:88px;margin:10px 0 0;border-radius:12px;background:#0a101c;border:1px solid rgba(255,255,255,0.05);overflow:hidden;">
+            <canvas data-fig="{{ r.fig }}" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;display:block;"></canvas>
+          </div>
+          <div style="font-family:'Geist Mono',monospace;font-size:10.5px;letter-spacing:0.06em;color:#7d889c;padding:8px 4px 0;">{{ r.cap }}</div>
+          <div style="padding:22px 14px 16px;display:flex;flex-direction:column;gap:10px;flex:1;">
+            <div style="display:flex;justify-content:space-between;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#7d889c;"><span style="color:#e6b667;">{{ r.tag }}</span><span>{{ r.num }} / 07</span></div>
+            <h2 style="font-weight:500;font-size:23px;letter-spacing:-0.02em;line-height:1.15;">{{ r.title }}</h2>
+            <p style="font-size:14.5px;line-height:1.6;color:#8792a6;font-weight:300;">{{ r.blurb }}</p>
+          </div>
+        </a>
+      </sc-for>
+    </div>
+  </section>
+
+  <section style="max-width:1360px;margin:clamp(80px,10vw,128px) auto 0;padding:0 clamp(20px,5vw,40px);">
+    <sc-for list="{{ research }}" as="r" hint-placeholder-count="7">
+      <div id="{{ r.id }}" data-reveal="" style="scroll-margin-top:88px;background:{{ r.bg }};box-shadow:0 0 0 100vmax {{ r.bg }};clip-path:inset(0 -100vmax);border-top:1px solid rgba(255,255,255,0.1);padding:clamp(48px,6vw,80px) 0;display:flex;flex-direction:row-reverse;flex-wrap:wrap;gap:clamp(28px,4vw,40px) clamp(40px,6vw,88px);align-items:flex-start;">
+        <div style="flex:1 1 380px;min-width:0;max-width:100%;display:flex;flex-direction:column;gap:8px;">
+          <div style="aspect-ratio:16/10;background:#fff;border-radius:14px;padding:16px;overflow:hidden;margin-bottom:8px;">
+            <img loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{{ r.img }}" alt="{{ r.title }}" style="width:100%;height:100%;object-fit:contain;display:block;">
+          </div>
+          <div style="position:relative;height:clamp(160px,18vw,220px);border-radius:14px;background:#0a101c;border:1px solid rgba(255,255,255,0.06);overflow:hidden;">
+            <canvas data-fig="{{ r.fig }}" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;display:block;"></canvas>
+          </div>
+          <div style="font-family:'Geist Mono',monospace;font-size:10.5px;letter-spacing:0.06em;color:#7d889c;padding:0 4px;">{{ r.cap }}</div>
+        </div>
+        <div style="flex:1.4 1 480px;min-width:0;max-width:760px;margin-right:auto;">
+          <div style="font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.2em;color:#e6b667;text-transform:uppercase;margin-bottom:20px;">{{ r.eyebrow }}</div>
+          <h2 style="font-weight:500;font-size:clamp(28px,3.4vw,46px);line-height:1.05;letter-spacing:-0.03em;text-wrap:balance;margin-bottom:26px;">{{ r.heading }}</h2>
+          <div style="display:flex;flex-direction:column;gap:18px;">
+            <sc-for list="{{ r.body }}" as="para" hint-placeholder-count="2">
+              <p style="font-size:16px;line-height:1.72;color:#aab3c3;font-weight:300;text-wrap:pretty;">{{ para }}</p>
+            </sc-for>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:28px;">
+            <sc-for list="{{ r.tags }}" as="t" hint-placeholder-count="4">
+              <span style="font-family:'Geist Mono',monospace;font-size:11.5px;letter-spacing:0.04em;color:#c3cad6;border:1px solid rgba(255,255,255,0.16);padding:6px 12px;border-radius:999px;">{{ t }}</span>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </sc-for>
+  </section>
+
+  <section style="max-width:1360px;margin:clamp(80px,10vw,128px) auto 0;padding:0 clamp(20px,5vw,40px);">
+    <div data-reveal="" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:24px 64px;align-items:end;margin-bottom:clamp(32px,4vw,48px);">
+      <h2 style="font-weight:500;font-size:clamp(32px,4.4vw,60px);line-height:1;letter-spacing:-0.035em;">Watching <span style="font-family:'Newsreader',serif;font-style:italic;font-weight:400;color:#f1d49a;">one molecule</span> work.</h2>
+      <p style="font-size:16px;line-height:1.7;color:#8792a6;font-weight:300;max-width:560px;">Single-channel patch-clamp recordings resolve the opening and closing of individual ion channels with microsecond precision. By combining electrophysiology with mutagenesis, structural modelling and molecular dynamics, we measure the free-energy changes that drive receptor activation.</p>
+    </div>
+    <div data-reveal="" style="border-top:1px solid rgba(255,255,255,0.1);border-bottom:1px solid rgba(255,255,255,0.1);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));">
+      <sc-for list="{{ methods }}" as="m" hint-placeholder-count="4">
+        <div style="padding:clamp(24px,3vw,36px) clamp(16px,2vw,28px);border-right:1px solid rgba(255,255,255,0.07);display:flex;flex-direction:column;gap:12px;transition:background .25s;" style-hover="background:rgba(241,212,154,0.04);">
+          <div style="font-family:'Geist Mono',monospace;font-size:12px;color:#e6b667;">{{ m.n }}</div>
+          <div style="font-weight:500;font-size:19px;letter-spacing:-0.015em;">{{ m.title }}</div>
+          <div style="font-size:14px;color:#8792a6;line-height:1.55;font-weight:300;">{{ m.desc }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <section style="max-width:1360px;margin:clamp(80px,10vw,128px) auto 0;padding:0 clamp(20px,5vw,40px);">
+    <div data-reveal="" style="display:flex;flex-direction:column;gap:24px;">
+      <div style="font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.2em;color:#e6b667;text-transform:uppercase;">Supported by</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:16px;">
+        <div style="background:#fff;border-radius:14px;height:120px;padding:18px 24px;display:flex;align-items:center;justify-content:center;"><img loading="lazy" src="assets/funders/dbt.webp" alt="Department of Biotechnology, Government of India" style="max-width:100%;max-height:100%;object-fit:contain;display:block;"></div>
+        <div style="background:#fff;border-radius:14px;height:120px;padding:18px 24px;display:flex;align-items:center;justify-content:center;"><img loading="lazy" src="assets/funders/icmr.svg" alt="Indian Council of Medical Research" style="max-width:100%;max-height:100%;object-fit:contain;display:block;"></div>
+        <div style="background:#fff;border-radius:14px;height:120px;padding:18px 24px;display:flex;align-items:center;justify-content:center;"><img loading="lazy" src="assets/funders/serb.webp" alt="Science and Engineering Research Board, India" style="max-width:100%;max-height:100%;object-fit:contain;display:block;"></div>
+        <div style="background:#fff;border-radius:14px;height:120px;padding:18px 24px;display:flex;align-items:center;justify-content:center;"><img loading="lazy" src="assets/logos/iit-delhi.webp" alt="" style="height:100%;width:auto;object-fit:contain;display:block;filter:invert(1);flex:none;"><span style="margin-left:14px;font-size:17px;font-weight:500;line-height:1.3;color:#111;">Indian Institute of<br>Technology, Delhi</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section style="max-width:1360px;margin:clamp(80px,10vw,128px) auto 0;padding:0 clamp(20px,5vw,40px);">
+    <div data-reveal="" style="border-radius:24px;border:1px solid rgba(241,212,154,0.25);background:radial-gradient(80% 120% at 100% 0%, rgba(224,165,58,0.16), transparent 60%),#0b1220;padding:clamp(32px,5vw,64px);display:flex;justify-content:space-between;align-items:center;gap:28px;flex-wrap:wrap;">
+      <div>
+        <h3 style="font-weight:500;font-size:clamp(26px,3vw,38px);letter-spacing:-0.03em;margin-bottom:10px;">Want the full picture?</h3>
+        <p style="font-size:15.5px;color:#aab3c3;font-weight:300;">Browse our peer-reviewed publications or get in touch about joining the lab.</p>
+      </div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;">
+        <a href="publications.html" style="font-size:14.5px;font-weight:500;color:#fff;border:1px solid rgba(255,255,255,0.18);padding:14px 26px;border-radius:999px;transition:background .18s;" style-hover="background:rgba(255,255,255,0.07);">Publications →</a>
+        <a href="join.html" style="font-size:14.5px;font-weight:500;color:#070c16;background:#f1d49a;padding:14px 26px;border-radius:999px;transition:transform .18s,box-shadow .18s;" style-hover="transform:translateY(-2px);box-shadow:0 0 0 6px rgba(241,212,154,0.14);">Join us →</a>
+      </div>
+    </div>
+  </section>
+
+  <div style="height:clamp(80px,10vw,128px);"></div>
+  <dc-import name="SiteFooter" hint-size="100%,340px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  componentDidMount() { const go = () => { if (!window.LAB_CONTENT) { this._t = setTimeout(go, 40); return; } this.forceUpdate(); }; go(); this._h = setTimeout(() => { const id = decodeURIComponent(location.hash.slice(1)); const el = id && document.getElementById(id); if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 88 }); }, 300); }
+  componentWillUnmount() { clearTimeout(this._h); clearTimeout(this._t); }
+  renderVals() {
+    const R = ((window.LAB_CONTENT || {}).research) || [];
+    const D = [
+      { eyebrow: '01 · Energetics', heading: 'Mechanism of ligand binding and channel gating', body: [
+        "Ligand-gated ion channels such as the acetylcholine receptors (AChRs) open when an agonist like acetylcholine binds. Binding and the global conformational change that follows, known as gating, are complex chemical processes. We have developed methods to quantify the free-energy changes and follow the structural dynamics of the receptor during both steps. A key innovation is measuring the intrinsic gating of the wild-type receptor experimentally, in the absence of any ligand.",
+        "Combining thermodynamics, receptor engineering, single-channel patch clamp, kinetic modelling and molecular dynamics simulations, we study agonist affinity, efficacy and efficiency in neuromuscular and neuronal nicotinic AChRs. Efficiency, the fraction of binding energy converted into gating, describes how well suited a ligand is to activate a receptor and could help screen drug candidates. Two ligands with the same chemical core but different substituents (for example –SH versus –OH) can differ in efficiency. Our preliminary work suggests that efficiency is a general property of receptors that may depend on how the ligand is aligned in the binding pocket. Because AChRs are typical allosteric proteins, these principles should apply to allosteric proteins in general."],
+        tags: ['Single-channel patch clamp', 'Kinetic modelling', 'Thermodynamics', 'Mutagenesis', 'MD simulations'] },
+      { eyebrow: '02 · Allostery', heading: 'Allosteric communication in AChRs', body: [
+        "Allostery is the coupling between distant sites in a protein: a perturbation at one site, such as ligand binding, a mutation, a post-translational modification, light absorption or mechanical force, changes the structure or function of another. Allosteric regulation is fundamental to ion channels, membrane receptors, signalling proteins and transcription factors, and is implicated in many human disorders. Allosteric sites are also attractive drug targets, because drugs can be engineered to act on them selectively without interfering with the natural ligand.",
+        "In nicotinic AChRs, the pore in the transmembrane domain lies about 50 Å from the transmitter binding site. We want to understand how the signal of agonist binding travels this distance during gating, and how allosteric modulators in turn influence binding. Our recent work points to a 'live-wire'-like network of amino acids connecting the transmitter binding site to the pore. Understanding this communication will give deep insight into how allosteric proteins work in cells."],
+        tags: ['Single-channel patch clamp', 'Mutational analysis', 'Transition-state analysis', 'MD simulations'] },
+      { eyebrow: '03 · Therapeutics', heading: 'Allosteric modulators as therapeutic candidates', body: [
+        "Positive and negative allosteric modulators (PAMs and NAMs) of ligand-gated ion channels such as nAChRs, of endolysosomal channels such as TRPML3 and TPC2, and of GPCRs are promising therapeutic candidates for neurodegenerative and neuropsychiatric disorders and neuropathic pain. We are committed to finding new drug candidates against these targets.",
+        "We helped set up a fluorescence-based high-throughput screening (HTS) platform, the FLIPR Penta, at IIT Delhi, the first of its kind in the country. We are now building a pipeline that runs from in silico high-throughput compound screening and structural dynamics studies to experimental HTS and functional validation of candidate drugs."],
+        tags: ['In silico screening', 'FLIPR Penta HTS', 'MD simulations', 'Patch clamp validation'] },
+      { eyebrow: '04 · Circuits', heading: 'Neuronal AChRs in chronic neuropathic pain', body: [
+        "Chronic pain is a debilitating condition that affects around one in five adults worldwide. Ion channels in central and peripheral neurons are essential for sensing pain, and calcium-conducting channels, including neuronal nicotinic AChRs, transient receptor potential (TRP) channels and ionotropic glutamate receptors (iGluRs), are strongly implicated in chronic pain.",
+        "We aim to understand how neuronal nAChRs and iGluRs contribute to pain perception, and to develop new drug candidates against them. We combine patch-clamp electrophysiology with fluorescence-based HTS in cellular, animal and human tissue models of pain. Our overall goal is to understand the mechanism of chronic pain and help develop better therapeutics."],
+        tags: ['Patch clamp', 'Calcium imaging', 'HTS', 'Pain models'] },
+      { eyebrow: '05 · Development', heading: 'Synaptic maturation', body: [
+        "Synapses are specialised junctions where neurons signal to other neurons or to muscle. There, neurotransmitter-gated ion channels convert chemical signals from the presynaptic cell into electrical signals in the postsynaptic cell. This electrochemical signalling at nascent synapses is critical for synapse formation during embryonic development.",
+        "As synapses develop, many receptors change their structure, function and subunit composition, which shows up as changes in the synaptic current. This universal milestone is known as synaptic receptor maturation; a classic example is the switch from the fetal γ to the adult ε subunit in the muscle AChR. We study the cellular and biophysical basis of maturation in central and ganglionic neurons, from agonist binding, gating and desensitisation to the intracellular events that drive gene expression and receptor turnover at the synapse."],
+        tags: ['Primary chick embryo neurons', 'Patch clamp', 'Kinetic analysis', 'Transcriptomics'] },
+      { eyebrow: '06 · GPCRs', heading: 'Allostery in GPCRs', body: [
+        "In G protein-coupled receptors (GPCRs), the ligand binding site and the G protein coupling site are tens of ångströms apart, and other sites bind positive or negative allosteric modulators (PAMs or NAMs) that tune signalling. These modulators are promising treatments for neuropsychiatric disorders. The central question is how a signal from the binding site, or from these allosteric sites, reaches the G protein coupling site. We aim to map the sequence of global conformational changes that follows ligand binding, using the M2 muscarinic acetylcholine receptor as a model.",
+        "GPCRs cannot be studied directly by patch clamp, so we use G protein-gated inwardly rectifying K⁺ (GIRK) channels as reporters. When an agonist activates the receptor, the G protein dissociates and the released Gβγ subunits open GIRK channels, turning receptor activation into a measurable current. Patch clamp resolves channel gating on a timescale of tens of microseconds, far faster than many fluorescence-based methods. Combining single-channel recording, strategic mutagenesis, thermodynamics and transition-state analysis, we are currently measuring the kinetic and energetic parameters of the M2 receptor."],
+        tags: ['GIRK reporter', 'Single-channel patch clamp', 'Mutagenesis', 'Transition-state analysis'] },
+      { eyebrow: '07 · Organelles', heading: 'Intracellular ion channels in autophagy', body: [
+        "Defects in autophagy lead to protein aggregates in neurons, a common feature of neurodegenerative disorders such as Alzheimer's and Parkinson's disease. Ion channels on the endoplasmic reticulum, endosomes and lysosomes help maintain the ionic balance of these compartments, but they remain poorly understood because they are hard to reach with standard biophysical methods.",
+        "We hypothesise that specific ER- and endolysosome-resident Ca²⁺-permeable channels play key roles in autophagy, through both their channel and non-channel functions. We study two endolysosomal channels, TRPML3 and TPC2, in a cellular model of autophagy, with the aim of developing therapeutics for neurodegenerative disorders. Using automated RNA-seq pipelines, in silico structural biology, patch-clamp electrophysiology and calcium imaging, we investigate their direct roles in autophagy, their interactions with autophagy-related gene (ARG) products, and their structure–function in neurodegenerative and lysosomal storage disorders."],
+        tags: ['Endolysosomal patch clamp', 'Calcium imaging', 'RNA-seq', 'Structural modelling'] },
+    ];
+    const go = id => e => {
+      const el = document.getElementById(id); if (!el) return;
+      e.preventDefault();
+      window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 88, behavior: 'smooth' });
+    };
+    const T = [
+      { fig: 'c01', cap: 'Simulated · Pₒ within clusters rises with [ACh]; long gaps at 1 µM omitted' },
+      { fig: 'c02', cap: 'Simulated · a gate mutation ~50 Å from the binding site lengthens openings' },
+      { fig: 'c03', cap: 'Simulated · a type II PAM prolongs bursts; unitary current unchanged' },
+      { fig: 'c04', cap: 'Simulated · flickery TRPV1 bursts' },
+      { fig: 'c05', cap: 'Simulated · fetal γ: smaller, longer openings; adult ε: larger, briefer' },
+      { fig: 'c06', cap: 'Simulated · GIRK current evoked by a Gi/o-coupled receptor, blocked by Ba²⁺' },
+      { fig: 'c07', cap: 'Simulated · whole-endolysosome TPC2 current, activated by PI(3,5)P₂' },
+    ];
+    return {
+      research: R.slice(0, 7).map((r, i) => ({ ...r, ...T[i], ...D[i], id: 'theme-0' + (i + 1), bg: i % 2 ? '#0b1220' : '#070c16', href: '#theme-0' + (i + 1), go: go('theme-0' + (i + 1)), seed: 31 + i * 7, num: '0' + (i + 1), delay: (i % 3) * 110 })),
+      methods: [
+        { n: '01', title: 'Single-channel patch clamp', desc: 'Microsecond-resolution recordings of individual channel openings.' },
+        { n: '02', title: 'Site-directed mutagenesis', desc: 'Mapping the residues that carry binding and gating energy.' },
+        { n: '03', title: 'Molecular dynamics', desc: 'All-atom simulation of receptor gating and ligand interactions.' },
+        { n: '04', title: 'Kinetic & energy modelling', desc: 'Linking rate constants to free-energy landscapes of activation.' },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>
