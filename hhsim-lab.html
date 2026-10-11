@@ -349,10 +349,11 @@ body.simple .adv{display:none!important}
 .ro em.u{font-style:normal;text-transform:none;letter-spacing:.02em}
 .keys b{font-weight:600;white-space:nowrap}
 .credit{display:flex;flex-wrap:wrap;align-items:center;gap:0 6px;margin:10px 0 0;font:400 11.5px var(--mono);color:var(--muted)}
-.credit a{display:inline-flex;align-items:center;gap:6px;min-height:32px;color:inherit;text-decoration:none}
+.credit a{display:inline-flex;align-items:center;gap:6px;min-height:32px;color:inherit;text-decoration:none;opacity:.5;transition:opacity .3s;-webkit-tap-highlight-color:transparent;outline:none}
+.credit a.on{opacity:1}
 .credit img{width:18px;height:18px;display:block}
 .credit a span{opacity:0;transform:translateX(-4px);transition:opacity .3s,transform .3s;color:var(--ink)}
-.credit a:hover span,.credit a:focus-visible span{opacity:1;transform:none}
+.credit a.on span{opacity:1;transform:none}
 /* lessons column */
 .lessons{background:var(--panel2);border:1px solid var(--line);border-radius:14px;padding:20px 22px 20px;position:sticky;top:calc(env(safe-area-inset-top,0px) + 10px);max-height:calc(100vh - 24px);overflow-y:auto}
 .lessons[hidden]{display:none}
@@ -2637,5 +2638,12 @@ function init() {
 init();
 
 </script>
+<script>(function(){var a=document.querySelector('.credit a');if(!a)return;var t,hid=null;
+function on(){a.classList.add('on')}function off(){a.classList.remove('on')}
+a.addEventListener('pointerenter',function(e){if(e.pointerType==='mouse')on()});
+a.addEventListener('pointerleave',function(e){if(e.pointerType==='mouse')off()});
+a.addEventListener('focus',on);a.addEventListener('blur',off);
+a.addEventListener('pointerdown',function(){hid=!a.classList.contains('on')});
+a.addEventListener('click',function(e){var h=hid==null?!a.classList.contains('on'):hid;hid=null;if(h){e.preventDefault();on();clearTimeout(t);t=setTimeout(off,4000)}});})();</script>
 </body>
 </html>
