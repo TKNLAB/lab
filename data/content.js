@@ -86,6 +86,7 @@ window.LAB_CONTENT = {
 
   /* GALLERY — in display order; the first is the big featured one. caption is shown under the photo and used as alt text. */
   "gallery": [
+    {"img":"assets/gallery/doodle-gauri.webp","caption":"doodle by gauri "},
     {"img":"assets/gallery/group-photo-steps.webp","caption":"The group on the front steps"},
     {"img":"assets/gallery/group-photo-lab-room.webp","caption":"The group in the lab meeting room"},
     {"img":"assets/gallery/group-iit-delhi-main-building.webp","caption":"The group outside the IIT Delhi main building"},
@@ -103,7 +104,6 @@ window.LAB_CONTENT = {
     {"img":"assets/gallery/certificate-presentation.webp","caption":"Receiving a certificate at an event"},
     {"img":"assets/gallery/walk-on-campus.webp","caption":"A walk across the IIT Delhi campus"},
     {"img":"assets/gallery/group-outing.webp","caption":"Lab members on a group outing"},
-    {"img":"assets/gallery/birthday-cake.webp","caption":"A birthday cake celebration"},
     {"img":"assets/gallery/portrait-patch-clamp.webp","caption":"Portrait beside the patch-clamp microscope"}
   ],
 
