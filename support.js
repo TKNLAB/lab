@@ -78,7 +78,7 @@
       p = decodeURIComponent(p);
     } catch {
     }
-    const base = p.split("index.html").pop() || "Root";
+    const base = p.split("/").pop() || "Root";
     return base.replace(/\.dc\.html$/, "").replace(/\.html?$/, "") || "Root";
   }
 
@@ -134,7 +134,7 @@
     let bootPath = loc.pathname || "";
     if (!/\.dc\.html?$/i.test(safeDecode(bootPath))) {
       try {
-        bootPath = new URL(doc.baseURI || "index.html").pathname;
+        bootPath = new URL(doc.baseURI || "/").pathname;
       } catch {
       }
     }
@@ -1524,7 +1524,7 @@
       } else if (c === "'" || c === '"') {
         quote = c;
         out += c;
-      } else if (c === "index.html" && css[i + 1] === "*") {
+      } else if (c === "/" && css[i + 1] === "*") {
         const end = css.indexOf("*/", i + 2);
         i = end === -1 ? css.length : end + 1;
         out += " ";
@@ -1643,7 +1643,7 @@
       const r = registry.get(name);
       if (r.fetched) return;
       r.fetched = true;
-      const url = COMPONENT_DIR + "index.html" + encodeURIComponent(name) + ".dc.html";
+      const url = COMPONENT_DIR + "/" + encodeURIComponent(name) + ".dc.html";
       const res = window.__resources;
       const pre = res ? res[url] : void 0;
       const target = typeof pre === "string" && pre ? pre : url;
@@ -1883,7 +1883,7 @@
        *  The host editor parses this into its own template DOM so it can map a
        *  rendered node (carrying the same `data-dc-tpl`) back to the source
        *  node that emitted it. Returns the encoded form (`sc-camel-*` attrs,
-       *  `<sc-raw-*>`index.html`<sc-helmet>` tags); the editor decodes on serialize. */
+       *  `<sc-raw-*>`/`<sc-helmet>` tags); the editor decodes on serialize. */
       __dcAnnotatedTemplate: (name) => runtime.annotatedTemplate(name),
       /** Editor bridge — the *original* (decoded) template source. */
       __dcTemplateSource: (name) => runtime.templateSource(name),
