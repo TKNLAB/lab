@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<title>Site dashboard · Nayak Lab</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/svg+xml" href="assets/logos/tkn-favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&amp;family=Geist+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#070c16;}
+a{color:#f1d49a;text-decoration:none;}
+a:hover{color:#ffffff;}
+input,textarea,select,button{font:inherit;color:inherit;}
+::placeholder{color:#5d6779;}
+</style>
+<script src="./js/theme.js"></script>
+<script src="./data/content.js"></script>
+</helmet>
+<div style="min-height:100vh;background:#070c16;color:#e8ecf3;font-family:'Geist',sans-serif;font-size:14px;">
+  <header style="position:sticky;top:0;z-index:5;background:rgba(7,12,22,0.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,0.08);">
+    <div style="max-width:1120px;margin:0 auto;padding:14px clamp(16px,4vw,32px) 0;display:flex;flex-wrap:wrap;align-items:center;gap:12px 14px;">
+      <div style="display:flex;flex-direction:column;gap:4px;margin-right:auto;min-width:0;">
+        <div style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#e6b667;">Nayak Lab · Site dashboard</div>
+        <div style="font-size:13px;color:#8792a6;line-height:1.4;">{{ folderText }}</div>
+      </div>
+      <button onClick="{{ toggleTheme }}" aria-label="{{ themeLabel }}" title="{{ themeLabel }}" style="min-height:40px;padding:0 14px;border-radius:999px;border:1px solid rgba(255,255,255,0.18);background:transparent;cursor:pointer;font-size:13px;" style-hover="background:rgba(255,255,255,0.06);">{{ themeText }}</button>
+      <a href="index.html" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;min-height:40px;padding:0 14px;font-size:13px;">Preview site ↗</a>
+      <button onClick="{{ openFolder }}" style="min-height:40px;padding:0 16px;border-radius:999px;border:1px solid rgba(255,255,255,0.18);background:transparent;cursor:pointer;font-size:13.5px;" style-hover="background:rgba(255,255,255,0.06);">{{ folderBtn }}</button>
+      <button onClick="{{ save }}" disabled="{{ saveDisabled }}" style="min-height:40px;padding:0 20px;border-radius:999px;border:none;background:#f1d49a;color:#070c16;font-weight:500;font-size:13.5px;cursor:pointer;opacity:{{ saveOpacity }};">{{ saveLabel }}</button>
+    </div>
+    <nav aria-label="Sections" style="max-width:1120px;margin:0 auto;padding:6px clamp(16px,4vw,32px) 0;display:flex;gap:4px;overflow-x:auto;">
+      <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="5">
+        <button onClick="{{ t.pick }}" aria-pressed="{{ t.on }}" style="flex:none;padding:12px 14px;border:none;background:transparent;cursor:pointer;font-size:14px;color:{{ t.fg }};border-bottom:2px solid {{ t.bd }};">{{ t.label }}</button>
+      </sc-for>
+    </nav>
+  </header>
+
+  <sc-if value="{{ hasMsg }}" hint-placeholder-val="{{ false }}">
+    <div role="status" style="max-width:1120px;margin:14px auto 0;padding:0 clamp(16px,4vw,32px);">
+      <div style="display:flex;gap:12px;align-items:flex-start;background:#141e30;border:1px solid rgba(241,212,154,0.35);border-radius:12px;padding:12px 14px;font-size:13.5px;line-height:1.55;color:#e8ecf3;white-space:pre-line;">
+        <div style="flex:1;min-width:0;">{{ msg }}</div>
+        <button onClick="{{ clearMsg }}" aria-label="Dismiss" style="flex:none;border:none;background:transparent;color:#8792a6;cursor:pointer;font-size:16px;line-height:1;">×</button>
+      </div>
+    </div>
+  </sc-if>
+
+  <main style="max-width:1120px;margin:0 auto;padding:20px clamp(16px,4vw,32px) 80px;">
+    <sc-if value="{{ noData }}" hint-placeholder-val="{{ false }}">
+      <div style="margin-top:40px;padding:28px;border:1px dashed rgba(255,255,255,0.18);border-radius:16px;color:#aab3c3;line-height:1.6;max-width:560px;">Couldn't load <code>data/content.js</code>. Put this file in the site folder, or click <b>Open site folder</b> and choose the <code>nayak-lab-site</code> folder.</div>
+    </sc-if>
+    <p style="font-size:14px;line-height:1.6;color:#8792a6;max-width:760px;text-wrap:pretty;">{{ note }}</p>
+    <sc-if value="{{ isHelp }}" hint-placeholder-val="{{ false }}">
+      <div style="margin-top:24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:14px;">
+        <section style="background:#0d1422;border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:12px;">
+          <h2 style="font-size:17px;font-weight:500;">1 · Before you start</h2>
+          <ol style="padding-left:20px;display:flex;flex-direction:column;gap:8px;line-height:1.6;color:#aab3c3;">
+            <li>Keep a copy of the whole site folder (<code>nayak-lab-site</code>) on your computer. This dashboard lives in it and is <b>not</b> uploaded to the server.</li>
+            <li>Open <code>Dashboard.dc.html</code> from that folder in <b>Chrome</b> or <b>Edge</b>.</li>
+            <li>Click <b>Open site folder</b> and choose the <code>nayak-lab-site</code> folder (the one containing <code>index.html</code>). Allow the browser to edit files when it asks.</li>
+          </ol>
+        </section>
+        <section style="background:#0d1422;border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:12px;">
+          <h2 style="font-size:17px;font-weight:500;">2 · Edit</h2>
+          <ul style="padding-left:20px;display:flex;flex-direction:column;gap:8px;line-height:1.6;color:#aab3c3;">
+            <li><b>Lab updates</b>: newest first; the first 4 show on Home.</li>
+            <li><b>Publications</b>: paste a DOI link in “Link”, press <b>Fill from DOI</b>, then check the authors and journal.</li>
+            <li><b>People</b>: drag the ⋮⋮ handle to reorder, or drag a card between Lab members and Alumni. Click a photo to replace it.</li>
+            <li><b>Member updates</b>: lab members fill in <code>add.dc.html</code> and email you a <code>profile-….json</code> file. In People, click <b>Import member update…</b>, check the changes, Accept, then Save.</li>
+            <li><b>Teaching</b>: add or edit courses and their images.</li>
+            <li><b>Gallery</b>: upload several photos at once, add captions, drag to reorder. The first is featured; the first 4 show on Home.</li>
+            <li>↑ ↓ move an item, ✕ deletes it. Photos are resized and converted to .webp automatically.</li>
+          </ul>
+        </section>
+        <section style="background:#0d1422;border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:12px;">
+          <h2 style="font-size:17px;font-weight:500;">3 · Save</h2>
+          <ol style="padding-left:20px;display:flex;flex-direction:column;gap:8px;line-height:1.6;color:#aab3c3;">
+            <li>Click <b>Save to folder</b>. This rewrites <code>data/content.js</code> and writes new images into <code>assets/people</code>, <code>assets/gallery</code> or <code>assets/courses</code>.</li>
+            <li>The previous <code>content.js</code> is kept in <code>data/backups/</code>, so any save can be undone by copying a backup back.</li>
+            <li>Click <b>Preview site ↗</b> to check the pages locally.</li>
+          </ol>
+        </section>
+        <section style="background:#0d1422;border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:12px;">
+          <h2 style="font-size:17px;font-weight:500;">4 · Publish</h2>
+          <ol style="padding-left:20px;display:flex;flex-direction:column;gap:8px;line-height:1.6;color:#aab3c3;">
+            <li>Upload <code>data/content.js</code> to the same place on the server, replacing the old one.</li>
+            <li>Upload every new image listed in the save message into the same <code>assets/…</code> folder on the server.</li>
+            <li>Never upload <code>Dashboard.dc.html</code>, <code>README.md</code> or <code>data/backups/</code>. <code>add.dc.html</code> is safe to upload so members can reach it.</li>
+            <li>If the site still shows old content, hard-refresh the page (Ctrl+Shift+R / Cmd+Shift+R).</li>
+          </ol>
+        </section>
+        <section style="background:#0d1422;border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:12px;">
+          <h2 style="font-size:17px;font-weight:500;">Using Safari or Firefox?</h2>
+          <p style="line-height:1.6;color:#aab3c3;">These browsers can't write into folders. Edits still work, but <b>Download files</b> saves <code>content.js</code> and any new images to your Downloads folder instead. Move <code>content.js</code> into <code>data/</code> and each image into the folder named in the message, then upload as in step 4.</p>
+        </section>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isPeople }}" hint-placeholder-val="{{ false }}">
+      <section style="margin-top:24px;background:#0d1422;border:1px solid rgba(241,212,154,0.22);border-radius:14px;padding:16px 18px;display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;">
+          <div style="flex:1 1 280px;min-width:0;display:flex;flex-direction:column;gap:4px;">
+            <div style="font-weight:500;">Member updates</div>
+            <div style="font-size:13px;line-height:1.5;color:#8792a6;">Lab members edit their details at <a href="add.dc.html" target="_blank" rel="noopener">add.dc.html</a> and email you a <code>profile-….json</code> file. Import it here to review the changes.</div>
+          </div>
+          <button onClick="{{ importFiles }}" style="min-height:38px;padding:0 16px;border-radius:999px;border:1px solid rgba(241,212,154,0.45);background:transparent;color:#f1d49a;cursor:pointer;font-size:13px;white-space:nowrap;" style-hover="background:rgba(241,212,154,0.1);">Import member update…</button>
+        </div>
+        <sc-if value="{{ hasImport }}" hint-placeholder-val="{{ false }}">
+          <div style="border-top:1px solid rgba(255,255,255,0.07);padding-top:14px;display:flex;flex-direction:column;gap:12px;">
+            <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;">
+              <span style="font-weight:500;font-size:15px;">{{ imp.title }}</span>
+              <span style="font-family:'Geist Mono',monospace;font-size:11px;color:#7d889c;">{{ imp.meta }}</span>
+            </div>
+            <sc-if value="{{ imp.hasPhoto }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+                <span style="width:120px;font-family:'Geist Mono',monospace;font-size:10.5px;letter-spacing:0.08em;text-transform:uppercase;color:#7d889c;">Photo</span>
+                <div style="width:64px;height:64px;border-radius:999px;overflow:hidden;background:#0a101c;border:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;font-size:11px;color:#5d6779;"><sc-if value="{{ imp.hasOld }}" hint-placeholder-val="{{ false }}"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{{ imp.oldImg }}" alt="" style="width:100%;height:100%;object-fit:cover;object-position:center 22%;"></sc-if><sc-if value="{{ imp.noOld }}" hint-placeholder-val="{{ false }}"><span>none</span></sc-if></div>
+                <span style="color:#7d889c;">→</span>
+                <div style="width:64px;height:64px;border-radius:999px;overflow:hidden;background:#0a101c;border:1px solid rgba(241,212,154,0.5);display:flex;align-items:center;justify-content:center;font-size:11px;color:#5d6779;"><sc-if value="{{ imp.hasNew }}" hint-placeholder-val="{{ false }}"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{{ imp.newImg }}" alt="" style="width:100%;height:100%;object-fit:cover;object-position:center 22%;"></sc-if><sc-if value="{{ imp.noNew }}" hint-placeholder-val="{{ false }}"><span>removed</span></sc-if></div>
+              </div>
+            </sc-if>
+            <sc-for list="{{ imp.rows }}" as="r" hint-placeholder-count="0">
+              <div style="display:grid;grid-template-columns:120px minmax(0,1fr);gap:4px 12px;align-items:start;">
+                <span style="font-family:'Geist Mono',monospace;font-size:10.5px;letter-spacing:0.08em;text-transform:uppercase;color:#7d889c;padding-top:3px;">{{ r.label }}</span>
+                <div style="display:flex;flex-direction:column;gap:4px;min-width:0;">
+                  <div style="font-size:13px;line-height:1.5;color:#7d889c;text-decoration:line-through;white-space:pre-line;word-break:break-word;">{{ r.old }}</div>
+                  <div style="font-size:13.5px;line-height:1.5;color:#e8ecf3;white-space:pre-line;word-break:break-word;">{{ r.nu }}</div>
+                </div>
+              </div>
+            </sc-for>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;">
+              <button onClick="{{ acceptImport }}" style="min-height:36px;padding:0 16px;border-radius:999px;border:none;background:#f1d49a;color:#070c16;font-weight:500;cursor:pointer;font-size:13px;">{{ imp.acceptLabel }}</button>
+              <button onClick="{{ skipImport }}" style="min-height:36px;padding:0 14px;border-radius:999px;border:1px solid rgba(255,255,255,0.14);background:transparent;cursor:pointer;font-size:13px;color:#c3cad6;" style-hover="background:rgba(255,255,255,0.06);">Skip</button>
+            </div>
+          </div>
+        </sc-if>
+      </section>
+    </sc-if>
+
+    <sc-for list="{{ groups }}" as="g" hint-placeholder-count="1">
+      <section style="margin-top:28px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px;">
+          <h2 style="font-size:19px;font-weight:500;letter-spacing:-0.01em;display:flex;align-items:baseline;gap:10px;">{{ g.title }}<span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:#7d889c;font-weight:400;">{{ g.count }}</span></h2>
+          <button onClick="{{ g.add }}" style="min-height:38px;padding:0 16px;border-radius:999px;border:1px solid rgba(241,212,154,0.45);background:transparent;color:#f1d49a;cursor:pointer;font-size:13px;white-space:nowrap;" style-hover="background:rgba(241,212,154,0.1);">+ {{ g.addLabel }}</button>
+        </div>
+        <div style="display:grid;grid-template-columns:{{ g.cols }};gap:12px;">
+          <sc-for list="{{ g.items }}" as="it" hint-placeholder-count="3">
+            <article id="{{ it.rid }}" onDragOver="{{ it.over }}" onDrop="{{ it.drop }}" style="min-width:0;background:#0d1422;border:1px solid {{ it.border }};border-radius:14px;padding:12px 14px 14px;display:flex;flex-direction:column;gap:12px;opacity:{{ it.op }};">
+              <div style="display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;min-width:0;">
+                <span draggable="true" onDragStart="{{ it.dragStart }}" onDragEnd="{{ it.dragEnd }}" title="Drag to reorder" style="flex:none;cursor:grab;color:#5d6779;font-size:16px;letter-spacing:-2px;padding:4px 2px;user-select:none;">⋮⋮</span>
+                <span style="flex:none;font-family:'Geist Mono',monospace;font-size:11px;color:#7d889c;">{{ it.num }}</span>
+                <span style="flex:1 1 80px;min-width:0;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ it.title }}</span>
+                <sc-for list="{{ it.badges }}" as="b" hint-placeholder-count="0">
+                  <span style="flex:none;font-family:'Geist Mono',monospace;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:#070c16;background:#e6b667;border-radius:999px;padding:3px 8px;">{{ b.t }}</span>
+                </sc-for>
+                <div style="flex:none;display:flex;gap:2px;margin-left:auto;">
+                  <sc-for list="{{ it.icons }}" as="a" hint-placeholder-count="3">
+                    <button onClick="{{ a.run }}" title="{{ a.title }}" aria-label="{{ a.title }}" style="width:32px;height:32px;border-radius:8px;border:none;background:transparent;color:{{ a.color }};cursor:pointer;font-size:14px;" style-hover="background:rgba(255,255,255,0.08);">{{ a.label }}</button>
+                  </sc-for>
+                </div>
+              </div>
+              <div style="display:flex;flex-wrap:wrap;gap:14px;">
+                <sc-if value="{{ it.hasImg }}" hint-placeholder-val="{{ false }}">
+                  <div style="flex:0 0 {{ it.imgW }};max-width:100%;display:flex;flex-direction:column;gap:6px;">
+                    <button onClick="{{ it.pickImg }}" title="Choose image" style="position:relative;width:100%;aspect-ratio:{{ it.ratio }};border-radius:{{ it.radius }};overflow:hidden;border:1px dashed rgba(255,255,255,0.2);background:#0a101c;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#7d889c;font-size:12px;">
+                      <sc-if value="{{ it.hasSrc }}" hint-placeholder-val="{{ false }}"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{{ it.imgSrc }}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;"></sc-if>
+                      <sc-if value="{{ it.noSrc }}" hint-placeholder-val="{{ false }}"><span>+ Add image</span></sc-if>
+                    </button>
+                    <div style="font-family:'Geist Mono',monospace;font-size:10px;color:#7d889c;word-break:break-all;line-height:1.4;">{{ it.imgPath }}</div>
+                  </div>
+                </sc-if>
+                <div style="flex:1 1 300px;min-width:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px 12px;align-content:start;">
+                  <sc-for list="{{ it.fields }}" as="f" hint-placeholder-count="3">
+                    <label style="display:flex;flex-direction:column;gap:5px;min-width:0;grid-column:{{ f.span }};">
+                      <span style="font-family:'Geist Mono',monospace;font-size:10.5px;letter-spacing:0.08em;text-transform:uppercase;color:#7d889c;">{{ f.label }}</span>
+                      <sc-if value="{{ f.isText }}" hint-placeholder-val="{{ true }}">
+                        <input type="text" value="{{ f.value }}" placeholder="{{ f.ph }}" onChange="{{ f.set }}" style="width:100%;min-height:38px;padding:8px 11px;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:#0a101c;font-size:14px;outline:none;" style-focus="border-color:#f1d49a;">
+                      </sc-if>
+                      <sc-if value="{{ f.isArea }}" hint-placeholder-val="{{ false }}">
+                        <textarea value="{{ f.value }}" placeholder="{{ f.ph }}" onChange="{{ f.set }}" rows="{{ f.rows }}" style="width:100%;padding:8px 11px;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:#0a101c;font-size:14px;line-height:1.5;resize:vertical;outline:none;" style-focus="border-color:#f1d49a;"></textarea>
+                      </sc-if>
+                      <sc-if value="{{ f.isSelect }}" hint-placeholder-val="{{ false }}">
+                        <select value="{{ f.value }}" onChange="{{ f.set }}" style="width:100%;min-height:38px;padding:8px 11px;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:#0a101c;font-size:14px;">
+                          <sc-for list="{{ f.opts }}" as="o" hint-placeholder-count="3"><option value="{{ o.v }}">{{ o.v }}</option></sc-for>
+                        </select>
+                      </sc-if>
+                    </label>
+                  </sc-for>
+                </div>
+              </div>
+              <sc-if value="{{ it.hasActs }}" hint-placeholder-val="{{ false }}">
+                <div style="display:flex;flex-wrap:wrap;gap:8px;">
+                  <sc-for list="{{ it.acts }}" as="a" hint-placeholder-count="1">
+                    <button onClick="{{ a.run }}" style="min-height:32px;padding:0 12px;border-radius:999px;border:1px solid rgba(255,255,255,0.14);background:transparent;cursor:pointer;font-size:12.5px;color:#c3cad6;" style-hover="background:rgba(255,255,255,0.06);">{{ a.label }}</button>
+                  </sc-for>
+                </div>
+              </sc-if>
+            </article>
+          </sc-for>
+        </div>
+        <sc-if value="{{ g.showDrop }}" hint-placeholder-val="{{ false }}">
+          <div onDragOver="{{ g.over }}" onDrop="{{ g.drop }}" style="margin-top:10px;padding:18px;border:1px dashed rgba(241,212,154,0.5);border-radius:12px;text-align:center;color:#f1d49a;font-size:13px;">{{ g.dropText }}</div>
+        </sc-if>
+      </section>
+    </sc-for>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { tab: 'news', data: null, dirty: false, dirName: '', msg: '', drag: null, pending: {}, preview: {}, busy: false, imports: [] };
+
+  componentDidMount() {
+    const go = (n) => {
+      if (window.LAB_CONTENT) { if (!this.state.data) this.setState({ data: this.norm(window.LAB_CONTENT) }); return; }
+      if (n < 60) this._t = setTimeout(() => go(n + 1), 50); else this.setState({ loadFailed: true });
+    };
+    go(0);
+    this._bu = (e) => { if (this.state.dirty) { e.preventDefault(); e.returnValue = ''; } };
+    window.addEventListener('beforeunload', this._bu);
+  }
+  componentDidUpdate() { this.syncImgs(); }
+  syncImgs() { document.querySelectorAll('img[data-src]').forEach(im => { const s = im.getAttribute('data-src'); if (s && s.indexOf('{{') < 0 && im.getAttribute('src') !== s) im.setAttribute('src', s); }); }
+  componentWillUnmount() { clearTimeout(this._t); clearTimeout(this._mt); window.removeEventListener('beforeunload', this._bu); }
+
+  norm(src) {
+    const d = JSON.parse(JSON.stringify(src || {}));
+    ['people', 'publications', 'publicationsOther', 'news', 'courses', 'gallery'].forEach(k => { if (!Array.isArray(d[k])) d[k] = []; });
+    d.gallery = d.gallery.map(g => typeof g === 'string' ? { img: g, caption: '' } : { img: g.img || '', caption: g.caption || '' });
+    return d;
+  }
+  flash(msg, ms) { clearTimeout(this._mt); this.setState({ msg }); if (ms) this._mt = setTimeout(() => this.setState({ msg: '' }), ms); }
+  edit(fn) { this.setState(s => { const d = JSON.parse(JSON.stringify(s.data)); fn(d); return { data: d, dirty: true }; }); }
+
+  static TABS = [
+    { id: 'news', label: 'Lab updates', note: 'Newest first. The Home page shows the first 4 under “Lab updates”.',
+      groups: [{ key: 'news', title: 'Updates', add: 'Add update', top: true }] },
+    { id: 'pubs', label: 'Publications', note: 'Paste a DOI or doi.org link into “Link” and press “Fill from DOI” to fetch the title, authors, journal and year. The Publications page groups papers by year (newest first); the Home page shows the 5 most recent.',
+      groups: [{ key: 'publications', title: 'Papers & preprints', add: 'Add publication', top: true }, { key: 'publicationsOther', title: 'Book chapters & under review', add: 'Add entry' }] },
+    { id: 'people', label: 'People', note: 'The order here is the order on the People page and in the Home “group” rail. Drag the ⋮⋮ handle to reorder, including between Lab members and Alumni, or use the arrows. Click a photo to replace it; it is resized and saved into assets/people/.',
+      groups: [{ key: 'people', status: 'current', title: 'Lab members', add: 'Add member' }, { key: 'people', status: 'alumni', title: 'Alumni', add: 'Add alumnus', top: true }] },
+    { id: 'teaching', label: 'Teaching', note: 'Courses on the Teaching page, in this order. Click an image to replace it.',
+      groups: [{ key: 'courses', title: 'Courses', add: 'Add course' }] },
+    { id: 'gallery', label: 'Gallery', note: 'Upload several photos at once; they are resized and saved into assets/gallery/. The first photo is the large featured one; the Home page shows the first 4. Captions appear under each photo and are used as alt text.',
+      groups: [{ key: 'gallery', title: 'Photos', add: 'Upload photos', upload: true }] },
+    { id: 'help', label: 'How to use', note: 'Edit on your computer, save into the local site folder, then upload the changed files to the server.', groups: [] },
+  ];
+  static TAGS = ['Publication', 'People', 'Award', 'Grant', 'Talk', 'Facility', 'Event'];
+  static FIELDS = {
+    news: [['date', 'Date', 'text', 'e.g. Mar 2026'], ['tag', 'Category', 'select'], ['text', 'Update', 'area', 'One sentence', 1, 2]],
+    publications: [['year', 'Year', 'text', '2026'], ['url', 'Link', 'text', 'https://doi.org/10…'], ['title', 'Title', 'text', '', 1], ['authors', 'Authors', 'text', 'Surname AB, Nayak TK', 1], ['venue', 'Journal / venue', 'text', 'J. Gen. Physiol. 156(2):e202213189', 1]],
+    publicationsOther: [['title', 'Title', 'text', '', 1], ['authors', 'Authors (year)', 'text', '', 1], ['venue', 'Venue', 'text', '', 1]],
+    people: [['name', 'Name', 'text'], ['role', 'Role', 'text', 'Ph.D. Scholar'], ['email', 'Email', 'text'], ['linkedin', 'LinkedIn URL', 'text'], ['bio', 'Bio', 'area', '', 1, 3], ['past', 'Past (shown on card back)', 'area', 'Past:\nMSc …', 1, 2]],
+    courses: [['code', 'Code', 'text', 'SBL100'], ['level', 'Level', 'text', 'Graduate elective'], ['title', 'Title', 'text', '', 1], ['desc', 'Description', 'area', '', 1, 3]],
+    gallery: [['caption', 'Caption', 'text', 'What / where', 1]],
+  };
+  static BLANK = {
+    news: () => ({ date: '', tag: 'Publication', text: '' }),
+    publications: () => ({ year: String(new Date().getFullYear()), title: '', authors: '', venue: '', url: '' }),
+    publicationsOther: () => ({ title: '', authors: '', venue: '' }),
+    people: (st) => ({ status: st || 'current', img: '', name: '', role: '', email: '', linkedin: '', bio: '', past: '' }),
+    courses: () => ({ code: '', title: '', level: '', img: '', desc: '' }),
+  };
+  static IMG = { people: { dir: 'people', max: 800, from: 'name', w: '120px', ratio: '1', radius: '999px' }, courses: { dir: 'courses', max: 1400, from: 'code', w: '200px', ratio: '4/3', radius: '10px' }, gallery: { dir: 'gallery', max: 1800, from: 'caption', w: '100%', ratio: '4/3', radius: '10px' } };
+
+  idxs(g) {
+    const a = (this.state.data || {})[g.key] || [];
+    return a.map((_, i) => i).filter(i => !g.status || ((a[i].status === 'alumni' ? 'alumni' : 'current') === g.status));
+  }
+  relocate(key, from, o) {
+    this.edit(d => {
+      const a = d[key], x = a[from];
+      if (o.status) x.status = o.status;
+      a.splice(from, 1);
+      let t;
+      if (o.before != null) t = o.before > from ? o.before - 1 : o.before;
+      else {
+        const same = a.map((y, i) => i).filter(i => !o.status || ((a[i].status === 'alumni' ? 'alumni' : 'current') === o.status));
+        if (o.at === 'start') t = same.length ? same[0] : (o.status === 'alumni' ? a.length : 0);
+        else t = same.length ? same[same.length - 1] + 1 : (o.status === 'alumni' ? a.length : 0);
+      }
+      a.splice(t, 0, x);
+    });
+  }
+  step(g, i, dir) {
+    const ids = this.idxs(g), p = ids.indexOf(i), q = ids[p + dir];
+    if (q == null) return;
+    this.edit(d => { const a = d[g.key]; const t = a[i]; a[i] = a[q]; a[q] = t; });
+  }
+  label(key, x) {
+    if (key === 'people') return x.name || 'New person';
+    if (key === 'courses') return [x.code, x.title].filter(Boolean).join(' · ') || 'New course';
+    if (key === 'gallery') return x.caption || (x.img || '').split('/').pop() || 'Photo';
+    if (key === 'news') return [x.date, x.text].filter(Boolean).join(' — ') || 'New update';
+    return x.title || 'Untitled';
+  }
+  slug(s) { return String(s || '').toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '').replace(/^(dr|prof)\.?\s+/, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 48); }
+  usedPaths() {
+    const d = this.state.data || {}, s = new Set(Object.keys(this.state.pending));
+    ['people', 'courses', 'gallery'].forEach(k => (d[k] || []).forEach(x => x.img && s.add(x.img)));
+    return s;
+  }
+  async toImage(file, max) {
+    const bmp = await createImageBitmap(file);
+    const r = Math.min(1, max / Math.max(bmp.width, bmp.height)), c = document.createElement('canvas');
+    c.width = Math.round(bmp.width * r); c.height = Math.round(bmp.height * r);
+    c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height);
+    const blob = await new Promise(res => c.toBlob(res, 'image/webp', 0.85));
+    return { blob, ext: blob.type === 'image/webp' ? 'webp' : 'png' };
+  }
+  pick(multi) {
+    return new Promise(res => { const inp = document.createElement('input'); inp.type = 'file'; inp.accept = 'image/*'; inp.multiple = !!multi; inp.onchange = () => res(Array.from(inp.files || [])); inp.click(); });
+  }
+  async addImage(key, file, base) {
+    const cfg = Component.IMG[key], { blob, ext } = await this.toImage(file, cfg.max), used = this.usedPaths();
+    const stem = this.slug(base) || this.slug(file.name.replace(/\.[^.]+$/, '')) || 'image';
+    let path = 'assets/' + cfg.dir + '/' + stem + '.' + ext, n = 2;
+    while (used.has(path)) path = 'assets/' + cfg.dir + '/' + stem + '-' + (n++) + '.' + ext;
+    const url = URL.createObjectURL(blob);
+    await new Promise(r => this.setState(s => ({ pending: { ...s.pending, [path]: blob }, preview: { ...s.preview, [path]: url } }), r));
+    return path;
+  }
+  async replaceImg(key, i) {
+    const [f] = await this.pick(false); if (!f) return;
+    const x = this.state.data[key][i], old = x.img;
+    try {
+      const path = await this.addImage(key, f, x[Component.IMG[key].from]);
+      this.edit(d => { d[key][i].img = path; });
+      if (old && this.state.pending[old]) this.setState(s => { const p = { ...s.pending }; delete p[old]; return { pending: p }; });
+    } catch (e) { this.flash('Could not read that image: ' + e.message, 6000); }
+  }
+  async uploadGallery() {
+    const files = await this.pick(true); if (!files.length) return;
+    this.flash('Processing ' + files.length + ' photo' + (files.length > 1 ? 's' : '') + '…');
+    const out = [];
+    for (const f of files) { try { out.push({ img: await this.addImage('gallery', f, f.name.replace(/\.[^.]+$/, '')), caption: '' }); } catch (e) {} }
+    this.edit(d => { d.gallery = out.concat(d.gallery); });
+    this.flash(out.length + ' photo' + (out.length === 1 ? '' : 's') + ' added at the top. Add captions, then Save.', 6000);
+  }
+  add(g) {
+    if (g.upload) return this.uploadGallery();
+    this.edit(d => {
+      const a = d[g.key], x = Component.BLANK[g.key](g.status);
+      if (!g.status) { if (g.top) a.unshift(x); else a.push(x); return; }
+      const same = a.map((y, i) => i).filter(i => (a[i].status === 'alumni' ? 'alumni' : 'current') === g.status);
+      const t = same.length ? (g.top ? same[0] : same[same.length - 1] + 1) : (g.status === 'alumni' ? a.length : 0);
+      a.splice(t, 0, x);
+    });
+  }
+  remove(key, i) {
+    const x = this.state.data[key][i];
+    if (!confirm('Delete “' + this.label(key, x) + '”?')) return;
+    this.edit(d => { d[key].splice(i, 1); });
+  }
+  async fillDoi(i) {
+    const p = this.state.data.publications[i], m = String(p.url || '').match(/10\.\d{4,9}\/[^\s"<>]+/);
+    if (!m) { this.flash('Paste a DOI or a doi.org link into the Link field first.', 6000); return; }
+    const doi = m[0].replace(/[.,;)]+$/, '');
+    this.flash('Looking up ' + doi + '…');
+    try {
+      const r = await fetch('https://api.crossref.org/works/' + encodeURIComponent(doi));
+      if (!r.ok) throw new Error(r.status === 404 ? 'DOI not found' : 'HTTP ' + r.status);
+      const w = (await r.json()).message, strip = s => String(s || '').replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+      const authors = (w.author || []).map(a => a.family ? a.family + ' ' + String(a.given || '').split(/[\s.\-]+/).filter(Boolean).map(z => z[0].toUpperCase()).join('') : (a.name || '')).filter(Boolean).join(', ');
+      const dp = ((w.issued || w['published-print'] || w['published-online'] || w.posted || {})['date-parts'] || [[]])[0];
+      let venue;
+      if (w.type === 'posted-content') venue = ((w.institution || [])[0] || {}).name || w.publisher || 'Preprint', venue += ' (preprint)';
+      else {
+        venue = strip((w['short-container-title'] || [])[0] || (w['container-title'] || [])[0] || w.publisher || '');
+        const vol = w.volume ? ' ' + w.volume + (w.issue ? '(' + w.issue + ')' : '') : '', pg = w.page || w['article-number'];
+        venue += vol + (pg ? (vol ? ':' : ' ') + pg : '');
+      }
+      this.edit(d => { Object.assign(d.publications[i], { title: strip((w.title || [])[0]) || p.title, authors: authors || p.authors, venue: venue || p.venue, year: dp && dp[0] ? String(dp[0]) : p.year, url: 'https://doi.org/' + doi }); });
+      this.flash('Filled from Crossref. Check the author list and journal name before saving.', 6000);
+    } catch (e) { this.flash('DOI lookup failed (' + e.message + '). Fill the fields by hand.', 8000); }
+  }
+
+  async importFiles() {
+    const files = await new Promise(res => { const inp = document.createElement('input'); inp.type = 'file'; inp.accept = '.json,application/json'; inp.multiple = true; inp.onchange = () => res(Array.from(inp.files || [])); inp.click(); });
+    if (!files.length) return;
+    const ok = [], bad = [];
+    for (const f of files) {
+      try { const j = JSON.parse(await f.text()); if (j.type !== 'nayak-lab-profile' || !j.fields) throw 0; ok.push({ file: f.name, ...j }); } catch (e) { bad.push(f.name); }
+    }
+    this.setState(s => ({ imports: s.imports.concat(ok) }));
+    if (bad.length) this.flash('Not a profile update file: ' + bad.join(', '), 8000);
+  }
+  findPerson(u) {
+    const a = (this.state.data || {}).people || [], n = s => String(s || '').trim().toLowerCase();
+    if (u.isNew) return -1;
+    let i = a.findIndex(p => n(p.name) === n(u.match));
+    if (i < 0) i = a.findIndex(p => n(p.name) === n(u.fields.name));
+    return i;
+  }
+  async acceptImport() {
+    const u = this.state.imports[0]; if (!u) return;
+    let path = null;
+    if (u.photo) {
+      try { const blob = await (await fetch(u.photo)).blob(); path = await this.addImage('people', new File([blob], 'photo.webp', { type: blob.type }), u.fields.name); }
+      catch (e) { this.flash('Could not read the photo in that file; the text changes were still applied.', 8000); }
+    }
+    const i = this.findPerson(u), K = ['name', 'role', 'email', 'linkedin', 'bio', 'past'];
+    this.edit(d => {
+      let x;
+      if (i < 0) {
+        x = Component.BLANK.people('current');
+        const same = d.people.map((y, j) => j).filter(j => d.people[j].status !== 'alumni');
+        d.people.splice(same.length ? same[same.length - 1] + 1 : 0, 0, x);
+      } else x = d.people[i];
+      K.forEach(k => { if (k in u.fields) x[k] = u.fields[k]; });
+      if (path) x.img = path; else if (u.removePhoto) x.img = '';
+    });
+    this.setState(s => ({ imports: s.imports.slice(1) }));
+    this.flash('Applied ' + (u.fields.name || 'update') + (i < 0 ? ' as a new lab member' : '') + '. Check the card below, then Save.', 6000);
+  }
+  importVals() {
+    const u = this.state.imports[0]; if (!u) return null;
+    const a = this.state.data.people, i = this.findPerson(u), cur = i >= 0 ? a[i] : {}, L = { name: 'Name', role: 'Role', email: 'Email', linkedin: 'LinkedIn', bio: 'Bio', past: 'Previously' };
+    const rows = Object.keys(L).filter(k => (u.fields[k] || '').trim() !== (cur[k] || '').trim()).map(k => ({ label: L[k], old: (cur[k] || '').trim() || '(empty)', nu: (u.fields[k] || '').trim() || '(empty)' }));
+    const oldImg = cur.img ? (this.state.preview[cur.img] || cur.img) : '', hasPhoto = !!u.photo || !!u.removePhoto, n = this.state.imports.length;
+    return {
+      title: (i >= 0 ? 'Update for ' + cur.name : 'New member: ' + (u.fields.name || 'unnamed')) + (u.isNew || i >= 0 ? '' : ' (no matching name found — will be added)'),
+      meta: u.file + ' · sent ' + String(u.submitted || '').slice(0, 10) + (n > 1 ? ' · 1 of ' + n : ''),
+      rows, hasPhoto, oldImg, hasOld: !!oldImg, noOld: !oldImg, newImg: u.photo || '', hasNew: !!u.photo, noNew: !u.photo,
+      acceptLabel: rows.length || hasPhoto ? (i >= 0 ? 'Accept changes' : 'Add to Lab members') : 'Nothing changed — dismiss',
+    };
+  }
+
+  async openFolder() {
+    if (!window.showDirectoryPicker) { this.flash('This browser can’t open folders. Use Chrome or Edge, or keep using Save to download the files.', 8000); return; }
+    if (this.state.dirty && !confirm('Discard unsaved changes and load from the folder?')) return;
+    let dir; try { dir = await window.showDirectoryPicker({ id: 'nayak-site', mode: 'readwrite' }); } catch (e) { return; }
+    try {
+      const txt = await (await (await (await dir.getDirectoryHandle('data')).getFileHandle('content.js')).getFile()).text();
+      const data = new Function('window', txt + '\n;return window.LAB_CONTENT;')({});
+      this.dir = dir;
+      this.setState({ data: this.norm(data), dirty: false, pending: {}, dirName: dir.name, loadFailed: false });
+      this.flash('Loaded content from “' + dir.name + '”. Save now writes straight into this folder.', 6000);
+    } catch (e) { this.flash('That folder has no readable data/content.js. Choose the nayak-lab-site folder (the one with index.html).', 8000); }
+  }
+  async writePath(path, data) {
+    const parts = path.split('/'); let h = this.dir;
+    for (const p of parts.slice(0, -1)) h = await h.getDirectoryHandle(p, { create: true });
+    const w = await (await h.getFileHandle(parts[parts.length - 1], { create: true })).createWritable();
+    await w.write(data); await w.close();
+  }
+  download(name, blob) {
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name;
+    document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+  }
+  async save() {
+    if (!this.state.dirty || this.state.busy) return;
+    const text = this.serialize(this.state.data), pend = this.state.pending, imgs = Object.keys(pend);
+    this.setState({ busy: true });
+    try {
+      if (this.dir) {
+        if ((await this.dir.queryPermission({ mode: 'readwrite' })) !== 'granted' && (await this.dir.requestPermission({ mode: 'readwrite' })) !== 'granted') throw new Error('permission denied');
+        for (const p of imgs) await this.writePath(p, pend[p]);
+        try {
+          const old = await (await (await (await this.dir.getDirectoryHandle('data')).getFileHandle('content.js')).getFile()).text();
+          const st = new Date().toISOString().slice(0, 16).replace(/[-:]/g, '').replace('T', '-');
+          await this.writePath('data/backups/content-' + st + '.js', old);
+        } catch (e) {}
+        await this.writePath('data/content.js', text);
+        this.flash('Saved to “' + this.state.dirName + '”.\nTo publish, upload data/content.js' + (imgs.length ? ' and these new images:\n' + imgs.join('\n') : '') + '\n(The previous version was kept in data/backups/.)');
+      } else {
+        this.download('content.js', new Blob([text], { type: 'text/javascript' }));
+        for (const p of imgs) { await new Promise(r => setTimeout(r, 350)); this.download(p.split('/').pop(), pend[p]); }
+        this.flash('Downloaded. Put content.js into data/' + (imgs.length ? ', and each image into its folder:\n' + imgs.join('\n') : '.') + '\nThen upload those files to the server.');
+      }
+      this.setState({ dirty: false, pending: {}, busy: false });
+    } catch (e) { this.setState({ busy: false }); this.flash('Save failed: ' + e.message, 8000); }
+  }
+  serialize(d) {
+    const NOTE = {
+      pi: 'PRINCIPAL INVESTIGATOR — title and department, used in the nav, footer, Home, People, Teaching and Join pages.',
+      people: 'PEOPLE — in display order. status "current" → Lab Group, "alumni" → Lab alumni. img "" shows initials.',
+      publications: 'PUBLICATIONS — grouped by "year" on the site (newest first). url = link to the paper.',
+      publicationsOther: 'BOOK CHAPTERS & UNDER REVIEW (shown in their own block, no year, no link)',
+      news: 'LAB UPDATES (homepage) — newest first; the homepage shows the first 4.',
+      research: 'RESEARCH THEMES — the seven Research-page cards, in order. Home shows 1, 3 and 7.',
+      courses: 'COURSES (Teaching page) — in the order shown. img: an image in assets/courses/.',
+      gallery: 'GALLERY — in display order; the first is the big featured one. caption is shown under the photo and used as alt text.',
+      positions: 'OPEN POSITIONS (Join page) — status "Closed" greys the card out.',
+    };
+    const order = Object.keys(NOTE).filter(k => k in d).concat(Object.keys(d).filter(k => !(k in NOTE)));
+    const val = v => Array.isArray(v) ? (v.length ? '[\n' + v.map(o => '    ' + JSON.stringify(o)).join(',\n') + '\n  ]' : '[]') : JSON.stringify(v);
+    const head = '/* ============================================================================\n   NAYAK LAB — WEBSITE CONTENT\n   ----------------------------------------------------------------------------\n   This one file holds ALL the content that changes over time. Every page of\n   the site reads from it. Edit it with Dashboard.dc.html (Chrome or Edge:\n   "Open site folder" → edit → "Save to folder"), or by hand — keep the commas\n   and quotes intact. Last saved from the dashboard: ' + new Date().toISOString().slice(0, 10) + '.\n   ============================================================================ */\n';
+    return head + 'window.LAB_CONTENT = {\n\n' + order.map(k => '  /* ' + (NOTE[k] || k.toUpperCase()) + ' */\n  ' + JSON.stringify(k) + ': ' + val(d[k])).join(',\n\n') + '\n\n};\n';
+  }
+
+  item(g, i, pos, n, homeSet) {
+    const d = this.state.data, key = g.key, x = d[key][i], F = Component.FIELDS[key], cfg = Component.IMG[key], drag = this.state.drag;
+    const fields = F.map(([k, label, kind, ph, wide, rows]) => ({
+      label, value: x[k] == null ? '' : String(x[k]), ph: ph || '', rows: rows || 2, span: wide ? '1 / -1' : 'auto',
+      isText: kind === 'text', isArea: kind === 'area', isSelect: kind === 'select',
+      opts: kind === 'select' ? Array.from(new Set(Component.TAGS.concat(x[k] ? [x[k]] : []))).map(v => ({ v })) : [],
+      set: (e) => { const v = e.target.value; this.edit(dd => { dd[key][i][k] = v; }); },
+    }));
+    const icons = [
+      { label: '↑', title: 'Move up', color: pos ? '#c3cad6' : '#3a4456', run: () => this.step(g, i, -1) },
+      { label: '↓', title: 'Move down', color: pos < n - 1 ? '#c3cad6' : '#3a4456', run: () => this.step(g, i, 1) },
+      { label: '✕', title: 'Delete', color: '#e59a8f', run: () => this.remove(key, i) },
+    ];
+    const acts = [];
+    if (key === 'publications') acts.push({ label: 'Fill from DOI', run: () => this.fillDoi(i) });
+    if (key === 'people') {
+      acts.push(g.status === 'alumni' ? { label: '→ Move to Lab members', run: () => this.relocate(key, i, { status: 'current', at: 'end' }) } : { label: '→ Move to Alumni', run: () => this.relocate(key, i, { status: 'alumni', at: 'start' }) });
+      if (x.img) acts.push({ label: 'Remove photo', run: () => this.edit(dd => { dd.people[i].img = ''; }) });
+    }
+    const badges = [];
+    if (key === 'gallery' && pos === 0) badges.push({ t: 'Featured' });
+    if (homeSet && homeSet.has(i)) badges.push({ t: 'On Home' });
+    const src = x.img ? (this.state.preview[x.img] || x.img) : '', isDrag = drag && drag.key === key && drag.i === i, target = drag && drag.key === key && !isDrag;
+    return {
+      rid: 'it-' + key + '-' + i, num: String(pos + 1).padStart(2, '0'), title: this.label(key, x), badges, icons, acts, hasActs: acts.length > 0, fields,
+      hasImg: !!cfg, imgW: cfg ? cfg.w : '0', ratio: cfg ? cfg.ratio : '1', radius: cfg ? cfg.radius : '0', hasSrc: !!src, noSrc: !src, imgSrc: src,
+      imgPath: x.img ? x.img + (this.state.pending[x.img] ? ' · new' : '') : (key === 'people' ? 'no photo — initials shown' : ''),
+      pickImg: () => this.replaceImg(key, i),
+      op: isDrag ? 0.4 : 1, border: target ? 'rgba(241,212,154,0.35)' : 'rgba(255,255,255,0.07)',
+      dragStart: (e) => { e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', String(i)); const art = e.target.closest('article'); if (art) e.dataTransfer.setDragImage(art, 24, 20); setTimeout(() => this.setState({ drag: { key, i } }), 0); },
+      dragEnd: () => this.setState({ drag: null }),
+      over: (e) => { if (this.state.drag && this.state.drag.key === key) { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; } },
+      drop: (e) => { e.preventDefault(); const dr = this.state.drag; this.setState({ drag: null }); if (dr && dr.key === key && dr.i !== i) this.relocate(key, dr.i, { status: g.status, before: i }); },
+    };
+  }
+
+  renderVals() {
+    const d = this.state.data, T = Component.TABS, tab = T.find(t => t.id === this.state.tab) || T[0], drag = this.state.drag;
+    const canFS = typeof window !== 'undefined' && !!window.showDirectoryPicker, npend = Object.keys(this.state.pending).length;
+    let homeSets = {};
+    if (d) {
+      const yr = v => parseInt((String(v || '').match(/\d{4}/) || ['0'])[0], 10);
+      homeSets.publications = new Set(d.publications.map((p, i) => i).sort((a, b) => yr(d.publications[b].year) - yr(d.publications[a].year) || a - b).slice(0, 5));
+      homeSets.news = new Set([0, 1, 2, 3]);
+      homeSets.gallery = new Set([0, 1, 2, 3]);
+    }
+    const groups = !d ? [] : tab.groups.map(g => {
+      const ids = this.idxs(g), n = ids.length, word = g.key === 'people' ? (g.status === 'alumni' ? 'alumni' : 'members') : g.key === 'gallery' ? 'photos' : 'entries';
+      return {
+        title: g.title, count: n + ' ' + word, addLabel: g.add, add: () => this.add(g),
+        cols: g.key === 'gallery' ? 'repeat(auto-fill,minmax(min(100%,250px),1fr))' : 'minmax(0,1fr)',
+        items: ids.map((i, pos) => this.item(g, i, pos, n, homeSets[g.key])),
+        showDrop: !!(drag && drag.key === g.key), dropText: 'Drop here to move to the end of ' + g.title,
+        over: (e) => { if (this.state.drag && this.state.drag.key === g.key) e.preventDefault(); },
+        drop: (e) => { e.preventDefault(); const dr = this.state.drag; this.setState({ drag: null }); if (dr && dr.key === g.key) this.relocate(g.key, dr.i, { status: g.status, at: 'end' }); },
+      };
+    });
+    return {
+      tabs: T.map(t => ({ label: t.label, on: t.id === tab.id ? 'true' : 'false', fg: t.id === tab.id ? '#f1d49a' : '#8792a6', bd: t.id === tab.id ? '#f1d49a' : 'transparent', pick: () => this.setState({ tab: t.id, drag: null }) })),
+      note: tab.note, groups, noData: !d && !!this.state.loadFailed,
+      folderText: this.state.dirName ? 'Folder: ' + this.state.dirName + ' — Save writes straight into it.' : canFS ? 'Not connected. Open the site folder to save directly; otherwise Save downloads the files.' : 'This browser can’t write to folders, so Save downloads the files. Chrome or Edge can save directly.',
+      folderBtn: this.state.dirName ? 'Change folder' : 'Open site folder', openFolder: () => this.openFolder(),
+      saveLabel: this.state.busy ? 'Saving…' : !this.state.dirty ? 'All saved' : (this.dir ? 'Save to folder' : 'Download files') + (npend ? ' · ' + npend + ' image' + (npend > 1 ? 's' : '') : ''),
+      saveDisabled: !this.state.dirty || this.state.busy, saveOpacity: this.state.dirty ? 1 : 0.45, save: () => this.save(),
+      isHelp: tab.id === 'help', isPeople: tab.id === 'people' && !!d,
+      importFiles: () => this.importFiles(), hasImport: !!(d && this.state.imports.length), imp: d ? (this.importVals() || {}) : {},
+      acceptImport: () => this.acceptImport(), skipImport: () => this.setState(s => ({ imports: s.imports.slice(1) })),
+      themeText: (window.TKNTheme && TKNTheme.get() === 'light') ? '☾ Dark' : '☀ Light',
+      themeLabel: (window.TKNTheme && TKNTheme.get() === 'light') ? 'Switch to dark mode' : 'Switch to light mode',
+      toggleTheme: () => { if (window.TKNTheme) { TKNTheme.toggle(); this.forceUpdate(); } },
+      hasMsg: !!this.state.msg, msg: this.state.msg, clearMsg: () => this.setState({ msg: '' }),
+    };
+  }
+}
+</script>
+</body>
+</html>
