@@ -4,7 +4,7 @@
    This one file holds ALL the content that changes over time. Every page of
    the site reads from it. Edit it with Dashboard.dc.html (Chrome or Edge:
    "Open site folder" → edit → "Save to folder"), or by hand — keep the commas
-   and quotes intact. Last saved from the dashboard: 2026-10-01.
+   and quotes intact. Last saved from the dashboard: 2026-10-13.
    ============================================================================ */
 window.LAB_CONTENT = {
 
@@ -14,7 +14,7 @@ window.LAB_CONTENT = {
   /* PEOPLE — in display order. status "current" → Lab Group, "alumni" → Lab alumni. img "" shows initials. */
   "people": [
     {"status":"current","img":"assets/people/pooja.webp","name":"Pooja Verma","role":"Ph.D. Scholar","email":"","linkedin":"","bio":"Modeling the behaviour of neurons in the nicotinic addiction-and-withdrawal network, using the NEURON simulation environment to capture pathways with complex branched anatomy and biophysical membrane properties.","past":"Past:\nB.Tech Electronics & Communication Engg, Maharaja Surajmal Institute of Technology, Delhi (2016–20)"},
-    {"status":"current","img":"assets/people/sunil.webp","name":"Sunil Gadhwal","role":"Ph.D. Scholar","email":"","linkedin":"","bio":"Understanding the structure–function relationship of the human two-pore channel 2 (hsTPC2), an endolysosomal ion channel. Enjoys experimental research; sports are a stressbuster in free time.","past":"Past:\nMSc Biotechnology (2019–21)\nBSBE, IIT Bombay"},
+    {"status":"current","img":"assets/people/sunil-gadhwal.webp","name":"Sunil Gadhwal","role":"Ph.D. Scholar","email":"sunil.gadhwal.c2021@iitbombay.org","linkedin":"","bio":"I explore the structure–function relationship of HsTPC2, a human endolysosomal ion channel, driven by curiosity and a passion for experimental research. Outside the lab, I enjoy sports to recharge and keep my competitive spirit alive—switching channels, quite literally!","past":"Past:\nMSc Biotechnology (2019–21)\nBSBE, IIT Bombay"},
     {"status":"current","img":"assets/people/mahesh.webp","name":"Mahesh Mahadeo Mathe","role":"Ph.D. Scholar","email":"","linkedin":"","bio":"Screening ion channels involved in neuropathic pain — in silico / in vitro HTS, transcriptomics, electrophysiology and MD simulations.","past":"Past:\nM.Tech Medical Biotechnology, IIT Hyderabad (2018–20)"},
     {"status":"current","img":"assets/people/rajiv.webp","name":"Rajiv Sharma","role":"Ph.D. Scholar","email":"","linkedin":"","bio":"Understanding the mechanism of nicotine binding to nAChRs and its role in synapse development, combining electrophysiology and computational studies.","past":"Past:\nMSc Biotechnology, University of Hyderabad (2021–23)"},
     {"status":"current","img":"assets/people/ritu.webp","name":"Ritu Singh","role":"Ph.D. Scholar","email":"","linkedin":"","bio":"Investigating the biophysical properties and functional role of ion channels in endolysosomes — ion permeability, channel regulation and intracellular trafficking.","past":"Past:\nMSc Biochemistry, Institute of Sciences, Banaras Hindu University (2021–2023)"},
