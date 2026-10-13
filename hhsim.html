@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&family=Newsreader:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
 <link rel="icon" href="assets/logos/tkn-favicon.svg" type="image/svg+xml">
-<script>try{document.documentElement.setAttribute("data-theme",localStorage.getItem("tkn-theme")==="light"?"light":"dark")}catch(e){}</script>
+<script>document.documentElement.setAttribute("data-theme","light")</script>
 <style>
 :root{
   box-sizing:border-box;
@@ -17,24 +17,24 @@
   --font:"Geist",system-ui,-apple-system,"Segoe UI",sans-serif;
   --font-c:var(--font); --mono:"Geist Mono",ui-monospace,monospace; --serif:"Newsreader",Georgia,serif;
   color-scheme:dark;
-  --page:#0d1015; --screen:#090b0f; --panel:#12161c; --panel2:#151a21; --line:#1f252e; --line2:#2d3540;
-  --ink:#e9edf2; --ink2:#b4bcc8; --muted:#8c96a4; --faint:#5f6876;
-  --grid:#151a21; --grid2:#252c36; --axis:#5f6876;
-  --vm:#ff6b5e; --stim:#b49bff; --t1:#ffb547; --t2:#3fd6a0; --t3:#5aa9ff;
-  --run:#3fd6a0; --stop:#ff6b5e; --nudge:#ffb547; --accent:#5aa9ff;
-  --chip:#1a2029; --focus:#5aa9ff; --c6:#ff8f4d; --c7:#ff7ac0; --c8:#b6d97a;
-  --cta:#b49bff; --cta-ink:#0d1015; --hi:#7db8ff; --hi2:#e9edf2; --hi-soft:rgba(90,169,255,.14); --hi-line:rgba(90,169,255,.4);
-  --shadow:none;
+  --page:#070c16; --screen:#0d0e11; --panel:#0b1221; --panel2:#0d1526; --line:#1a2334; --line2:#2a3549;
+  --ink:#e8ecf3; --ink2:#aab3c3; --muted:#8f9ab0; --faint:#7a8399;
+  --grid:#1a1c21; --grid2:#2b2e35; --axis:#6b7080;
+  --vm:#ff6a5c; --stim:#9d86ff; --t1:#f0a63a; --t2:#3fc28e; --t3:#5b9dff;
+  --run:#7fd1b9; --stop:#ff7a6b; --nudge:#e6b667; --accent:#e6b667;
+  --chip:#131c2d; --focus:#f1d49a; --c6:#ffb36b; --c7:#ff86c8; --c8:#b6d97a;
+  --cta:#e6b667; --cta-ink:#070c16; --hi:#e6b667; --hi2:#f1d49a; --hi-soft:rgba(230,182,103,.15); --hi-line:rgba(230,182,103,.38);
+  --shadow:none; --sel:#e6e8ec; --sel-ink:#0d0e11; --t-hi:rgba(255,255,255,.07); --t-sh:rgba(0,0,0,.45); --t-sh2:rgba(0,0,0,.3);
 }
 :root[data-theme="light"]{
   color-scheme:light;
-  --page:#f3f5f8; --screen:#ffffff; --panel:#ffffff; --panel2:#f8f9fb; --line:#e2e6ec; --line2:#cfd5de;
-  --ink:#141922; --ink2:#3a4352; --muted:#5b6575; --faint:#8b94a3;
-  --grid:#eef1f5; --grid2:#d6dce4; --axis:#8b94a3;
-  --vm:#d1362a; --stim:#6b4bd6; --t1:#c27400; --t2:#0f8a63; --t3:#1f6fd1;
-  --run:#0f8a63; --stop:#d1362a; --nudge:#a86400; --accent:#1f6fd1;
-  --chip:#eef1f5; --focus:#1f6fd1; --c6:#c25e14; --c7:#b0397c; --c8:#5a7a14;
-  --cta:#6b4bd6; --cta-ink:#ffffff; --hi:#1f5fb8; --hi2:#141922; --hi-soft:rgba(31,111,209,.09); --hi-line:rgba(31,111,209,.35);
+  --page:#f7f4ee; --screen:#ffffff; --panel:#fffdf9; --panel2:#efe9dd; --line:#e3ddd1; --line2:#d3cbbb;
+  --ink:#141a26; --ink2:#3b4254; --muted:#585f74; --faint:#717684;
+  --grid:#eceef1; --grid2:#d6d9df; --axis:#8a8f9c;
+  --vm:#d0362b; --stim:#6b4fd8; --t1:#c27a00; --t2:#13865a; --t3:#1f6fd6;
+  --run:#2f7d5b; --stop:#b23a2b; --nudge:#8a6420; --accent:#8a6420;
+  --chip:#f1ece2; --focus:#8a6420; --c6:#c25e14; --c7:#a83a78; --c8:#5a7a14;
+  --cta:#8a6420; --cta-ink:#fff; --hi:#8a6420; --hi2:#8a6420; --hi-soft:rgba(138,100,32,.10); --hi-line:rgba(138,100,32,.35); --sel:#23272e; --sel-ink:#fff; --t-hi:rgba(255,255,255,.85); --t-sh:rgba(20,26,38,.12); --t-sh2:rgba(20,26,38,.07);
 }
 *,*::before,*::after{box-sizing:inherit}
 html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
@@ -42,7 +42,7 @@ body{margin:0;min-height:100%;background:var(--page);color:var(--ink);font:15px/
   font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
 button,input,select{font:inherit;color:inherit}
 select{background:var(--panel);color:var(--ink);border:1px solid var(--line2);border-radius:6px;padding:4px 6px;font:13px var(--font-c);max-width:100%}
-:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+:focus-visible{outline:2px solid var(--sel);outline-offset:2px}
 .wrap{max-width:1480px;margin:0 auto;padding:12px clamp(10px,2vw,22px) 28px}
 
 /* ---------- top bar ---------- */
@@ -254,14 +254,17 @@ a{color:var(--hi)} a:hover{color:var(--hi2)}
 .seg{border:1px solid var(--line);border-radius:999px;padding:3px;gap:2px;background:var(--panel)}
 .seg button{border-radius:999px;padding:6px 14px;font:500 13px var(--font);color:var(--muted)}
 .seg button:hover{color:var(--ink)}
-.seg button[aria-pressed="true"]{background:var(--ink);color:var(--page)}
-.seg.level{border-color:var(--hi-line);background:transparent}
+.seg button[aria-pressed="true"]{background:var(--sel);color:var(--sel-ink)}
+.seg.level{border-color:var(--line);background:transparent}
 .seg.level button{font:400 11px var(--mono);letter-spacing:.1em;text-transform:uppercase;padding:6px 11px}
-.seg.level button[aria-pressed="true"]{background:var(--hi-soft);color:var(--hi2)}
+.seg.level button[aria-pressed="true"]{background:var(--sel);color:var(--sel-ink)}
 .toplinks{display:flex;align-items:center;gap:4px 16px;flex-wrap:wrap}
 .iconbtn{border:0;background:transparent;padding:6px 2px;border-radius:4px;font:400 13.5px var(--font);color:var(--muted)}
 .iconbtn:hover{color:var(--ink)}
-.iconbtn[aria-pressed="true"]{color:var(--hi2);border:0}
+.iconbtn[aria-pressed="true"]{color:var(--sel);border:0}
+#lessonsBtn{border:1px solid var(--line2);border-radius:999px;padding:6px 14px;color:var(--ink);font-weight:500}
+#lessonsBtn:hover{border-color:var(--muted)}
+#lessonsBtn[aria-pressed="true"]{background:var(--sel);border-color:var(--sel);color:var(--sel-ink)}
 .rig{grid-template-columns:minmax(0,1fr) 380px;gap:16px}
 body.lessons-on .rig{grid-template-columns:330px minmax(0,1fr) 380px}
 @media (max-width:1380px){body.lessons-on .rig{grid-template-columns:minmax(0,1fr) 360px}body.lessons-on .scope{grid-column:1;grid-row:1}body.lessons-on .lessons{grid-column:1;grid-row:2;position:static;max-height:none}body.lessons-on .side{grid-column:2;grid-row:1/span 2}}
@@ -274,34 +277,34 @@ body.lessons-on .rig{grid-template-columns:330px minmax(0,1fr) 380px}
 .btn.stim{background:var(--cta);border-color:var(--cta);color:var(--cta-ink);font-weight:500;padding:8px 18px}
 .btn.stim small{font:400 11.5px var(--mono);opacity:.75}
 .btn.on{background:var(--ink);border-color:var(--ink);color:var(--page)}
-.btn[aria-pressed="true"].tog{background:var(--hi-soft);border-color:var(--hi-line);color:var(--ink)}
-.btn.tog[aria-pressed="true"] .led{background:var(--hi)}
+.btn[aria-pressed="true"].tog{background:color-mix(in srgb,var(--sel) 14%,transparent);border-color:var(--sel);color:var(--ink)}
+.btn.tog[aria-pressed="true"] .led{background:var(--sel)}
 .speed{font:400 12px var(--mono);letter-spacing:.04em;color:var(--muted)}
-input[type=range]{accent-color:var(--hi)}
-.toggle input{accent-color:var(--hi)}
+input[type=range]{accent-color:var(--sel)}
+.toggle input{accent-color:var(--sel)}
 #cvMain{height:clamp(280px,46vh,480px)}
 #cvSub{height:clamp(160px,24vh,250px)}
 .subbar,.statusline,.reflist{background:transparent;font-family:var(--font)}
 .subbar select,select{background:var(--page);border-color:var(--line2);border-radius:6px;font:13px var(--font)}
 .statusline{font:400 12.5px var(--mono);letter-spacing:.02em}
 .statusline b{font:500 12.5px var(--mono);color:var(--ink)}
-.statusline .msg{font-family:var(--font);color:var(--hi2)}
+.statusline .msg{font-family:var(--font);color:var(--ink2)}
 .ro{border-left:0;padding-left:0;gap:3px}
 .ro span,.mgrid div span{font:400 10.5px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
 .ro b{font:400 19px var(--mono);letter-spacing:-.02em;color:var(--ink)}
 .metrics .mh{font:400 10.5px var(--mono);letter-spacing:.12em;text-transform:uppercase}
-.metrics .mh b{color:var(--hi)}
+.metrics .mh b{color:var(--ink)}
 .mgrid div{font-family:var(--font)}
 .mgrid b,.kv .v,.ion .e,.cursorbox .val{font-family:var(--mono);font-weight:400}
 .num input[type=number],.ion input,.ptab input,.vcrow input[type=number],.btgrid input,.fi input,.ans-in,textarea,.txt{background:var(--page);border-color:var(--line2);font-family:var(--mono);font-size:13px}
 .memview h3{font:400 10.5px var(--mono);letter-spacing:.12em;text-transform:uppercase}
 .vtabs button{border-radius:999px;font:500 12.5px var(--font)}
-.vtabs button[aria-pressed="true"]{background:var(--ink);color:var(--page);border-color:var(--ink)}
+.vtabs button[aria-pressed="true"]{background:var(--sel);color:var(--sel-ink);border-color:var(--sel)}
 .side{background:var(--panel);border-radius:14px}
 .tabs{background:transparent;gap:18px;padding:0 18px;border-radius:14px 14px 0 0}
 .tabs{scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}
 .tabs button{flex:0 0 auto;padding:15px 0 12px;font:400 13.5px var(--font)}
-.tabs button[aria-selected="true"]{border-bottom-color:var(--hi);color:var(--ink)}
+.tabs button[aria-selected="true"]{border-bottom-color:var(--sel);color:var(--ink)}
 .pane{padding:16px 18px 22px}
 .pane h2,.lessonpane h2{font:400 11px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--hi);margin:20px 0 8px}
 .pane h2:first-child{margin-top:4px}
@@ -323,6 +326,34 @@ dialog.help .hd h2{font:400 24px var(--serif)}
 dialog.help .bd h3{font:400 11px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--hi);margin:18px 0 6px}
 .foot{max-width:900px;font-size:12.5px;color:var(--faint)}
 body.simple .adv{display:none!important}
+.readout{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+.ro{justify-content:space-between}
+.cursorbox{justify-content:space-between}
+.cursorbox .val{flex:1 1 200px;font-size:13px}
+.cbtns{display:flex;flex-wrap:wrap;gap:6px}
+#cvView[data-v="gates"]{height:150px}
+.memkey p{margin:0 0 6px}
+.memkey summary{cursor:pointer;list-style:none;display:inline-flex;align-items:center;gap:6px;min-height:28px;font:500 12.5px var(--font);color:var(--ink2)}
+.memkey summary::-webkit-details-marker{display:none}
+.memkey summary::before{content:"+";display:inline-grid;place-items:center;width:16px;height:16px;border:1px solid var(--line2);border-radius:50%;font:500 11px/1 var(--mono)}
+.memkey[open] summary::before{content:"−"}
+.memkey[open] summary{margin-bottom:6px}
+.memkey .lg{list-style:none;margin:0 0 6px;padding:0;display:grid;gap:3px}
+.memkey .lg li{display:grid;grid-template-columns:12px 1fr;align-items:center;gap:8px}
+.memkey .lg i{flex:none;display:inline-block;font-style:normal}
+.memkey .sq{width:9px;height:12px;border:1.5px solid;border-radius:2px}
+.memkey .dt{width:7px;height:7px;border-radius:50%;margin:0 1px}
+.memkey .br{width:3px;height:12px;margin:0 3px}
+.memkey .ar{width:9px;text-align:center;color:var(--ink2)}
+:root[data-theme="light"] .credit img{filter:brightness(0) opacity(.65)}
+.ro em.u{font-style:normal;text-transform:none;letter-spacing:.02em}
+.keys b{font-weight:600;white-space:nowrap}
+.credit{display:flex;flex-wrap:wrap;align-items:center;gap:0 6px;margin:10px 0 0;font:400 11.5px var(--mono);color:var(--muted)}
+.credit a{display:inline-flex;align-items:center;gap:6px;min-height:32px;color:inherit;text-decoration:none;opacity:.5;transition:opacity .3s;-webkit-tap-highlight-color:transparent;outline:none}
+.credit a.on{opacity:1}
+.credit img{width:18px;height:18px;display:block}
+.credit a span{opacity:0;transform:translateX(-4px);transition:opacity .3s,transform .3s;color:var(--hi2)}
+.credit a.on span{opacity:1;transform:none}
 /* lessons column */
 .lessons{background:var(--panel2);border:1px solid var(--line);border-radius:14px;padding:20px 22px 20px;position:sticky;top:calc(env(safe-area-inset-top,0px) + 10px);max-height:calc(100vh - 24px);overflow-y:auto}
 .lessons[hidden]{display:none}
@@ -355,9 +386,28 @@ body.simple .adv{display:none!important}
 .lx-nav button{border:0;background:transparent;padding:4px 0;font:400 13.5px var(--font);color:var(--muted);cursor:pointer;text-align:left;max-width:48%}
 .lx-nav button:last-child{text-align:right;color:var(--ink)}
 .lx-nav button:disabled{opacity:.35;cursor:default}
-.lx-jump{width:100%;margin-top:14px}
+.lx-jump{width:100%;margin:-8px 0 18px}
 .lx-model{margin-top:18px;border-top:1px solid var(--line);padding-top:12px}
 .lx-model summary{cursor:pointer;font:400 11px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+/* tactile buttons, theme + home */
+.btn.on{background:var(--sel);border-color:var(--sel);color:var(--sel-ink)}
+.toplinks .iconbtn{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line2);border-radius:999px;padding:6px 13px;background:var(--panel);color:var(--ink);font-weight:500;text-decoration:none;cursor:pointer;list-style:none}
+.toplinks .iconbtn::-webkit-details-marker{display:none}
+.toplinks .iconbtn[aria-pressed="true"]{background:var(--sel);border-color:var(--sel);color:var(--sel-ink)}
+.btn,.toplinks .iconbtn{box-shadow:inset 0 1px 0 var(--t-hi),0 1px 2px var(--t-sh),0 2px 6px var(--t-sh2);transition:transform .08s ease,box-shadow .12s ease,background .12s,border-color .12s}
+.btn:hover:not(:disabled),.toplinks .iconbtn:hover{transform:translateY(-1px);box-shadow:inset 0 1px 0 var(--t-hi),0 2px 4px var(--t-sh),0 6px 14px var(--t-sh2)}
+.btn:active:not(:disabled),.toplinks .iconbtn:active{transform:translateY(1px);box-shadow:inset 0 2px 4px var(--t-sh)}
+.seg{box-shadow:inset 0 1px 3px var(--t-sh2)}
+.seg button{transition:background .12s,color .12s,box-shadow .12s}
+.seg button[aria-pressed="true"]{box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 1px 2px var(--t-sh)}
+.seg button:active{transform:translateY(1px)}
+#themeBtn svg{display:block}
+:root[data-theme="light"] #themeBtn .ic-sun,:root[data-theme="light"] #themeBtn .t-light,:root:not([data-theme="light"]) #themeBtn .ic-moon,:root:not([data-theme="light"]) #themeBtn .t-dark{display:none}
+.homebtn img{height:17px;width:auto;display:block}
+:root[data-theme="light"] .homebtn .logo-d,:root:not([data-theme="light"]) .homebtn .logo-l{display:none}
+.btn.nudge{color:var(--ink)}
+.zoombar button{min-width:30px;height:28px}
+.homebtn .go{font-size:14px;line-height:1;color:var(--muted)}
 </style>
 </head>
 <body>
@@ -365,7 +415,7 @@ body.simple .adv{display:none!important}
   <header class="top">
     <div class="brand">
       <h1>HH<i>sim</i></h1>
-      <span class="eyebrow">Hodgkin–Huxley neuron lab · TKN</span>
+      <span class="eyebrow">Hodgkin–Huxley Simulator · TKN Lab, IIT Delhi</span>
     </div>
     <div class="seg" role="group" aria-label="Recording mode">
       <button id="modeCC" aria-pressed="true">Current clamp</button>
@@ -387,8 +437,8 @@ body.simple .adv{display:none!important}
           <button id="resetAllBtn">Reset everything</button>
         </div></details>
       <button class="iconbtn" id="helpBtn" title="How to use (?)">Help</button>
-      <button class="iconbtn" id="themeBtn" title="Switch light / dark">Theme</button>
-      <a class="iconbtn" href="index.html" style="text-decoration:none">Lab home ↗</a>
+      <button class="iconbtn" id="themeBtn" title="Switch light / dark" aria-label="Switch light / dark"><svg class="ic-moon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M20.5 14.2A8.5 8.5 0 1 1 9.8 3.5a7 7 0 0 0 10.7 10.7z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"></path></svg><svg class="ic-sun" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.7"></circle><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"></path></svg><span class="t-dark">Dark</span><span class="t-light">Light</span></button>
+      <a class="iconbtn homebtn" href="index.html" aria-label="Lab home" title="Lab home"><img class="logo-l" src="assets/logos/tkn-logo-dark.png" alt="TKN"><img class="logo-d" src="assets/logos/tkn-logo-cut.png" alt="TKN"><span class="go" aria-hidden="true">↗</span></a>
     </div>
     <input type="file" id="fileIn" accept=".json,application/json" hidden>
   </header>
@@ -446,6 +496,12 @@ body.simple .adv{display:none!important}
         <button class="btn small" id="axExportBtn">Export CSV</button>
         <button class="btn small" id="axPngBtn">Save image</button>
       </div>
+      <details class="memkey" style="padding:2px 16px 6px"><summary>How to read &amp; use the recording</summary>
+        <p data-modes="cc">Press <b>Stim 1</b> or <b>Stim 2</b> to inject current; <b>Run</b> keeps time going, <b>Clear</b> wipes the traces. The upper plot is membrane voltage (mV) against time (ms). The lower plot shows up to three variables, chosen in the menus under it; the coloured swatch next to each menu is its trace colour.</p>
+        <p data-modes="vc">The membrane is held at a command voltage and the plot shows the currents needed to hold it. Choose the variable in <b>Plot</b>; the lower panel shows either the command steps or the I–V summary of the whole family. Inward current is drawn below zero.</p>
+        <p data-modes="ax">Each trace is the voltage at one electrode along the axon (P1, P2, P3). A spike that reaches the next electrode later has travelled; the delay gives the conduction velocity in the readouts below. Hover the recordings or the map to scrub through time.</p>
+        <p>Hover a trace to read values; click to place a cursor. <b>−</b> and <b>+</b> show more or less time; <b>Live</b> (or double-click) jumps back to the present. <b>Pin trace</b> keeps the latest response as a dashed reference to compare against.</p>
+      </details>
       <div class="statusline">
         <span>t <b id="stT">0.0</b> ms</span>
         <span>V<sub>m</sub> <b id="stV">—</b> mV</span>
@@ -455,33 +511,37 @@ body.simple .adv{display:none!important}
       </div>
       <div class="lower" id="lower">
         <div class="readout" id="readout" data-modes="cc">
-          <div class="ro"><span>m (Na activation)</span><b id="roM">—</b></div>
-          <div class="ro"><span>h (Na inactivation)</span><b id="roH">—</b></div>
-          <div class="ro"><span>n (K activation)</span><b id="roN">—</b></div>
-          <div class="ro"><span>g<sub>Na</sub> (µS)</span><b id="roGNa">—</b></div>
-          <div class="ro"><span>g<sub>K</sub> (µS)</span><b id="roGK">—</b></div>
-          <div class="ro"><span>I injected (nA)</span><b id="roI">—</b></div>
+          <div class="ro" title="Na⁺ activation gate: fraction open (0–1). Opens fast when the membrane depolarises."><span>m (Na activation)</span><b id="roM">—</b></div>
+          <div class="ro" title="Na⁺ inactivation gate: fraction not inactivated (0–1). Closes slowly during depolarisation, which ends the spike."><span>h (Na inactivation)</span><b id="roH">—</b></div>
+          <div class="ro" title="K⁺ activation gate: fraction open (0–1). Opens slowly and repolarises the membrane."><span>n (K activation)</span><b id="roN">—</b></div>
+          <div class="ro" title="Na⁺ conductance = ḡNa · m³h, in microsiemens"><span>g<sub>Na</sub> <em class="u">(µS)</em></span><b id="roGNa">—</b></div>
+          <div class="ro" title="K⁺ conductance = ḡK · n⁴, in microsiemens"><span>g<sub>K</sub> <em class="u">(µS)</em></span><b id="roGK">—</b></div>
+          <div class="ro" title="Current injected right now: stimulus plus holding current, in nanoamps"><span>I injected <em class="u">(nA)</em></span><b id="roI">—</b></div>
           <div class="metrics adv">
             <div class="mh"><b>Spike measurements</b><span id="spHead">No spike yet</span></div>
             <div class="mgrid">
-              <div><span>Threshold</span><b id="spThr">—</b></div>
-              <div><span>Peak</span><b id="spPk">—</b></div>
-              <div><span>Amplitude</span><b id="spAmp">—</b></div>
-              <div><span>Half-width</span><b id="spHW">—</b></div>
-              <div><span>Max rise</span><b id="spRise">—</b></div>
-              <div><span>Max fall</span><b id="spFall">—</b></div>
-              <div><span>AHP minimum</span><b id="spAHP">—</b></div>
-              <div><span>Latency</span><b id="spLat">—</b></div>
+              <div title="V where dV/dt first exceeds 20 mV/ms before the peak"><span>Threshold</span><b id="spThr">—</b></div>
+              <div title="Highest V of the spike"><span>Peak</span><b id="spPk">—</b></div>
+              <div title="Peak minus threshold"><span>Amplitude</span><b id="spAmp">—</b></div>
+              <div title="Spike width at the voltage halfway between threshold and peak"><span>Half-width</span><b id="spHW">—</b></div>
+              <div title="Fastest upstroke (largest dV/dt), mV/ms"><span>Max rise</span><b id="spRise">—</b></div>
+              <div title="Fastest downstroke (most negative dV/dt), mV/ms"><span>Max fall</span><b id="spFall">—</b></div>
+              <div title="Lowest V after the spike (after-hyperpolarisation)"><span>AHP minimum</span><b id="spAHP">—</b></div>
+              <div title="Time from the latest stimulus onset to threshold"><span>Latency</span><b id="spLat">—</b></div>
             </div>
           </div>
           <div class="cursorbox adv" id="cursorBox">
-            <span>Cursor</span><span class="val" id="curVal">Click a trace to place the cursor</span>
-            <button class="btn" id="curPrevX" title="Previous peak or trough (Shift+←)">◂ extremum</button>
+            <span title="Click a trace to place a cursor; read t and value here. ◂ ▸ move one sample, extremum jumps to the next peak or trough.">Cursor</span><span class="val" id="curVal">Click a trace to place the cursor</span>
+            <span class="cbtns"><button class="btn" id="curPrevX" title="Previous peak or trough (Shift+←)">◂ extremum</button>
             <button class="btn" id="curPrev" title="One sample left (←)">◂</button>
             <button class="btn" id="curNext" title="One sample right (→)">▸</button>
             <button class="btn" id="curNextX" title="Next peak or trough (Shift+→)">extremum ▸</button>
-            <button class="btn" id="curOff">Hide</button>
+            <button class="btn" id="curOff">Hide</button></span>
           </div>
+          <details class="memkey" style="grid-column:1/-1"><summary>How to read these numbers</summary>
+            <p>Values at the cursor, the pointer or the current time. m, h and n are the Hodgkin–Huxley gates, each a fraction from 0 to 1: m and n rise when the membrane depolarises, h falls. g<sub>Na</sub> and g<sub>K</sub> are the resulting conductances; I injected is the current you are applying. Hover any label for a reminder.</p>
+            <p class="adv">Spike measurements are taken from the most recent complete spike. With <b>Measure</b> on, threshold, peak, half-width and AHP are marked on that spike in the plot.</p>
+          </details>
         </div>
         <div class="axread" data-modes="ax" hidden>
           <div class="ro"><span>Velocity P1→P2</span><b id="axV12">—</b></div>
@@ -492,6 +552,9 @@ body.simple .adv{display:none!important}
           <div class="ro"><span>Time constant τ (passive)</span><b id="axTau">—</b></div>
           <div class="ro"><span>Compartment size</span><b id="axDx">—</b></div>
           <p class="note">Velocity is measured from the times V crosses 0 mV at each electrode after the latest stimulus.</p>
+          <details class="memkey" style="grid-column:1/-1"><summary>How to read these numbers</summary>
+            <p>Velocities compare spike arrival times between pairs of electrodes; equal values mean the spike travels at a steady speed. Peak at P1 / P2 / P3 shows whether the spike keeps its size as it travels. λ and τ are the passive length and time constants: a larger λ lets voltage spread further along the axon before it decays.</p>
+          </details>
         </div>
         <div class="memview">
           <div class="vtabs" data-modes="cc vc" role="group" aria-label="View">
@@ -502,7 +565,27 @@ body.simple .adv{display:none!important}
           <h3 data-modes="ax" hidden>Gates along the axon</h3>
           <canvas id="cvView" aria-label="Visualisation"></canvas>
           <div class="ppctl" id="ppCtl" hidden><label>V-nullcline uses <select id="ppMode"><option value="rinzel">h = 0.89 − 1.1n (Rinzel)</option><option value="frozen">h frozen at its current value</option></select></label></div>
-          <p class="memkey" id="memKey">Each gate opens independently with probability m, h or n; a channel conducts only when all its gates are open. Dots: activation gates (filled = open). Green ball: the h gate, which plugs the pore when it closes. Red dot: drug block.</p>
+          <details class="memkey" id="memKey"><summary>How to read this view</summary>
+            <div class="mk" data-k="gates">
+              <p>A sample of the channels in the patch. Each gate opens at random with probability m, h or n; a channel conducts only when all its gates are open.</p>
+              <ul class="lg">
+                <li><i class="sq" style="border-color:var(--t1)"></i><span>Na⁺ channel: three m gates (dots above) and one h gate</span></li>
+                <li><i class="sq" style="border-color:var(--t3)"></i><span>K⁺ channel: four n gates</span></li>
+                <li><i class="dt" style="background:var(--ink2)"></i><span>Dot filled = activation gate open, hollow = closed</span></li>
+                <li><i class="dt" style="background:var(--t2)"></i><span>h gate: hangs below when open, plugs the pore when closed</span></li>
+                <li><i class="br" style="background:var(--t1)"></i><span>Coloured centre = channel conducting</span></li>
+                <li><i class="dt" style="background:var(--stop)"></i><span>Blocked by TTX or TEA; faded = channel switched off</span></li>
+                <li><i class="ar">↓</i><span>Arrows at right: size and direction of I<sub>Na</sub> and I<sub>K</sub> (down = inward)</span></li>
+              </ul>
+              <p>m³h and n⁴ are the exact open fractions; the drawing is a random sample of them.</p>
+            </div>
+            <div class="mk" data-k="currents" hidden>
+              <p>Each bar is one membrane current at the cursor, pointer or now, on a log scale. Left = inward (depolarising), right = outward. I ionic is their sum. In current clamp C·dV/dt = I injected − I ionic, so V rises whenever the inward side wins.</p>
+            </div>
+            <div class="mk" data-k="phase" hidden>
+              <p>V plotted against n. The trajectory shows the path of the membrane state over time. Red dots: V-nullcline (dV/dt = 0); blue curve: n-nullcline (dn/dt = 0). Where they cross is the rest point. A spike is one large loop; repetitive firing settles into a closed loop, the limit cycle.</p>
+            </div>
+          </details>
         </div>
       </div>
     </section>
@@ -520,10 +603,16 @@ body.simple .adv{display:none!important}
       <div class="pane" id="pane-chan" hidden></div>
       <div class="pane" id="pane-drug" hidden></div>
       <div class="pane" id="pane-an" hidden></div>
+      <details class="memkey" style="padding:4px 18px 14px;border-top:1px solid var(--line)"><summary>How to use these settings</summary>
+        <p><b>Stimuli</b> (or Protocol / Axon) sets what each button delivers: amplitude, duration and delay of the injected current, or the voltage steps in voltage clamp.</p>
+        <p class="adv"><b>Membrane</b> sets temperature, capacitance and ion concentrations, which set the Nernst potentials. <b>Channels</b> sets the maximum conductances and channel noise. <b>Drugs</b> applies TTX (blocks Na⁺) or TEA (blocks K⁺). <b>Analysis</b> runs whole protocols, such as an f–I curve, and plots the result.</p>
+        <p>Changes apply to the next stimulus. Simple shows only the first tab; choose Full in the top bar for all of them.</p>
+      </details>
     </aside>
   </div>
 
   <p class="foot">An independent web re-implementation inspired by HHsim (Touretzky et al., Carnegie Mellon University, GPL), extended with an axon model, analysis tools and guided lessons. Model: Hodgkin &amp; Huxley (1952) squid axon kinetics referenced to 6.3 °C, Nernst potentials from ion concentrations, passive Na⁺/K⁺/Cl⁻ leak, Q10-scaled gating, an ideal voltage clamp, a 1-D cable for the axon, and Fox–Lu Langevin channel noise. Units: mV, ms, nF, µS, nA, mM. Integration: exponential Euler (Δt = 5 µs patch, 10 µs axon with implicit axial coupling).</p>
+  <p class="credit">© 2026 Nayak Group · IIT Delhi ·<a href="people.html#rakesh-barwar" aria-label="Made with love by Rakesh Barwar">made with ♥ by<img src="assets/logos/rb.png" alt="" width="18" height="18"><span>Rakesh Barwar</span></a></p>
 </div>
 
 <dialog class="help" id="helpDlg" aria-labelledby="helpTitle">
@@ -535,6 +624,18 @@ body.simple .adv{display:none!important}
     <p>Press <b>Stim 1</b>. The simulation runs until the membrane settles, then stops. <b>Run</b> keeps it going; <b>Nudge</b> advances a little. <b>Clear</b> wipes the traces but keeps your parameters. <b>Recall</b> returns to rest (or to a state you stored with <b>Store</b>).</p>
     <h3>Reading the screen</h3>
     <p>Hover over any trace to read values; click to place a cursor. The lower-right panel shows the channels' gates, a live balance of currents, or the phase plane, all synchronised with the pointer or cursor. <b>Measure</b> marks threshold, peak, half-width and the after-hyperpolarisation. <b>Pin trace</b> keeps a response as a dashed reference so you can compare before and after a change.</p>
+    <h3>Gates, Currents and Phase plane</h3>
+    <p>The panel at the lower right has three views, each synchronised with the cursor or pointer.</p>
+    <div class="keys"><b>Gates</b><span>A sample of Na⁺ channels (gold) and K⁺ channels (blue). Dots above each channel are activation gates: three m gates on Na⁺, four n gates on K⁺; filled = open. The green ball is the Na⁺ h gate, which plugs the pore when it closes. A channel conducts (coloured centre) only when every gate is open. A red dot marks a drug block (TTX or TEA). The arrows at the right show the size and direction of I<sub>Na</sub> and I<sub>K</sub>. m³h and n⁴ below are the exact open fractions.</span><b>Currents</b><span>Every membrane current as a bar on a log scale: left = inward (depolarising), right = outward. I ionic is the sum. In current clamp C·dV/dt = I injected − I ionic, so V rises whenever the inward side wins.</span><b>Phase plane</b><span>V against n. Red dots are the V-nullcline (dV/dt = 0), the blue curve is the n-nullcline (dn/dt = 0), and their crossing is the rest point. A spike is one loop; steady firing traces a closed loop, the limit cycle.</span></div>
+    <h3>Readouts (current clamp)</h3>
+    <p>Values at the current simulation time. Hover any label for a short reminder.</p>
+    <div class="keys"><b>m</b><span>Na⁺ activation gate, fraction open (0–1). Opens fast on depolarisation.</span><b>h</b><span>Na⁺ inactivation gate, fraction not inactivated. Closes slowly on depolarisation and ends the spike.</span><b>n</b><span>K⁺ activation gate. Opens slowly and repolarises the membrane.</span><b>g<sub>Na</sub></b><span>Na⁺ conductance, ḡ<sub>Na</sub>·m³h (µS).</span><b>g<sub>K</sub></b><span>K⁺ conductance, ḡ<sub>K</sub>·n⁴ (µS).</span><b>I injected</b><span>Stimulus plus holding current (nA).</span></div>
+    <h3>Spike measurements</h3>
+    <p>Measured on the most recent complete spike.</p>
+    <div class="keys"><b>Threshold</b><span>V where dV/dt first exceeds 20 mV/ms before the peak.</span><b>Peak</b><span>Highest V of the spike.</span><b>Amplitude</b><span>Peak minus threshold.</span><b>Half-width</b><span>Width at the voltage halfway between threshold and peak.</span><b>Max rise / fall</b><span>Largest and most negative dV/dt (mV/ms).</span><b>AHP minimum</b><span>Lowest V after the spike (after-hyperpolarisation).</span><b>Latency</b><span>Time from the latest stimulus onset to threshold.</span><b>Cursor</b><span>Click a trace to read t and value. ◂ ▸ move one sample; extremum jumps to the next peak or trough.</span></div>
+    <h3>Lower-plot variables</h3>
+    <p>The three menus under the voltage plot choose what the lower plot shows.</p>
+    <div class="keys"><b>m, h, n</b><span>HH gates (0–1).</span><b>m³h, n⁴</b><span>Fraction of Na⁺ / K⁺ channels open.</span><b>g Na, g K</b><span>Conductances (µS).</span><b>I Na, I K</b><span>Ionic currents (nA). Inward current is negative.</span><b>I leak</b><span>Sum of the passive Na⁺, K⁺ and Cl⁻ leak currents.</span><b>I ionic</b><span>Total membrane ionic current.</span><b>I stimulus</b><span>Injected current.</span><b>dV/dt</b><span>Rate of change of V (mV/ms).</span><b>a, b, g custom, I custom</b><span>Gates, conductance and current of the optional third channel (Channels tab), e.g. the M-current or persistent Na⁺ presets.</span></div>
     <h3>Learning</h3>
     <p>The <b>Lessons</b> column (button in the top bar) has guided experiments that set themselves up, and challenges that check your answers against the model. The <b>Analysis</b> tab measures whole relationships: threshold, strength–duration, f–I and refractory curves, and conduction velocity against diameter.</p>
     <h3>Keyboard</h3>
@@ -859,6 +960,13 @@ function stimLabel(s) {
    Colours & canvas helpers
    ===================================================================== */
 let COL = {};
+function subLabel(ctx, a, sb, b, x, y, al) {
+  const f = ctx.font, m = /(\d+(?:\.\d+)?)px/.exec(f), px = m ? +m[1] : 11, fs = f.replace(/\d+(?:\.\d+)?px/, (px * 0.78).toFixed(1) + "px");
+  const wa = ctx.measureText(a).width, wb = b ? ctx.measureText(b).width : 0; ctx.font = fs; const ws = ctx.measureText(sb).width; ctx.font = f;
+  const tw = wa + ws + wb, x0 = al === "center" ? x - tw / 2 : al === "right" ? x - tw : x, ta = ctx.textAlign; ctx.textAlign = "left";
+  ctx.fillText(a, x0, y); ctx.font = fs; ctx.fillText(sb, x0 + wa, y + px * 0.28); ctx.font = f; if (b) ctx.fillText(b, x0 + wa + ws, y); ctx.textAlign = ta;
+}
+(() => { const of = CanvasRenderingContext2D.prototype.fillText; CanvasRenderingContext2D.prototype.fillText = function (t, ...r) { if (typeof t === "number") t = String(t); if (typeof t === "string") t = t.replace(/(^|[\s(=±])-(?=\.?\d)/g, "$1\u2212"); return of.call(this, t, ...r); }; })();
 function readColors() {
   const cs = getComputedStyle(document.documentElement);
   ["--screen", "--grid", "--grid2", "--axis", "--ink", "--muted", "--faint", "--vm", "--stim", "--t1", "--t2", "--t3", "--panel", "--line", "--accent", "--run", "--stop", "--c6", "--c7", "--c8"]
@@ -923,7 +1031,7 @@ app.vcView = { x0: 0, win: 30 };
 /* =====================================================================
    CC drawing
    ===================================================================== */
-const geomMain = { L: 52, R: 50, T: 12, B: 24 }, geomSub = { L: 52, R: 50, T: 22, B: 22 };
+const geomMain = { L: 52, R: 50, T: 40, B: 24 }, geomSub = { L: 52, R: 50, T: 22, B: 22 };
 function rangeFor(key, i0, i1, arr) {
   const v = VAR[key];
   if (v.frac) return [0, 1];
@@ -950,10 +1058,10 @@ function drawCC() {
       ctx.beginPath(); ctx.moveTo(g.L, y); ctx.lineTo(w - g.R, y); ctx.stroke();
       ctx.fillStyle = COL["--muted"]; ctx.fillText(v + "", g.L - 6, y);
     }
-    ctx.save(); ctx.translate(13, g.T + vH / 2); ctx.rotate(-Math.PI / 2); ctx.textAlign = "center"; ctx.fillStyle = COL["--vm"]; ctx.fillText("Vm (mV)", 0, 0); ctx.restore();
+    ctx.save(); ctx.translate(13, g.T + vH / 2); ctx.rotate(-Math.PI / 2); ctx.textAlign = "center"; ctx.fillStyle = COL["--vm"]; subLabel(ctx, "V", "m", " (mV)", 0, 0, "center"); ctx.restore();
     // reversal potentials
     const E = revPots(app.P); ctx.setLineDash([3, 4]);
-    [["Na", E.Na], ["K", E.K]].forEach(([n, e]) => { if (e > vmin && e < vmax) { const y = Math.round(Y(e)) + .5; ctx.strokeStyle = COL["--faint"]; ctx.beginPath(); ctx.moveTo(g.L, y); ctx.lineTo(w - g.R, y); ctx.stroke(); ctx.fillStyle = COL["--faint"]; ctx.textAlign = "left"; ctx.fillText("E" + n, w - g.R + 4, y); } });
+    [["Na", E.Na], ["K", E.K]].forEach(([n, e]) => { if (e > vmin && e < vmax) { const y = Math.round(Y(e)) + .5; ctx.strokeStyle = COL["--faint"]; ctx.beginPath(); ctx.moveTo(g.L, y); ctx.lineTo(w - g.R, y); ctx.stroke(); ctx.fillStyle = COL["--muted"]; subLabel(ctx, "E", n, "", w - g.R + 4, y, "left"); } });
     ctx.setLineDash([]);
     // stim lane
     const ly0 = g.T + vH + 8; let smax = 10; for (let i = i0; i < i1; i++) smax = Math.max(smax, Math.abs(d.Istim[i]));
@@ -1087,7 +1195,7 @@ function drawSpikeAnnot(ctx, X, Y, clip) {
   ctx.save(); ctx.beginPath(); ctx.rect(clip.x, clip.y - 8, clip.w, clip.h + 16); ctx.clip();
   font(ctx, 11); ctx.lineWidth = 1.2; ctx.strokeStyle = COL["--ink"]; ctx.fillStyle = COL["--ink"];
   const edge = clip.x + clip.w - 110;
-  const dot = (t, v, lab, dx, dy, al) => { const x = X(t), y = Y(v); ctx.beginPath(); ctx.arc(x, y, 3.2, 0, Math.PI * 2); ctx.fill(); if (x > edge && (al || "left") === "left") { al = "right"; dx = -Math.abs(dx || 8); } ctx.textAlign = al || "left"; ctx.textBaseline = "middle"; ctx.fillText(lab, x + dx, y + dy); };
+  const dot = (t, v, lab, dx, dy, al) => { const x = X(t), y = Y(v); ctx.beginPath(); ctx.arc(x, y, 3.2, 0, Math.PI * 2); ctx.fill(); if (x > edge && (al || "left") === "left") { al = "right"; dx = -Math.abs(dx || 8); } if (al === "right" && x + dx - ctx.measureText(lab).width < clip.x) { al = "left"; dx = Math.abs(dx || 8); } ctx.textAlign = al || "left"; ctx.textBaseline = "middle"; ctx.fillText(lab, x + dx, y + dy); };
   dot(r.tThr, r.Vthr, `threshold ${fmt(r.Vthr, 1)}`, -8, 0, "right");
   dot(r.tPk, r.Vpk, `peak ${fmt(r.Vpk, 1)}`, 8, -2);
   if (isFinite(r.hw)) { const y = Math.round(Y(r.Vh)) + .5; ctx.setLineDash([3, 2]); ctx.beginPath(); ctx.moveTo(X(r.t1h), y); ctx.lineTo(X(r.t2h), y); ctx.stroke(); ctx.setLineDash([]); const rt = X(r.t2h) > edge; ctx.textAlign = rt ? "right" : "left"; ctx.fillText(`half-width ${fmt(r.hw, 2)} ms`, rt ? X(r.t1h) - 6 : X(r.t2h) + 6, y); }
@@ -1518,7 +1626,7 @@ function drawAxon() {
     for (let v = -100; v <= 60; v += 40) { const y = Math.round(Y(v)) + .5; ctx.strokeStyle = v === 0 ? COL["--grid2"] : COL["--grid"]; ctx.beginPath(); ctx.moveTo(g.L, y); ctx.lineTo(w - g.R, y); ctx.stroke(); ctx.fillStyle = COL["--muted"]; ctx.fillText(v, g.L - 6, y); }
     ctx.textAlign = "center"; ctx.textBaseline = "top";
     const st = niceStep(c.L, 6); for (let x = 0; x <= c.L + 1e-9; x += st) { const xx = Math.round(Xp(x)) + .5; ctx.strokeStyle = COL["--grid"]; ctx.beginPath(); ctx.moveTo(xx, g.T); ctx.lineTo(xx, g.T + ph1); ctx.stroke(); }
-    ctx.save(); ctx.translate(13, g.T + ph1 / 2); ctx.rotate(-Math.PI / 2); ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillStyle = COL["--vm"]; ctx.fillText("Vm (mV)", 0, 0); ctx.restore();
+    ctx.save(); ctx.translate(13, g.T + ph1 / 2); ctx.rotate(-Math.PI / 2); ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillStyle = COL["--vm"]; subLabel(ctx, "V", "m", " (mV)", 0, 0, "center"); ctx.restore();
     if (fr) {
       // fill under the wave for emphasis
       ctx.save(); ctx.beginPath(); ctx.moveTo(Xp(0), Y(-100)); for (let i = 0; i < S.N; i++) ctx.lineTo(Xp((i + .5) * S.dx), Y(Math.max(-100, Math.min(60, fr.V[i])))); ctx.lineTo(Xp(c.L), Y(-100)); ctx.closePath();
@@ -1812,7 +1920,7 @@ function buildAxonPane(pane) {
     numField("Diameter", "µm", () => c.diam, v => c.diam = v, { min: 20, max: 1000, step: 1, slider: true, sstep: 1, dp: 0, after: rebuild }),
     numField("Axial resistivity R<sub>i</sub>", "Ω·cm", () => c.Ri, v => c.Ri = v, { min: 5, max: 300, step: 0.1, after: rebuild }),
     numField("Length", "cm", () => c.L, v => c.L = v, { min: 1, max: 12, step: 0.5, slider: true, sstep: 0.5, after: () => { c.probes = c.probes.map(p => Math.min(p, c.L)); c.block.x1 = Math.min(c.block.x1, c.L); rebuild(); } }),
-    h("p", { class: "note", style: "margin:0" }, "Defaults are the squid giant axon modelled by Hodgkin and Huxley (diameter 476 µm, Ri 35.4 Ω·cm).")));
+    h("p", { class: "note", style: "margin:0", html: "Defaults are the squid giant axon modelled by Hodgkin and Huxley (diameter 476 µm, R<sub>i</sub> 35.4 Ω·cm)." })));
   const pr = h("div", { class: "card" }, h("h3", {}, "Recording electrodes"));
   c.probes.forEach((p, k) => pr.append(numField(`<span style="color:var(--t${k + 1})">P${k + 1}</span> position`, "cm", () => c.probes[k], v => { c.probes[k] = Math.min(v, c.L); A.cross[k] = []; }, { min: 0, max: c.L, step: 0.05, slider: true, sstep: 0.05, after: () => { dirty = true; } })));
   pane.append(pr);
@@ -1887,12 +1995,12 @@ function buildMemPane() {
   pane.append(h("h2", {}, "Derived"),
     h("div", { class: "kv" },
       h("span", { class: "k" }, "RT/F"), h("span", {}), h("span", { class: "v", id: "dRTF" }),
-      h("span", { class: "k" }, "Passive Vr (leak channels only)"), h("span", {}), h("span", { class: "v", id: "dVr" }),
+      h("span", { class: "k", html: "Passive V<sub>r</sub> (leak channels only)" }), h("span", {}), h("span", { class: "v", id: "dVr" }),
       h("span", { class: "k" }, "Passive input resistance"), h("span", {}), h("span", { class: "v", id: "dRm" }),
       h("span", { class: "k" }, "Membrane time constant (passive)"), h("span", {}), h("span", { class: "v", id: "dTau" }),
-      h("span", { class: "k" }, "Steady-state Vm (all channels)"), h("span", {}), h("span", { class: "v", id: "dVss" }),
+      h("span", { class: "k", html: "Steady-state V<sub>m</sub> (all channels)" }), h("span", {}), h("span", { class: "v", id: "dVss" }),
       h("span", { class: "k" }, "Gating rate factor (φ)"), h("span", {}), h("span", { class: "v", id: "dPhi" })));
-  pane.append(h("p", { class: "note" }, "Passive Vr is the parallel-conductance (chord) equation: Vr = (gNa·ENa + gK·EK + gCl·ECl)/(gNa + gK + gCl), using only the passive channels."));
+  pane.append(h("p", { class: "note", html: "Passive V<sub>r</sub> is the parallel-conductance (chord) equation: V<sub>r</sub> = (g<sub>Na</sub>E<sub>Na</sub> + g<sub>K</sub>E<sub>K</sub> + g<sub>Cl</sub>E<sub>Cl</sub>)/(g<sub>Na</sub> + g<sub>K</sub> + g<sub>Cl</sub>), using only the passive channels." }));
   pane.append(h("div", { class: "mini" }, h("button", { class: "btn", onclick: () => { const d = defaultParams(); P.T = d.T; P.C = d.C; P.q10 = d.q10; P.useQ10 = d.useQ10; P.conc = d.conc; buildMemPane(); paramChanged(); } }, "Reset membrane")));
   refreshDerived();
 }
@@ -1951,7 +2059,7 @@ function buildChanPane() {
     const r = h("input", { type: "range", min: 1.5, max: 6, step: 0.05, value: Math.log10(nz.N), "aria-label": "Number of channels (log scale)" });
     r.addEventListener("input", () => { nz.N = Math.round(Math.pow(10, +r.value)); sync(); paramChanged(); }); sync();
     nzBody.append(h("div", { class: "field" }, h("label", {}, "Channels in the patch"), lab), r,
-      h("p", { class: "note" }, "Smaller patches have fewer channels, so random openings matter more. Below about 10⁴ Na⁺ channels the membrane fires spontaneously. A real patch of this capacitance (0.001 cm²) holds about 6 × 10⁶ Na⁺ channels.")); };
+      h("p", { class: "note" }, "Smaller patches have fewer channels, so random openings matter more. With up to a few × 10⁴ Na⁺ channels the membrane fires spontaneously. A real patch of this capacitance (0.001 cm²) holds about 6 × 10⁶ Na⁺ channels.")); };
   pane.append(h("h2", {}, "Channel noise"), h("div", { class: "card" }, toggle(" Stochastic gating (Langevin approximation)", () => nz.on, v => { nz.on = v; rn(); paramChanged(); }), nzBody)); rn();
   pane.append(h("div", { class: "mini" }, h("button", { class: "btn", onclick: () => { const d = defaultParams(); P.passive = d.passive; P.chans = d.chans; P.noise = d.noise; buildChanPane(); paramChanged(); } }, "Reset all channels")));
 }
@@ -2095,7 +2203,7 @@ function rebuildAll() {
   syncSpeed(); dirty = true;
 }
 function syncSpeed() { const ax = app.mode === "ax", idx = ax ? app.ax.speedIdx : app.speedIdx; $("speed").value = idx; $("speedLbl").textContent = (ax ? AX_SPEEDS : SPEEDS)[idx] + " ms/s"; }
-function setView(tab) { app.viewTab = tab; document.querySelectorAll(".vtabs button").forEach(b => b.setAttribute("aria-pressed", b.dataset.v === tab)); $("ppCtl").hidden = tab !== "phase"; $("memKey").hidden = tab !== "gates"; dirty = true; }
+function setView(tab) { app.viewTab = tab; document.querySelectorAll(".vtabs button").forEach(b => b.setAttribute("aria-pressed", b.dataset.v === tab)); $("ppCtl").hidden = tab !== "phase"; $("memKey").hidden = false; document.querySelectorAll("#memKey .mk").forEach(e => e.hidden = e.dataset.k !== tab); $("cvView").dataset.v = tab; dirty = true; }
 function openTab(name) { const b = document.querySelector(`.tabs button[data-tab="${name}"]`); if (!b) return; if (b.classList.contains("adv") && document.body.classList.contains("simple")) setLevel("full"); b.click(); }
 function setLevel(lv) {
   lv = lv === "simple" ? "simple" : "full"; document.body.classList.toggle("simple", lv === "simple");
@@ -2117,7 +2225,7 @@ const EXPERIMENTS = [
 <ol><li>Where does V<sub>m</sub> settle, and why exactly there?</li><li>Halve [Na⁺]<sub>o</sub> from 440 to 220 mM. Predict the new E<sub>Na</sub> first.</li><li>Raise the temperature from 6.3 to 12.6 °C. Why does E<sub>Na</sub> not double?</li></ol>`,
     ans: `With a single conductance, zero net current requires V = E<sub>Na</sub> = (RT/F)·ln([Na]<sub>o</sub>/[Na]<sub>i</sub>) ≈ 24.08 mV × ln 8.8 ≈ +52.4 mV. Halving [Na]<sub>o</sub> subtracts (RT/F)·ln 2 ≈ 16.7 mV, giving about +35.7 mV. E is proportional to absolute temperature, and 279.45 K → 285.75 K is only a 2.3% increase, so E<sub>Na</sub> becomes about +53.6 mV. The approach is slow because the passive conductance is tiny (τ = C/g ≈ 31 ms).` },
   { title: "Resting potential and the chord equation", setup: () => { resetAll(); app.P.chans[0].on = false; app.P.chans[1].on = false; app.sel = ["IL", "-", "-"]; app.speedIdx = 4; app.win = 300; rebuildAll(); startAuto(app.t + 200); },
-    body: `<p>Both voltage-gated channels are off; only the three leak conductances remain. The yellow trace in the lower plot is I<sub>leak</sub>, which goes to zero at rest.</p>
+    body: `<p>Both voltage-gated channels are off; only the three leak conductances remain. The orange trace in the lower plot is I<sub>leak</sub>, which goes to zero at rest.</p>
 <ol><li>Compute V<sub>r</sub> from the conductances (Channels) and reversal potentials (Membrane), then compare with the trace.</li><li>Find the passive g<sub>K</sub> that gives V<sub>r</sub> = −45 mV.</li><li>Turn the gated channels back on. Why does the cell rest about 15 mV more negative?</li></ol>`,
     ans: `V<sub>r</sub> = Σg<sub>i</sub>E<sub>i</sub>/Σg<sub>i</sub> = (0.0323·52.4 + 0.07·(−72.1) + 0.1·(−63.6))/0.2023 ≈ −48.0 mV, the voltage where net leak current is zero. Solving for −45 mV gives g<sub>K</sub> ≈ 0.048 µS. With the delayed rectifier on, n ≈ 0.35 at rest, so 36·n⁴ ≈ 0.56 µS of K⁺ conductance is open. That is nearly three times the whole passive conductance, and it pulls V<sub>m</sub> toward E<sub>K</sub>: the cell rests at −62.7 mV.` },
   { group: "The action potential" },
@@ -2138,7 +2246,7 @@ const EXPERIMENTS = [
 <ol><li>Change the ramp duration to 400 ms (zoom out to see it). The cell now fires many spikes; how does their threshold compare with the single spike on the fast ramp?</li><li>Why does a slowly rising stimulus need a more depolarised voltage to fire?</li></ol>`,
     ans: `The threshold rises from about −50 mV on the 5 ms ramp to about −46 to −47 mV on the 400 ms ramp. During a slow depolarisation, Na⁺ channels have time to inactivate (h falls) and K⁺ channels to open (n rises), so a larger depolarisation is needed before inward current wins. This is accommodation. The HH membrane accommodates only modestly and keeps firing on slow ramps; many real axons accommodate more strongly.` },
   { title: "Phase plane: threshold and the limit cycle", setup: () => { resetAll(); app.win = 60; rebuildAll(); setView("phase"); },
-    body: `<p>The Phase plane view plots V against n. The red dots are where dV/dt = 0 in Rinzel's two-variable reduction (m set to m∞(V), h ≈ 0.89 − 1.1n); the cyan curve is where dn/dt = 0. Their crossing is the resting point.</p>
+    body: `<p>The Phase plane view plots V against n. The red dots are where dV/dt = 0 in Rinzel's two-variable reduction (m set to m∞(V), h ≈ 0.89 − 1.1n); the blue curve is where dn/dt = 0. Their crossing is the resting point.</p>
 <ol><li>Press Stim 1. Watch the trajectory leave the rest point and loop around. Where does it turn?</li><li>Set a holding current of 10 nA. What happens to the red nullcline and the rest point?</li><li>Why does the trajectory cycle forever at 10 nA?</li></ol>`,
     ans: `During the spike V races right along the bottom (n changes slowly), turns when it meets the right branch of the V-nullcline, then rides up and back as n grows and drives repolarisation. Holding current lifts the V-nullcline. At 10 nA the intersection sits on its middle branch, where the fixed point is unstable, so the trajectory settles onto a closed loop: a limit cycle, which is repetitive firing. The resting point loses stability through a Hopf bifurcation, which is why firing starts at a non-zero frequency.` },
   { group: "Channels and drugs" },
@@ -2263,21 +2371,24 @@ function buildLearnPane() {
     pane.append(h("div", { class: "mini" }, h("button", { class: "btn small", onclick: () => { saveDone({}); buildLearnPane(); } }, "Reset progress")));
     return;
   }
-  let n = 0; const total = EXPERIMENTS.filter(e => !e.group).length;
-  pane.append(h("p", { class: "note" }, `${total} experiments. Each one resets the simulator and sets itself up. Answer the questions before you open the explanation.`));
-  EXPERIMENTS.forEach(ex => {
-    if (ex.group) { pane.append(h("h2", { class: "lx-group" }, ex.group)); return; }
-    const i = ++n;
-    const ans = h("div", { class: "ans", html: ex.ans }); ans.hidden = true;
-    const rev = h("button", { class: "btn small", onclick: () => { ans.hidden = !ans.hidden; rev.textContent = ans.hidden ? "Show explanation" : "Hide explanation"; } }, "Show explanation");
-    const d = h("details", { class: "exp" + (app.exRan && app.exRan.has(i) ? " ran" : ""), open: app.exOpen === i },
-      h("summary", {}, h("span", { class: "n" }, String(i).padStart(2, "0")), h("span", { html: ex.title })),
-      h("div", { class: "body" },
-        h("div", { class: "mini" }, h("button", { class: "btn on small", onclick: () => { ex.setup(); (app.exRan = app.exRan || new Set()).add(i); d.classList.add("ran"); setMsg("Experiment " + i + " is set up"); } }, "Set up this experiment")),
-        h("div", { html: ex.body }), rev, ans));
-    d.addEventListener("toggle", () => { if (d.open) { app.exOpen = i; pane.querySelectorAll("details.exp[open]").forEach(o => { if (o !== d) o.open = false; }); } else if (app.exOpen === i) app.exOpen = null; });
-    pane.append(d);
-  });
+  const list = []; let grp = ""; EXPERIMENTS.forEach(e => { if (e.group) grp = e.group; else list.push(Object.assign({ grp }, e)); });
+  let k = app.exIdx; if (k === undefined) { try { k = +(localStorage.getItem("hhsim-ex") || 0); } catch (e) { k = 0; } }
+  k = Math.max(0, Math.min(list.length - 1, k || 0)); app.exIdx = k; const ex = list[k];
+  const go = i => { app.exIdx = i; try { localStorage.setItem("hhsim-ex", i); } catch (e) { } buildLearnPane(); $("lessons").scrollTop = 0; };
+  const ans = h("div", { class: "ans", html: ex.ans }); ans.hidden = true;
+  const rev = h("button", { class: "btn small", onclick: () => { ans.hidden = !ans.hidden; rev.textContent = ans.hidden ? "Show explanation" : "Hide explanation"; } }, "Show explanation");
+  const strip = t => t.replace(/<[^>]+>/g, "");
+  const jump = h("select", { class: "lx-jump", "aria-label": "All experiments", onchange: e => go(+e.target.value) });
+  let og = null; list.forEach((e, i) => { if (!og || og.label !== e.grp) { og = h("optgroup", { label: e.grp }); jump.append(og); } og.append(h("option", { value: i }, `${i + 1}. ${strip(e.title)}`)); }); jump.value = k;
+  pane.append(jump,
+    h("div", { class: "lx-eyebrow" }, `Experiment ${k + 1} of ${list.length} · ${ex.grp}`),
+    h("h2", { class: "lx-title", html: ex.title }),
+    h("div", { class: "lx-row" }, h("button", { class: "btn on", onclick: () => { ex.setup(); setMsg("Experiment ready"); } }, "Set up this experiment")),
+    h("div", { class: "lx-body", html: ex.body }),
+    h("div", { class: "lx-row" }, rev), ans,
+    h("div", { class: "lx-nav" },
+      h("button", { disabled: k === 0, onclick: () => go(k - 1) }, k > 0 ? "← " + strip(list[k - 1].title) : "←"),
+      h("button", { disabled: k === list.length - 1, onclick: () => go(k + 1) }, k < list.length - 1 ? strip(list[k + 1].title) + " →" : "→")));
   const model = h("details", { class: "lx-model" }, h("summary", {}, "The model"));
   pane.append(model);
   const pane0 = pane;
@@ -2486,9 +2597,8 @@ function wire() {
   }));
   $("themeBtn").addEventListener("click", () => {
     const root = document.documentElement, next = root.getAttribute("data-theme") === "light" ? "dark" : "light";
-    root.setAttribute("data-theme", next); try { localStorage.setItem("tkn-theme", next); } catch (e) { } readColors(); if (!$("pane-chan").hidden) buildChanPane(); drawAnalysis(); dirty = true;
+    root.setAttribute("data-theme", next); readColors(); if (!$("pane-chan").hidden) buildChanPane(); drawAnalysis(); dirty = true;
   });
-  window.addEventListener("storage", e => { if (e.key === "tkn-theme") { document.documentElement.setAttribute("data-theme", e.newValue === "light" ? "light" : "dark"); readColors(); dirty = true; } });
   const setLessons = on => { document.body.classList.toggle("lessons-on", on); $("lessons").hidden = !on; $("lessonsBtn").setAttribute("aria-pressed", on); try { localStorage.setItem("hhsim-lessons", on ? "1" : "0"); } catch (e) { } dirty = true; };
   $("lessonsBtn").addEventListener("click", () => setLessons($("lessons").hidden));
   $("lessonsClose").addEventListener("click", () => setLessons(false));
@@ -2499,6 +2609,7 @@ function wire() {
     app.audio = !app.audio; $("soundBtn").setAttribute("aria-pressed", app.audio);
     if (app.audio) { try { actx = actx || new (window.AudioContext || window.webkitAudioContext)(); actx.resume(); setMsg("Sound on: each spike clicks"); } catch (e) { app.audio = false; $("soundBtn").setAttribute("aria-pressed", false); setMsg("Sound is not available in this browser"); } }
   });
+  try { if (localStorage.getItem("hhsim-key") === "1") $("memKey").open = true; } catch (e) { } $("memKey").addEventListener("toggle", () => { try { localStorage.setItem("hhsim-key", $("memKey").open ? "1" : "0"); } catch (e) { } });
   $("helpBtn").addEventListener("click", openHelp); $("helpClose").addEventListener("click", () => { const d = $("helpDlg"); d.close ? d.close() : d.removeAttribute("open"); });
   const closeMenu = () => $("setupMenu").removeAttribute("open");
   $("saveSetup").addEventListener("click", () => { closeMenu(); saveFile("hhsim_setup.json", JSON.stringify(setupJSON(), null, 1), "application/json"); });
@@ -2545,5 +2656,12 @@ function init() {
 init();
 
 </script>
+<script>(function(){var a=document.querySelector('.credit a');if(!a)return;var t,hid=null;
+function on(){a.classList.add('on')}function off(){a.classList.remove('on')}
+a.addEventListener('pointerenter',function(e){if(e.pointerType==='mouse')on()});
+a.addEventListener('pointerleave',function(e){if(e.pointerType==='mouse')off()});
+a.addEventListener('focus',on);a.addEventListener('blur',off);
+a.addEventListener('pointerdown',function(){hid=!a.classList.contains('on')});
+a.addEventListener('click',function(e){var h=hid==null?!a.classList.contains('on'):hid;hid=null;if(h){e.preventDefault();on();clearTimeout(t);t=setTimeout(off,4000)}});})();</script>
 </body>
 </html>
