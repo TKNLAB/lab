@@ -496,6 +496,12 @@ body.simple .adv{display:none!important}
         <button class="btn small" id="axExportBtn">Export CSV</button>
         <button class="btn small" id="axPngBtn">Save image</button>
       </div>
+      <details class="memkey" style="padding:2px 16px 6px"><summary>How to read &amp; use the recording</summary>
+        <p data-modes="cc">Press <b>Stim 1</b> or <b>Stim 2</b> to inject current; <b>Run</b> keeps time going, <b>Clear</b> wipes the traces. The upper plot is membrane voltage (mV) against time (ms). The lower plot shows up to three variables, chosen in the menus under it; the coloured swatch next to each menu is its trace colour.</p>
+        <p data-modes="vc">The membrane is held at a command voltage and the plot shows the currents needed to hold it. Choose the variable in <b>Plot</b>; the lower panel shows either the command steps or the I–V summary of the whole family. Inward current is drawn below zero.</p>
+        <p data-modes="ax">Each trace is the voltage at one electrode along the axon (P1, P2, P3). A spike that reaches the next electrode later has travelled; the delay gives the conduction velocity in the readouts below. Hover the recordings or the map to scrub through time.</p>
+        <p>Hover a trace to read values; click to place a cursor. <b>−</b> and <b>+</b> show more or less time; <b>Live</b> (or double-click) jumps back to the present. <b>Pin trace</b> keeps the latest response as a dashed reference to compare against.</p>
+      </details>
       <div class="statusline">
         <span>t <b id="stT">0.0</b> ms</span>
         <span>V<sub>m</sub> <b id="stV">—</b> mV</span>
@@ -532,6 +538,10 @@ body.simple .adv{display:none!important}
             <button class="btn" id="curNextX" title="Next peak or trough (Shift+→)">extremum ▸</button>
             <button class="btn" id="curOff">Hide</button></span>
           </div>
+          <details class="memkey" style="grid-column:1/-1"><summary>How to read these numbers</summary>
+            <p>Values at the cursor, the pointer or the current time. m, h and n are the Hodgkin–Huxley gates, each a fraction from 0 to 1: m and n rise when the membrane depolarises, h falls. g<sub>Na</sub> and g<sub>K</sub> are the resulting conductances; I injected is the current you are applying. Hover any label for a reminder.</p>
+            <p class="adv">Spike measurements are taken from the most recent complete spike. With <b>Measure</b> on, threshold, peak, half-width and AHP are marked on that spike in the plot.</p>
+          </details>
         </div>
         <div class="axread" data-modes="ax" hidden>
           <div class="ro"><span>Velocity P1→P2</span><b id="axV12">—</b></div>
@@ -542,6 +552,9 @@ body.simple .adv{display:none!important}
           <div class="ro"><span>Time constant τ (passive)</span><b id="axTau">—</b></div>
           <div class="ro"><span>Compartment size</span><b id="axDx">—</b></div>
           <p class="note">Velocity is measured from the times V crosses 0 mV at each electrode after the latest stimulus.</p>
+          <details class="memkey" style="grid-column:1/-1"><summary>How to read these numbers</summary>
+            <p>Velocities compare spike arrival times between pairs of electrodes; equal values mean the spike travels at a steady speed. Peak at P1 / P2 / P3 shows whether the spike keeps its size as it travels. λ and τ are the passive length and time constants: a larger λ lets voltage spread further along the axon before it decays.</p>
+          </details>
         </div>
         <div class="memview">
           <div class="vtabs" data-modes="cc vc" role="group" aria-label="View">
@@ -590,6 +603,11 @@ body.simple .adv{display:none!important}
       <div class="pane" id="pane-chan" hidden></div>
       <div class="pane" id="pane-drug" hidden></div>
       <div class="pane" id="pane-an" hidden></div>
+      <details class="memkey" style="padding:4px 18px 14px;border-top:1px solid var(--line)"><summary>How to use these settings</summary>
+        <p><b>Stimuli</b> (or Protocol / Axon) sets what each button delivers: amplitude, duration and delay of the injected current, or the voltage steps in voltage clamp.</p>
+        <p class="adv"><b>Membrane</b> sets temperature, capacitance and ion concentrations, which set the Nernst potentials. <b>Channels</b> sets the maximum conductances and channel noise. <b>Drugs</b> applies TTX (blocks Na⁺) or TEA (blocks K⁺). <b>Analysis</b> runs whole protocols, such as an f–I curve, and plots the result.</p>
+        <p>Changes apply to the next stimulus. Simple shows only the first tab; choose Full in the top bar for all of them.</p>
+      </details>
     </aside>
   </div>
 

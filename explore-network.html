@@ -82,6 +82,13 @@ details>summary::-webkit-details-marker{display:none;}
         <div style="display:grid;grid-template-columns:minmax(0,150px) 1fr;gap:8px 20px;padding:14px 0;border-top:1px solid rgba(255,255,255,0.07);border-bottom:1px solid rgba(255,255,255,0.07);font-size:14.5px;line-height:1.6;"><div style="font-family:'Geist Mono',monospace;font-size:12px;color:#f1d49a;">What is missing</div><div style="color:#aab3c3;font-weight:300;">No structure of the open channel has been solved. The open state in the next scene is a molecular-dynamics model.</div></div>
       </div>
     </div>
+    <details style="margin-top:16px;max-width:900px;border-top:1px solid rgba(255,255,255,0.08);border-bottom:1px solid rgba(255,255,255,0.08);">
+      <summary style="cursor:pointer;padding:16px 0;display:flex;justify-content:space-between;gap:12px;font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#f1d49a;"><span>How to read &amp; use this</span><span aria-hidden="true">+</span></summary>
+      <div style="padding:4px 0 24px;display:flex;flex-direction:column;gap:14px;font-size:15px;line-height:1.75;color:#aab3c3;font-weight:300;">
+        <p style="text-wrap:pretty;"><span style="font-weight:500;color:#e8ecf3;">Read.</span> A cut through the protein seen from the side, extracellular face at the top and cytoplasm at the bottom. The coloured columns are the transmembrane helices, the retinal sits in its pocket, and the three marks along the pore are the gates, all closed in the dark.</p>
+        <p style="text-wrap:pretty;"><span style="font-weight:500;color:#e8ecf3;">Read the table.</span> Each row names one part of the drawing and what is known about it from the crystal structure.</p>
+      </div>
+    </details>
     <p style="margin-top:14px;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.04em;color:#7d889c;">Sources · Volkov et al. 2017 <a href="#ref-1">[1]</a> · Xin et al. 2023 <a href="#ref-2">[2]</a></p>
   </section>
 
@@ -123,7 +130,15 @@ details>summary::-webkit-details-marker{display:none;}
         <figcaption style="font-family:'Geist Mono',monospace;font-size:10.5px;line-height:1.6;color:#7d889c;text-wrap:pretty;">Schematic · D470 to P520 follow the molecular-dynamics models of Xin, Zhang &amp; Yuan 2023 (water at the central gate in their stepwise ratio; P520 pore radius &gt; 6 Å). P480 was not modelled there and is drawn closed. Timescales are orders of magnitude from photocycle spectroscopy.</figcaption>
       </figure>
     </div>
-    <details style="margin-top:16px;max-width:900px;border-top:1px solid rgba(255,255,255,0.08);border-bottom:1px solid rgba(255,255,255,0.08);">
+    <details style="margin-top:16px;max-width:900px;border-top:1px solid rgba(255,255,255,0.08);">
+      <summary style="cursor:pointer;padding:16px 0;display:flex;justify-content:space-between;gap:12px;font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#f1d49a;"><span>How to read &amp; use this</span><span aria-hidden="true">+</span></summary>
+      <div style="padding:4px 0 24px;display:flex;flex-direction:column;gap:14px;font-size:15px;line-height:1.75;color:#aab3c3;font-weight:300;">
+        <p style="text-wrap:pretty;"><span style="font-weight:500;color:#e8ecf3;">Use.</span> Click a state name to jump to it, or use Previous and Next to step through the cycle. Play runs through it on its own.</p>
+        <p style="text-wrap:pretty;"><span style="font-weight:500;color:#e8ecf3;">Read the ring.</span> The photocycle drawn as a loop. The highlighted state is the one shown on the right; the arrows show the order and the light-driven step.</p>
+        <p style="text-wrap:pretty;"><span style="font-weight:500;color:#e8ecf3;">Read the right panel.</span> The same cut through the protein as in 01, now in the selected state: which gates are open and whether water and ions reach the pore. The text and tiles give the state's name, whether it conducts, and its approximate lifetime.</p>
+      </div>
+    </details>
+    <details style="max-width:900px;border-top:1px solid rgba(255,255,255,0.08);border-bottom:1px solid rgba(255,255,255,0.08);">
       <summary style="cursor:pointer;padding:16px 0;display:flex;justify-content:space-between;gap:12px;font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#f1d49a;"><span>The detail · from photocycle to the four-state model</span><span aria-hidden="true">+</span></summary>
       <div style="padding:4px 0 24px;display:flex;flex-direction:column;gap:14px;font-size:15px;line-height:1.75;color:#aab3c3;font-weight:300;">
         <p style="text-wrap:pretty;">In the dark state a hydrogen-bond network joins K93 and E90 on TM2, E123 on TM3 and D253 on TM7, and water cannot reach the central gate. In the simulations E90 loses its proton as P390-early turns into P390-late, which breaks the link between TM2 and TM7. The number of waters at the central gate rises in steps: low in P390-early, about 70% of the open value in P390-late, and the full value in P520. The free energy for a Na⁺ ion crossing the central gate of P520 is almost flat.</p>
@@ -178,7 +193,15 @@ details>summary::-webkit-details-marker{display:none;}
         <figcaption style="font-family:'Geist Mono',monospace;font-size:10.5px;line-height:1.6;color:#7d889c;text-wrap:pretty;">{{ capCh }}</figcaption>
       </figure>
     </div>
-    <details style="margin-top:16px;max-width:900px;border-top:1px solid rgba(255,255,255,0.08);border-bottom:1px solid rgba(255,255,255,0.08);">
+    <details style="margin-top:16px;max-width:900px;border-top:1px solid rgba(255,255,255,0.08);">
+      <summary style="cursor:pointer;padding:16px 0;display:flex;justify-content:space-between;gap:12px;font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#f1d49a;"><span>How to read &amp; use this</span><span aria-hidden="true">+</span></summary>
+      <div style="padding:4px 0 24px;display:flex;flex-direction:column;gap:14px;font-size:15px;line-height:1.75;color:#aab3c3;font-weight:300;">
+        <p style="text-wrap:pretty;"><span style="font-weight:500;color:#e8ecf3;">Use.</span> Set the irradiance and choose the recording noise. Next sweep records a new random sweep with the same settings.</p>
+        <p style="text-wrap:pretty;"><span style="font-weight:500;color:#e8ecf3;">Read.</span> Each row is a patch with a different number of channels, from one at the top to a whole cell at the bottom. Grey is what an amplifier would record, gold the channel current without noise, and the dashed blue line the average the deterministic model predicts, N·i·P<sub>o</sub>. The signal-to-noise figure on the right of each row tells you whether the current is visible above the noise.</p>
+        <p style="text-wrap:pretty;"><span style="font-weight:500;color:#e8ecf3;">Try.</span> Switch the noise off to see single openings in the top row, then on again to see them disappear.</p>
+      </div>
+    </details>
+    <details style="max-width:900px;border-top:1px solid rgba(255,255,255,0.08);border-bottom:1px solid rgba(255,255,255,0.08);">
       <summary style="cursor:pointer;padding:16px 0;display:flex;justify-content:space-between;gap:12px;font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#f1d49a;"><span>The detail</span><span aria-hidden="true">+</span></summary>
       <div style="padding:4px 0 24px;display:flex;flex-direction:column;gap:14px;font-size:15px;line-height:1.75;color:#aab3c3;font-weight:300;">
         <p style="text-wrap:pretty;">Each channel follows the same four-state scheme as Module 1, but as a random process: in every 50 µs step, the number of channels leaving each state is drawn from a binomial distribution with the transition probabilities of that step. With one channel you see single openings to O1 and the smaller O2 level; with many, the fluctuations average out and the sum converges on N·i·P<sub>o</sub>(t), where P<sub>o</sub> is the open-equivalent fraction (O1 + 0.1·O2) of the deterministic model.</p>
@@ -238,7 +261,15 @@ details>summary::-webkit-details-marker{display:none;}
         <p style="text-wrap:pretty;">Boyden and colleagues showed in 2005 that millisecond pulses of blue light on ChR2-expressing hippocampal neurons fire spikes with millisecond precision. This scene reproduces that result in the Hodgkin–Huxley membrane used on the Teaching page and in HHsim.</p>
       </div>
     </div>
-    <details style="margin-top:16px;max-width:900px;border-top:1px solid rgba(255,255,255,0.08);border-bottom:1px solid rgba(255,255,255,0.08);">
+    <details style="margin-top:16px;max-width:900px;border-top:1px solid rgba(255,255,255,0.08);">
+      <summary style="cursor:pointer;padding:16px 0;display:flex;justify-content:space-between;gap:12px;font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#f1d49a;"><span>How to read &amp; use this</span><span aria-hidden="true">+</span></summary>
+      <div style="padding:4px 0 24px;display:flex;flex-direction:column;gap:14px;font-size:15px;line-height:1.75;color:#aab3c3;font-weight:300;">
+        <p style="text-wrap:pretty;"><span style="font-weight:500;color:#e8ecf3;">Use.</span> Pick a variant and set the irradiance and pulse length. The neuron is simulated again on every change.</p>
+        <p style="text-wrap:pretty;"><span style="font-weight:500;color:#e8ecf3;">Read the upper plot.</span> Membrane voltage in mV. A spike is a fast rise past 0 mV and back; without one, the light only bumps the voltage up. The lower trace is the ChR2 current during the same pulse, with the coloured bar showing when the light is on.</p>
+        <p style="text-wrap:pretty;"><span style="font-weight:500;color:#e8ecf3;">Read the strength–duration plot.</span> Open circles are the threshold irradiance for each pulse length. Your current settings are the filled blue dot: above the curve fires a spike, below it does not.</p>
+      </div>
+    </details>
+    <details style="max-width:900px;border-top:1px solid rgba(255,255,255,0.08);border-bottom:1px solid rgba(255,255,255,0.08);">
       <summary style="cursor:pointer;padding:16px 0;display:flex;justify-content:space-between;gap:12px;font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#f1d49a;"><span>The detail</span><span aria-hidden="true">+</span></summary>
       <div style="padding:4px 0 24px;display:flex;flex-direction:column;gap:14px;font-size:15px;line-height:1.75;color:#aab3c3;font-weight:300;">
         <p style="text-wrap:pretty;">The membrane is the Hodgkin–Huxley squid axon (resting near −65 mV), with its gating rates scaled from 6.3 °C to 12 °C using Q<sub>10</sub> = 3 so that it can follow the pulse trains in the next scene. The ChR2 current is added as a membrane current, I<sub>ChR2</sub> = g·(O1 + 0.1·O2)·G(V), with the photocycle integrated together with V, m, h and n by fourth-order Runge–Kutta at 10 µs. Because the closing rate Gd1 and the rectification depend on voltage, the channel feels the spike it causes.</p>
@@ -309,7 +340,16 @@ details>summary::-webkit-details-marker{display:none;}
         </figure>
       </div>
     </div>
-    <details style="margin-top:16px;max-width:900px;border-top:1px solid rgba(255,255,255,0.08);border-bottom:1px solid rgba(255,255,255,0.08);">
+    <details style="margin-top:16px;max-width:900px;border-top:1px solid rgba(255,255,255,0.08);">
+      <summary style="cursor:pointer;padding:16px 0;display:flex;justify-content:space-between;gap:12px;font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#f1d49a;"><span>How to read &amp; use this</span><span aria-hidden="true">+</span></summary>
+      <div style="padding:4px 0 24px;display:flex;flex-direction:column;gap:14px;font-size:15px;line-height:1.75;color:#aab3c3;font-weight:300;">
+        <p style="text-wrap:pretty;"><span style="font-weight:500;color:#e8ecf3;">Use.</span> Pick a variant and a pulse rate. Each train is twenty 2 ms pulses.</p>
+        <p style="text-wrap:pretty;"><span style="font-weight:500;color:#e8ecf3;">Read the train.</span> The upper trace is voltage, the lower the ChR2 current. Watch whether each pulse is followed by a spike, and how the current per pulse shrinks as the train goes on. The tiles give fidelity (the share of pulses that fired a spike) and extra spikes.</p>
+        <p style="text-wrap:pretty;"><span style="font-weight:500;color:#e8ecf3;">Read the fidelity plot.</span> Fidelity against rate for all three variants. The curve that stays high longest follows fast trains best.</p>
+        <p style="text-wrap:pretty;"><span style="font-weight:500;color:#e8ecf3;">Use the modulation panel.</span> Drag its irradiance slider. Each row of the raster is one trial, each tick a spike; the shaded middle half second is when the dim light is on. The plot below averages the rate across trials.</p>
+      </div>
+    </details>
+    <details style="max-width:900px;border-top:1px solid rgba(255,255,255,0.08);border-bottom:1px solid rgba(255,255,255,0.08);">
       <summary style="cursor:pointer;padding:16px 0;display:flex;justify-content:space-between;gap:12px;font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#f1d49a;"><span>The detail</span><span aria-hidden="true">+</span></summary>
       <div style="padding:4px 0 24px;display:flex;flex-direction:column;gap:14px;font-size:15px;line-height:1.75;color:#aab3c3;font-weight:300;">
         <p style="text-wrap:pretty;">To compare kinetics rather than current size, each variant is driven at three times its own 2 ms single-spike threshold. Fidelity is the fraction of pulses followed by at least one spike within the shorter of one period and 15 ms; extra spikes are any others. With the rescaled rates used here, wild-type ChR2 desensitises more during a train than H134R, so its per-pulse current falls and spikes are lost first; ChETA closes about three times faster and loses less current between pulses. At the highest rates the neuron's own refractory period also limits following.</p>
@@ -382,7 +422,16 @@ details>summary::-webkit-details-marker{display:none;}
         <figcaption style="font-family:'Geist Mono',monospace;font-size:10.5px;line-height:1.6;color:#7d889c;text-wrap:pretty;">{{ capNet }}</figcaption>
       </figure>
     </div>
-    <details style="margin-top:16px;max-width:900px;border-top:1px solid rgba(255,255,255,0.08);border-bottom:1px solid rgba(255,255,255,0.08);">
+    <details style="margin-top:16px;max-width:900px;border-top:1px solid rgba(255,255,255,0.08);">
+      <summary style="cursor:pointer;padding:16px 0;display:flex;justify-content:space-between;gap:12px;font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#f1d49a;"><span>How to read &amp; use this</span><span aria-hidden="true">+</span></summary>
+      <div style="padding:4px 0 24px;display:flex;flex-direction:column;gap:14px;font-size:15px;line-height:1.75;color:#aab3c3;font-weight:300;">
+        <p style="text-wrap:pretty;"><span style="font-weight:500;color:#e8ecf3;">Use.</span> Choose which cell type makes ChR2, what fraction of them express it, the light pattern, the irradiance at the fibre, and whether light reaches all cells equally or falls off with depth. Copy link shares the settings; Reset page restores all scenes.</p>
+        <p style="text-wrap:pretty;"><span style="font-weight:500;color:#e8ecf3;">Read the raster.</span> Each row is one neuron and each dot a spike, with time running left to right. Excitatory cells are grey, inhibitory cells blue, and expressing cells gold. Vertical stripes of dots mean the network is firing in step with the light.</p>
+        <p style="text-wrap:pretty;"><span style="font-weight:500;color:#e8ecf3;">Read the plots below.</span> Population firing rate for excitatory and inhibitory cells, then the voltage of one expressing cell. The tiles give the rates with the light on and off and how tightly spikes lock to the pulses.</p>
+        <p style="text-wrap:pretty;"><span style="font-weight:500;color:#e8ecf3;">Try.</span> Switch ChR2 from excitatory to inhibitory cells with the same light and watch the excitatory rate fall.</p>
+      </div>
+    </details>
+    <details style="max-width:900px;border-top:1px solid rgba(255,255,255,0.08);border-bottom:1px solid rgba(255,255,255,0.08);">
       <summary style="cursor:pointer;padding:16px 0;display:flex;justify-content:space-between;gap:12px;font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#f1d49a;"><span>The detail</span><span aria-hidden="true">+</span></summary>
       <div style="padding:4px 0 24px;display:flex;flex-direction:column;gap:14px;font-size:15px;line-height:1.75;color:#aab3c3;font-weight:300;">
         <p style="text-wrap:pretty;">Cells are conductance-based leaky integrate-and-fire units (τ<sub>m</sub> 20 ms, threshold −50 mV, reset −60 mV, refractory 5 ms for excitatory and 2 ms for inhibitory cells) with exponential excitatory (5 ms, 0 mV) and inhibitory (10 ms, −80 mV) synapses, after the benchmark networks of Vogels &amp; Abbott 2005 and Brette et al. 2007. Each cell receives 32 excitatory and 8 inhibitory recurrent inputs chosen at random, plus independent Poisson background input that holds the network in an asynchronous, irregular state. Integration is forward Euler at 0.1 ms.</p>
@@ -573,7 +622,12 @@ class Component extends DCLogic {
   }
   drawProtein(cv, S, full) {
     const P = this.prep(cv); if (!P) return; const { g, W, H } = P, M = OPTO.MONO, C = OPTO.C;
-    const y0 = H * 0.2, y1 = H * 0.8, hm = y1 - y0, cx = W * (full ? 0.52 : 0.5), u = Math.min(W / 11, 52), hw = u * 0.42;
+    const y0 = H * 0.2, y1 = H * 0.8, hm = y1 - y0; let u = Math.min(W / 11, 52);
+    g.font = '10.5px ' + M; let labW = full ? g.measureText('Intracellular gate').width + 16 : 0;
+    const narrow = full && labW + 7.44 * u + 42 > W;
+    if (narrow) { u = Math.max(18, (W - labW - 50) / 7.44); if (labW + 7.44 * u + 42 > W) { full = false; labW = 0; u = Math.min(W / 11, 52); } }
+    const hw = u * 0.42;
+    const cx = full ? Math.min(Math.max(W * 0.52, labW + 3.3 * u + hw + 8), W - 3.3 * u - hw - 34) : W * 0.5;
     // bilayer
     g.fillStyle = 'rgba(143,180,232,0.045)'; g.fillRect(0, y0, W, hm);
     g.fillStyle = '#2a3548';
@@ -581,7 +635,7 @@ class Component extends DCLogic {
     g.strokeStyle = 'rgba(255,255,255,0.05)'; g.lineWidth = 1;
     for (let x = 6; x < W; x += 13) { g.beginPath(); g.moveTo(x, y0 + 5); g.lineTo(x, y0 + hm * 0.42); g.moveTo(x, y1 - 5); g.lineTo(x, y1 - hm * 0.42); g.stroke(); }
     g.font = '10.5px ' + M; g.fillStyle = C.mute; g.textAlign = 'left'; g.textBaseline = 'middle';
-    g.fillText(full ? 'EXTRACELLULAR' : 'OUT', 8, y0 - 22); g.fillText(full ? 'CYTOPLASM' : 'IN', 8, y1 + 22);
+    g.fillText(full && W >= 560 ? 'EXTRACELLULAR' : 'OUT', 8, y0 - 22); g.fillText(full && W >= 560 ? 'CYTOPLASM' : 'IN', 8, y1 + 22);
     const xs = { TM1: cx - 3.3 * u, TM2: cx - 1.55 * u, TM3: cx + 1.55 * u, TM7: cx + 3.3 * u };
     const top = y0 - hm * 0.12, bot = y1 + hm * 0.12, rr = 10;
     const helix = (x, lab) => {
@@ -606,7 +660,7 @@ class Component extends DCLogic {
       g.beginPath(); g.moveTo(xl, y); g.lineTo(xl + reach, y); g.moveTo(xr, y); g.lineTo(xr - reach, y); g.stroke();
       g.fillStyle = o > 0.5 ? '#0d1422' : C.gold2; g.strokeStyle = C.gold2; g.lineWidth = 1.4;
       [xl + reach, xr - reach].forEach(x => { g.beginPath(); g.arc(x, y, rad, 0, 6.283); g.fill(); g.stroke(); });
-      g.fillStyle = C.soft; g.textAlign = 'right'; g.font = '10.5px ' + M; g.fillText(full ? gname[k] : ['ECG', 'CG', 'ICG'][k], xs.TM1 - hw - 8, y);
+      g.fillStyle = C.soft; g.textAlign = 'right'; g.font = '10.5px ' + M; if (full) { const pr = gname[k].split(' · '); if (pr[1]) { g.fillText(pr[0], xs.TM1 - hw - 8, y - 7); g.fillStyle = C.mute; g.fillText(pr[1], xs.TM1 - hw - 8, y + 8); } else g.fillText(pr[0], xs.TM1 - hw - 8, y); } else g.fillText(['ECG', 'CG', 'ICG'][k], xs.TM1 - hw - 8, y);
     });
     // retinal in the TM3–TM7 pocket
     const ry = y0 + hm * 0.5, ra = xs.TM7 - hw - 2, rb = xs.TM3 + hw + 4, cis = S.ret === '13-cis';
@@ -620,7 +674,7 @@ class Component extends DCLogic {
     g.stroke();
     g.fillStyle = C.gold; g.beginPath(); g.arc(ra, ry + 4, 3.5, 0, 6.283); g.fill();
     g.font = '10px ' + M; g.textAlign = 'right'; g.fillStyle = C.gold;
-    g.fillText('K257', xs.TM7 + hw + 30, ry + 20);
+    if (W >= 560) g.fillText('K257', xs.TM7 + hw + 30, ry + 20); else { g.textAlign = 'center'; g.fillText('K257', xs.TM7, ry + 36); }
     g.textAlign = 'center'; g.fillStyle = C.soft;
     g.fillText(S.ret === 'not modelled' ? 'retinal' : 'retinal · ' + S.ret, (ra + rb) / 2, ry + 22);
     if (S.sb !== '—') { g.fillStyle = S.sb.indexOf('de') === 0 ? C.mute : C.gold; g.textAlign = 'left'; g.fillText(S.sb.indexOf('de') === 0 ? 'SB' : 'SB–H⁺', ra - 4, ry - 12); }

@@ -153,6 +153,15 @@ details>summary::-webkit-details-marker{display:none;}
         <p style="font-family:'Geist Mono',monospace;font-size:10.5px;line-height:1.6;color:#7d889c;text-wrap:pretty;">Simulated · calcium-based bistable synapse (Graupner &amp; Brunel 2012, published parameters) at the auditory → lateral amygdala input; calcium per light pulse and the behavioural read-out calibrated here to Nabavi et al. 2014. Each test is a 2 min optical CS (10 Hz, 2 ms pulses) between 2 min baselines. Expected values over a population of synapses; lever presses drawn with a fixed seed.</p>
       </div>
     </div>
+    <details style="margin-top:16px;max-width:900px;border-top:1px solid rgba(255,255,255,0.08);border-bottom:1px solid rgba(255,255,255,0.08);">
+      <summary style="cursor:pointer;padding:16px 0;display:flex;justify-content:space-between;gap:12px;font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#f1d49a;"><span>How to read &amp; use this</span><span aria-hidden="true">+</span></summary>
+      <div style="padding:4px 0 24px;display:flex;flex-direction:column;gap:14px;font-size:15px;line-height:1.75;color:#aab3c3;font-weight:300;">
+        <p style="text-wrap:pretty;"><span style="font-weight:500;color:#e8ecf3;">Use.</span> Start from one of the published sequences, or build your own: each button under Add a day adds one session to this animal, in order. Undo removes the last day; New animal starts again from a naive animal. Greyed-out buttons are not allowed at that point.</p>
+        <p style="text-wrap:pretty;"><span style="font-weight:500;color:#e8ecf3;">Read the circuit strip.</span> The optically driven input to the lateral amygdala, with its current strength w relative to a naive animal. After extinction, the dashed box shows how much inhibition is subtracting from the output.</p>
+        <p style="text-wrap:pretty;"><span style="font-weight:500;color:#e8ecf3;">Read the strength plot.</span> One point per day. Gold is synaptic strength, the dashed blue line strength minus extinction inhibition, and the grey dashed line the threshold above which the cue produces fear.</p>
+        <p style="text-wrap:pretty;"><span style="font-weight:500;color:#e8ecf3;">Read the test plots.</span> The left plot counts lever presses through the last test: the coloured bar is the 2 min light cue, and a flat stretch there means the animal stopped pressing. The right plot shows suppression and freezing for every test so far.</p>
+      </div>
+    </details>
     <p style="margin-top:14px;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.04em;color:#7d889c;">Sources · Nabavi et al. 2014 <a href="#ref-1">[1]</a> · Graupner &amp; Brunel 2012 <a href="#ref-2">[2]</a> · Pape &amp; Paré 2010 <a href="#ref-3">[3]</a></p>
   </section>
 
@@ -201,7 +210,15 @@ details>summary::-webkit-details-marker{display:none;}
       </sc-for>
     </div>
     <p style="margin-top:12px;font-family:'Geist Mono',monospace;font-size:10.5px;line-height:1.6;color:#7d889c;max-width:960px;text-wrap:pretty;">Published values from Nabavi et al. 2014: in vivo field EPSP slope 30–40 min after each optical protocol, and AMPA/NMDA ratios measured in slices after conditioning. Model values are computed live from naive synapses (field EPSPs) or after each conditioning protocol (AMPA/NMDA, with NMDA unchanged).</p>
-    <details style="margin-top:16px;max-width:900px;border-top:1px solid rgba(255,255,255,0.08);border-bottom:1px solid rgba(255,255,255,0.08);">
+    <details style="margin-top:16px;max-width:900px;border-top:1px solid rgba(255,255,255,0.08);">
+      <summary style="cursor:pointer;padding:16px 0;display:flex;justify-content:space-between;gap:12px;font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#f1d49a;"><span>How to read &amp; use this</span><span aria-hidden="true">+</span></summary>
+      <div style="padding:4px 0 24px;display:flex;flex-direction:column;gap:14px;font-size:15px;line-height:1.75;color:#aab3c3;font-weight:300;">
+        <p style="text-wrap:pretty;"><span style="font-weight:500;color:#e8ecf3;">Use.</span> Pick a protocol. Each one plays the calcium it produces at a single synapse.</p>
+        <p style="text-wrap:pretty;"><span style="font-weight:500;color:#e8ecf3;">Read the plot.</span> Calcium against time. The blue band is the depression zone and the gold band above it the potentiation zone; the coloured ticks at the top are the light pulses and the pale bar the shock. Whether a synapse strengthens or weakens depends on how long the trace spends in each band.</p>
+        <p style="text-wrap:pretty;"><span style="font-weight:500;color:#e8ecf3;">Read the tiles and table.</span> Time above θ<sub>p</sub> and in the depression band, the chances that a synapse switches state, and the resulting change for a naive synapse. The table compares the model with the published measurements.</p>
+      </div>
+    </details>
+    <details style="max-width:900px;border-top:1px solid rgba(255,255,255,0.08);border-bottom:1px solid rgba(255,255,255,0.08);">
       <summary style="cursor:pointer;padding:16px 0;display:flex;justify-content:space-between;gap:12px;font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#f1d49a;"><span>The detail · the synapse model</span><span aria-hidden="true">+</span></summary>
       <div style="padding:4px 0 24px;display:flex;flex-direction:column;gap:16px;font-size:15px;line-height:1.75;color:#aab3c3;font-weight:300;">
         <p style="text-wrap:pretty;">Each synapse carries a variable ρ between 0 and 1 with two stable states, DOWN and UP; its strength is w<sub>0</sub> in DOWN and w<sub>1</sub> = 5·w<sub>0</sub> in UP. Calcium c(t) drives it:</p>
@@ -236,6 +253,13 @@ details>summary::-webkit-details-marker{display:none;}
         </div>
       </sc-for>
     </div>
+    <details style="margin-top:16px;max-width:900px;border-top:1px solid rgba(255,255,255,0.08);border-bottom:1px solid rgba(255,255,255,0.08);">
+      <summary style="cursor:pointer;padding:16px 0;display:flex;justify-content:space-between;gap:12px;font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#f1d49a;"><span>How to read &amp; use this</span><span aria-hidden="true">+</span></summary>
+      <div style="padding:4px 0 24px;display:flex;flex-direction:column;gap:14px;font-size:15px;line-height:1.75;color:#aab3c3;font-weight:300;">
+        <p style="text-wrap:pretty;"><span style="font-weight:500;color:#e8ecf3;">Read.</span> Each card is one control experiment from the study: the question it answers, what was done, and the model's numbers for it.</p>
+        <p style="text-wrap:pretty;"><span style="font-weight:500;color:#e8ecf3;">Use.</span> Run on the bench loads that sequence into the experiment in section 01 so you can see every day and plot.</p>
+      </div>
+    </details>
     <p style="margin-top:14px;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.04em;color:#7d889c;">Sources · Nabavi et al. 2014 <a href="#ref-1">[1]</a> · Pape &amp; Paré 2010 <a href="#ref-3">[3]</a></p>
   </section>
 
