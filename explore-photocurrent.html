@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The channelrhodopsin-2 photocurrent — Explore · Nayak Lab · IIT Delhi</title>
+<meta name="description" content="An interactive four-state model of the channelrhodopsin-2 photocurrent: peak, desensitisation, plateau, off-kinetics, I–V, recovery, action spectrum and temperature, with live fits.">
+<meta property="og:title" content="The channelrhodopsin-2 photocurrent — Nayak Lab">
+<meta property="og:description" content="Run the light-gated current yourself: a four-state ChR2 model with live fits of τON, τINACT, τOFF and ISS/Ip.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://channellab.iitd.ac.in/explore-photocurrent">
+<meta property="og:image" content="https://channellab.iitd.ac.in/assets/logos/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://channellab.iitd.ac.in/explore-photocurrent">
+<script src="./support.js"></script>
+<script src="./js/theme.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="icon" type="image/svg+xml" href="assets/logos/tkn-favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/logos/tkn-favicon-32.png">
+<link rel="apple-touch-icon" href="assets/logos/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&amp;family=Geist+Mono:wght@400;500&amp;family=Newsreader:ital,opsz,wght@1,6..72,400&amp;display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#070c16;-webkit-font-smoothing:antialiased;}
+:focus-visible{outline:2px solid #f1d49a;outline-offset:3px;}
+::selection{background:#e0a53a;color:#070c16;}
+a{text-decoration:none;color:#f1d49a;}
+a:hover{color:#fbe7bf;}
+img{max-width:100%;}
+details>summary{list-style:none;}
+details>summary::-webkit-details-marker{display:none;}
+@media (prefers-reduced-motion:reduce){*{transition-duration:.01ms !important;}}
+</style>
+<script src="./data/content.js"></script>
+<script src="./js/site-fx.js"></script>
+<script src="./js/tap-fix.js"></script>
+<script src="./js/opto-engine.js"></script>
+</helmet>
+<div style="font-family:'Geist',sans-serif;color:#e8ecf3;background:#070c16;min-height:100vh;overflow-x:clip;">
+  <dc-import name="SiteNav" active="explore" hint-size="100%,64px" style="position:sticky;top:0;z-index:200;"></dc-import>
+
+  <section id="main" style="border-bottom:1px solid rgba(255,255,255,0.07);">
+    <div style="max-width:1360px;margin:0 auto;padding:clamp(56px,8vw,112px) clamp(20px,5vw,40px) clamp(44px,6vw,72px);">
+      <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.2em;text-transform:uppercase;margin-bottom:22px;">
+        <a href="explore.html" style="color:#7d889c;transition:color .15s;" style-hover="color:#f1d49a;">← Explore</a>
+        <span style="color:#e6b667;">01 · Patch clamp</span>
+      </div>
+      <h1 style="font-weight:500;font-size:clamp(36px,5.6vw,78px);line-height:1;letter-spacing:-0.04em;margin-bottom:26px;max-width:980px;text-wrap:balance;">The channelrhodopsin-2 <span style="font-family:'Newsreader',serif;font-style:italic;font-weight:400;color:#f1d49a;letter-spacing:-0.02em;">photocurrent</span></h1>
+      <p style="font-size:clamp(16px,1.5vw,18px);line-height:1.65;color:#aab3c3;max-width:680px;font-weight:300;text-wrap:pretty;">Shine blue light on a cell that makes channelrhodopsin-2 and an inward current flows within milliseconds. It peaks, sags to a lower plateau while the light stays on, and switches off within tens of milliseconds when the light goes out. A second flash soon after is smaller: the protein needs seconds in the dark to recover. This page builds that current from a four-state model of the protein and lets you run the protocols yourself.</p>
+    </div>
+  </section>
+
+  <section id="trace" style="max-width:1360px;margin:0 auto;padding:clamp(48px,6vw,88px) clamp(20px,5vw,40px) 0;">
+    <div style="font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.2em;color:#e6b667;text-transform:uppercase;margin-bottom:16px;">01 · The canonical trace</div>
+    <h2 style="font-weight:500;font-size:clamp(28px,3.6vw,46px);line-height:1.03;letter-spacing:-0.035em;margin-bottom:14px;text-wrap:balance;">One pulse, five numbers</h2>
+    <p style="font-size:16.5px;line-height:1.7;color:#aab3c3;font-weight:300;max-width:700px;margin-bottom:30px;text-wrap:pretty;">Light on: the current jumps to a peak. Light still on: it sags to a steady level. Light off: the channels close. Every ChR2 paper reports the same five measures of this shape, and the page fits them to the trace as it is recorded.</p>
+
+    <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:stretch;">
+      <div style="flex:1 1 270px;max-width:100%;background:#0d1422;border:1px solid rgba(255,255,255,0.07);border-radius:18px;padding:20px;display:flex;flex-direction:column;gap:20px;">
+        <div style="display:flex;flex-direction:column;gap:9px;">
+          <div style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#7d889c;">Variant</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <sc-for list="{{ variants }}" as="o" hint-placeholder-count="3">
+              <button type="button" onClick="{{ o.pick }}" aria-pressed="{{ o.pressed }}" style="flex:1 1 auto;min-height:38px;padding:0 12px;border-radius:999px;font-family:'Geist Mono',monospace;font-size:12px;cursor:pointer;transition:background .15s,color .15s,border-color .15s;background:{{ o.bg }};color:{{ o.fg }};border:1px solid {{ o.bd }};">{{ o.label }}</button>
+            </sc-for>
+          </div>
+        </div>
+        <label style="display:flex;flex-direction:column;gap:8px;">
+          <span style="display:flex;justify-content:space-between;gap:10px;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#7d889c;"><span>Irradiance</span><span style="color:#f1d49a;letter-spacing:0.02em;text-transform:none;white-space:nowrap;">{{ irrLabel }} mW/mm²</span></span>
+          <input type="range" min="0" max="100" step="1" value="{{ irrPos }}" onChange="{{ onIrr }}" style="width:100%;accent-color:#e6b667;">
+        </label>
+        <label style="display:flex;flex-direction:column;gap:8px;">
+          <span style="display:flex;justify-content:space-between;gap:10px;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#7d889c;"><span>Pulse</span><span style="color:#f1d49a;letter-spacing:0.02em;text-transform:none;white-space:nowrap;">{{ durLabel }} ms</span></span>
+          <input type="range" min="0" max="8" step="1" value="{{ durPos }}" onChange="{{ onDur }}" style="width:100%;accent-color:#e6b667;">
+        </label>
+        <label style="display:flex;flex-direction:column;gap:8px;">
+          <span style="display:flex;justify-content:space-between;gap:10px;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#7d889c;"><span>Holding voltage</span><span style="color:#f1d49a;letter-spacing:0.02em;text-transform:none;white-space:nowrap;">{{ vLabel }} mV</span></span>
+          <input type="range" min="-80" max="40" step="10" value="{{ V }}" onChange="{{ onV }}" style="width:100%;accent-color:#e6b667;">
+        </label>
+        <label style="display:flex;flex-direction:column;gap:8px;">
+          <span style="display:flex;justify-content:space-between;gap:10px;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#7d889c;"><span>Wavelength</span><span style="color:#f1d49a;letter-spacing:0.02em;text-transform:none;white-space:nowrap;">{{ wl }} nm</span></span>
+          <input type="range" min="400" max="600" step="5" value="{{ wl }}" onChange="{{ onWl }}" style="width:100%;accent-color:#e6b667;">
+        </label>
+        <div style="display:flex;flex-direction:column;gap:9px;">
+          <div style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#7d889c;">Temperature</div>
+          <div style="display:flex;gap:6px;">
+            <sc-for list="{{ temps }}" as="o" hint-placeholder-count="2">
+              <button type="button" onClick="{{ o.pick }}" aria-pressed="{{ o.pressed }}" style="flex:1 1 0;min-height:38px;padding:0 12px;border-radius:999px;font-family:'Geist Mono',monospace;font-size:12px;cursor:pointer;transition:background .15s,color .15s,border-color .15s;background:{{ o.bg }};color:{{ o.fg }};border:1px solid {{ o.bd }};">{{ o.label }}</button>
+            </sc-for>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:auto;padding-top:14px;border-top:1px solid rgba(255,255,255,0.07);">
+          <button type="button" onClick="{{ replay }}" style="flex:1 1 auto;min-height:40px;padding:0 14px;border-radius:999px;border:none;background:#f1d49a;color:#070c16;font-family:'Geist',sans-serif;font-size:13.5px;font-weight:500;cursor:pointer;">Record again</button>
+          <button type="button" onClick="{{ copyLink }}" style="flex:1 1 auto;min-height:40px;padding:0 14px;border-radius:999px;border:1px solid rgba(255,255,255,0.18);background:transparent;color:#e8ecf3;font-family:'Geist',sans-serif;font-size:13.5px;cursor:pointer;">{{ copyLabel }}</button>
+          <button type="button" onClick="{{ reset }}" style="flex:1 1 auto;min-height:40px;padding:0 14px;border-radius:999px;border:1px solid rgba(255,255,255,0.18);background:transparent;color:#aab3c3;font-family:'Geist',sans-serif;font-size:13.5px;cursor:pointer;">Reset</button>
+        </div>
+      </div>
+
+      <figure style="flex:3 1 520px;min-width:0;max-width:100%;background:#0d1422;border:1px solid rgba(255,255,255,0.07);border-radius:18px;padding:18px 18px 16px;display:flex;flex-direction:column;gap:14px;">
+        <canvas ref="{{ cvBench }}" data-fig="opto" role="img" aria-label="{{ benchAria }}" style="width:100%;height:360px;display:block;"></canvas>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:1px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.07);border-radius:12px;overflow:hidden;">
+          <sc-for list="{{ readouts }}" as="r" hint-placeholder-count="6">
+            <div style="background:#0d1422;padding:12px 14px;display:flex;flex-direction:column;gap:4px;">
+              <div style="font-family:'Geist Mono',monospace;font-size:12px;color:#7d889c;">{{ r.k1 }}<sub>{{ r.s1 }}</sub>{{ r.k2 }}<sub>{{ r.s2 }}</sub></div>
+              <div style="display:flex;align-items:baseline;gap:5px;transition:opacity .3s;opacity:{{ r.op }};"><span style="font-size:22px;font-weight:500;letter-spacing:-0.02em;font-variant-numeric:tabular-nums;color:#e8ecf3;">{{ r.v }}</span><span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:#aab3c3;">{{ r.u }}</span></div>
+            </div>
+          </sc-for>
+        </div>
+        <sc-if value="{{ benchNote }}" hint-placeholder-val="{{ false }}"><p style="font-size:13.5px;line-height:1.55;color:#aab3c3;font-weight:300;">{{ benchNote }}</p></sc-if>
+        <figcaption style="font-family:'Geist Mono',monospace;font-size:10.5px;line-height:1.6;color:#7d889c;text-wrap:pretty;">{{ capBench }}</figcaption>
+      </figure>
+    </div>
+
+    <details style="margin-top:16px;max-width:900px;border-top:1px solid rgba(255,255,255,0.08);border-bottom:1px solid rgba(255,255,255,0.08);">
+      <summary style="cursor:pointer;padding:16px 0;display:flex;justify-content:space-between;gap:12px;font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#f1d49a;"><span>The detail · the model and the fits</span><span aria-hidden="true">+</span></summary>
+      <div style="padding:4px 0 24px;display:flex;flex-direction:column;gap:16px;font-size:15px;line-height:1.75;color:#aab3c3;font-weight:300;">
+        <p style="text-wrap:pretty;">The protein is treated as four states: two closed (C1 dark-adapted, C2 light-adapted) and two open (O1 with full conductance, O2 with a tenth of it). Light drives C1→O1 and C2→O2. While the light stays on, open channels drift from O1 to O2 and close into C2, which reopens poorly. That drift is the sag from peak to plateau. C2 returns to C1 only slowly, over seconds, which is why the protein needs time in the dark before it gives a full peak again.</p>
+        <div style="background:#070c16;border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:18px 20px;font-family:'Geist Mono',monospace;font-size:13px;line-height:1.95;color:#e8ecf3;overflow-x:auto;">
+          <div>dO1/dt = k1·p·C1 − (Gd1 + e12)·O1 + e21·O2</div>
+          <div>dO2/dt = k2·p·C2 − (Gd2 + e21)·O2 + e12·O1</div>
+          <div>dC2/dt = Gd2·O2 − (k2·p + Gr)·C2</div>
+          <div>dp/dt = (S − p)/τ<sub>ChR2</sub>,  C1 = 1 − O1 − O2 − C2</div>
+          <div style="height:8px;"></div>
+          <div>I = g·(O1 + γ·O2)·V<sub>0</sub>·(1 − e<sup>−(V − E)/V<sub>0</sub></sup>),  γ = 0.1, E = 0 mV</div>
+        </div>
+        <p style="text-wrap:pretty;">k1 and k2 are proportional to the photon flux absorbed by retinal (cross-section 1.2 × 10⁻¹⁹ m², scaled by the spectral sensitivity at the chosen wavelength). p is a light-activation variable with τ<sub>ChR2</sub> = 1.3 ms, S = 1 while the light is on. e12 and e21 grow with the log of irradiance; Gd1 and Gr depend on voltage. The rate constants and their light and voltage dependence are those published for ChR2(H134R) by Williams et al. (2013). The rectification uses their exponential constant (V<sub>0</sub> = 42.8 mV) with the reversal set at 0 mV.</p>
+        <p style="text-wrap:pretty;">The equations are integrated by fourth-order Runge–Kutta (25 µs steps with light on or just after it, 0.5 ms in the dark). The current is sampled at 10 kHz, then given 5 pA rms of Gaussian-filtered noise (1 kHz corner) from a fixed seed, so every visitor sees the same recording. The measures are fitted to that noisy record: I<sub>p</sub> is the extremum of a 0.5 ms running mean; τ<sub>ON</sub> is a single exponential from light onset to the peak; τ<sub>INACT</sub> from the peak to the end of the pulse (pulses of 20 ms or longer); I<sub>SS</sub> is the mean over the last 20 ms of the pulse (pulses of 100 ms or longer); τ<sub>OFF</sub> from 0.3 ms after light off to the end of the record.</p>
+      </div>
+    </details>
+    <p style="margin-top:14px;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.04em;color:#7d889c;">Sources · Williams et al. 2013 <a href="#ref-9">[9]</a> · Nikolic et al. 2009 <a href="#ref-5">[5]</a> · Hegemann et al. 2005 <a href="#ref-2">[2]</a></p>
+  </section>
+
+  <section id="irradiance" style="max-width:1360px;margin:clamp(72px,9vw,120px) auto 0;padding:clamp(40px,5vw,64px) clamp(20px,5vw,40px) 0;border-top:1px solid rgba(255,255,255,0.08);">
+    <div style="font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.2em;color:#e6b667;text-transform:uppercase;margin-bottom:16px;">02 · Irradiance</div>
+    <h2 style="font-weight:500;font-size:clamp(28px,3.6vw,46px);line-height:1.03;letter-spacing:-0.035em;margin-bottom:14px;text-wrap:balance;">More light: bigger, faster, then saturated</h2>
+    <p style="font-size:16.5px;line-height:1.7;color:#aab3c3;font-weight:300;max-width:700px;margin-bottom:30px;text-wrap:pretty;">Brighter light opens channels faster and drives them into the desensitised state faster. The peak grows and then levels off. Closing, which happens after the light is off, hardly changes.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:16px;">
+      <figure style="min-width:0;background:#0d1422;border:1px solid rgba(255,255,255,0.07);border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:12px;">
+        <canvas ref="{{ cvIrrT }}" data-fig="opto" role="img" aria-label="Photocurrents at four irradiances, superimposed" style="width:100%;height:280px;display:block;"></canvas>
+        <div style="display:flex;gap:16px;flex-wrap:wrap;font-family:'Geist Mono',monospace;font-size:11px;color:#aab3c3;">
+          <span style="display:flex;align-items:center;gap:7px;"><span style="width:16px;height:2px;background:#7d889c;"></span>0.34</span>
+          <span style="display:flex;align-items:center;gap:7px;"><span style="width:16px;height:2px;background:#aab3c3;"></span>1.0</span>
+          <span style="display:flex;align-items:center;gap:7px;"><span style="width:16px;height:2px;background:#e6b667;"></span>1.6</span>
+          <span style="display:flex;align-items:center;gap:7px;"><span style="width:16px;height:2px;background:#f1d49a;"></span>5.5 mW/mm²</span>
+        </div>
+      </figure>
+      <figure style="min-width:0;background:#0d1422;border:1px solid rgba(255,255,255,0.07);border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:12px;">
+        <canvas ref="{{ cvIrrC }}" data-fig="opto" role="img" aria-label="Peak and steady-state current against irradiance" style="width:100%;height:280px;display:block;"></canvas>
+        <div style="display:flex;gap:16px;flex-wrap:wrap;font-family:'Geist Mono',monospace;font-size:11px;color:#aab3c3;">
+          <span style="display:flex;align-items:center;gap:7px;"><span style="width:8px;height:8px;border-radius:50%;background:#f1d49a;"></span>I<sub>p</sub></span>
+          <span style="display:flex;align-items:center;gap:7px;"><span style="width:8px;height:8px;border-radius:50%;border:1.4px solid #aab3c3;"></span>I<sub>SS</sub></span>
+        </div>
+      </figure>
+    </div>
+    <div style="margin-top:16px;max-width:900px;display:grid;">
+      <div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.14);font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.06em;color:#7d889c;">
+        <div>mW/mm²</div><div>I<sub>p</sub></div><div>τ<sub>ON</sub></div><div>τ<sub>INACT</sub></div><div>τ<sub>OFF</sub></div>
+      </div>
+      <sc-for list="{{ irrRows }}" as="r" hint-placeholder-count="4">
+        <div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.07);font-size:14px;color:#aab3c3;font-weight:300;font-variant-numeric:tabular-nums;">
+          <div style="font-family:'Geist Mono',monospace;font-size:12.5px;color:#f1d49a;">{{ r.irr }}</div><div>{{ r.ip }}</div><div>{{ r.on }}</div><div>{{ r.inact }}</div><div>{{ r.off }}</div>
+        </div>
+      </sc-for>
+    </div>
+    <p style="margin-top:14px;font-family:'Geist Mono',monospace;font-size:10.5px;line-height:1.6;color:#7d889c;max-width:900px;text-wrap:pretty;">{{ capShared }} · 500 ms pulses · the four irradiances of Williams et al. 2013</p>
+    <details style="margin-top:16px;max-width:900px;border-top:1px solid rgba(255,255,255,0.08);border-bottom:1px solid rgba(255,255,255,0.08);">
+      <summary style="cursor:pointer;padding:16px 0;display:flex;justify-content:space-between;gap:12px;font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#f1d49a;"><span>The detail</span><span aria-hidden="true">+</span></summary>
+      <div style="padding:4px 0 24px;display:flex;flex-direction:column;gap:14px;font-size:15px;line-height:1.75;color:#aab3c3;font-weight:300;">
+        <p style="text-wrap:pretty;">The light-driven steps, C1→O1 and C2→O2, are proportional to photon flux, so opening and the approach to the plateau both speed up as irradiance rises. The peak saturates because a cell has a fixed number of channels: once light opens them faster than they close, more light adds little. The transition from O1 to O2 also grows with irradiance, which is why the plateau does not rise in proportion to the peak.</p>
+        <p style="text-wrap:pretty;">τ<sub>OFF</sub> is measured after the light is switched off. It is set by the dark closing rates, Gd1 and Gd2, so it barely depends on the irradiance used during the pulse. It does depend on voltage (section 03).</p>
+      </div>
+    </details>
+    <p style="margin-top:14px;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.04em;color:#7d889c;">Sources · Williams et al. 2013 <a href="#ref-9">[9]</a> · Mattis et al. 2011 <a href="#ref-8">[8]</a></p>
+  </section>
+
+  <section id="iv" style="max-width:1360px;margin:clamp(72px,9vw,120px) auto 0;padding:clamp(40px,5vw,64px) clamp(20px,5vw,40px) 0;border-top:1px solid rgba(255,255,255,0.08);">
+    <div style="font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.2em;color:#e6b667;text-transform:uppercase;margin-bottom:16px;">03 · Current and voltage</div>
+    <h2 style="font-weight:500;font-size:clamp(28px,3.6vw,46px);line-height:1.03;letter-spacing:-0.035em;margin-bottom:14px;text-wrap:balance;">Reversal at zero, and strong inward rectification</h2>
+    <p style="font-size:16.5px;line-height:1.7;color:#aab3c3;font-weight:300;max-width:700px;margin-bottom:30px;text-wrap:pretty;">ChR2 lets several kinds of cation through (protons, sodium, potassium, some calcium), so its current reverses near 0 mV. It carries inward current far more readily than outward current.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:16px;">
+      <figure style="min-width:0;background:#0d1422;border:1px solid rgba(255,255,255,0.07);border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:12px;">
+        <canvas ref="{{ cvIV }}" data-fig="opto" role="img" aria-label="Peak and steady-state current-voltage relation" style="width:100%;height:280px;display:block;"></canvas>
+        <div style="display:flex;gap:16px;flex-wrap:wrap;font-family:'Geist Mono',monospace;font-size:11px;color:#aab3c3;">
+          <span style="display:flex;align-items:center;gap:7px;"><span style="width:8px;height:8px;border-radius:50%;background:#f1d49a;"></span>I<sub>p</sub></span>
+          <span style="display:flex;align-items:center;gap:7px;"><span style="width:8px;height:8px;border-radius:50%;border:1.4px solid #aab3c3;"></span>I<sub>SS</sub></span>
+        </div>
+      </figure>
+      <figure style="min-width:0;background:#0d1422;border:1px solid rgba(255,255,255,0.07);border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:12px;">
+        <canvas ref="{{ cvIVr }}" data-fig="opto" role="img" aria-label="Steady-state to peak ratio against voltage" style="width:100%;height:280px;display:block;"></canvas>
+        <div style="font-family:'Geist Mono',monospace;font-size:11px;color:#aab3c3;">I<sub>SS</sub>/I<sub>p</sub> · points within 10 mV of reversal omitted</div>
+      </figure>
+    </div>
+    <div style="margin-top:16px;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.07);border-radius:12px;overflow:hidden;max-width:900px;">
+      <sc-for list="{{ ivReadouts }}" as="r" hint-placeholder-count="3">
+        <div style="background:#0d1422;padding:12px 14px;display:flex;flex-direction:column;gap:4px;">
+          <div style="font-family:'Geist Mono',monospace;font-size:12px;color:#7d889c;">{{ r.k }}</div>
+          <div style="display:flex;align-items:baseline;gap:5px;"><span style="font-size:22px;font-weight:500;letter-spacing:-0.02em;font-variant-numeric:tabular-nums;">{{ r.v }}</span><span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:#aab3c3;">{{ r.u }}</span></div>
+        </div>
+      </sc-for>
+    </div>
+    <p style="margin-top:14px;font-family:'Geist Mono',monospace;font-size:10.5px;line-height:1.6;color:#7d889c;max-width:900px;text-wrap:pretty;">{{ capIV }}</p>
+    <details style="margin-top:16px;max-width:900px;border-top:1px solid rgba(255,255,255,0.08);border-bottom:1px solid rgba(255,255,255,0.08);">
+      <summary style="cursor:pointer;padding:16px 0;display:flex;justify-content:space-between;gap:12px;font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#f1d49a;"><span>The detail</span><span aria-hidden="true">+</span></summary>
+      <div style="padding:4px 0 24px;display:flex;flex-direction:column;gap:14px;font-size:15px;line-height:1.75;color:#aab3c3;font-weight:300;">
+        <p style="text-wrap:pretty;">The rectification is empirical: an exponential driving-force term with a 42.8 mV constant, which makes the current at −80 mV several times larger than at +40 mV. Voltage also changes the kinetics. In the published parameter set the O1→C1 closing rate, Gd1, slows at depolarised potentials and the C2→C1 recovery rate, Gr, slows too. Hold at +20 mV and τ<sub>OFF</sub> on the bench above lengthens accordingly.</p>
+        <p style="text-wrap:pretty;">Because the plateau is not a fixed fraction of the peak at every voltage, an I–V measured from the plateau and one measured from the peak are different curves. Papers that report "the" ChR2 I–V usually mean the peak.</p>
+      </div>
+    </details>
+    <p style="margin-top:14px;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.04em;color:#7d889c;">Sources · Nagel et al. 2003 <a href="#ref-1">[1]</a> · Williams et al. 2013 <a href="#ref-9">[9]</a></p>
+  </section>
+
+  <section id="recovery" style="max-width:1360px;margin:clamp(72px,9vw,120px) auto 0;padding:clamp(40px,5vw,64px) clamp(20px,5vw,40px) 0;border-top:1px solid rgba(255,255,255,0.08);">
+    <div style="font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.2em;color:#e6b667;text-transform:uppercase;margin-bottom:16px;">04 · Desensitisation and recovery</div>
+    <h2 style="font-weight:500;font-size:clamp(28px,3.6vw,46px);line-height:1.03;letter-spacing:-0.035em;margin-bottom:14px;text-wrap:balance;">Why a second flash is smaller</h2>
+    <p style="font-size:16.5px;line-height:1.7;color:#aab3c3;font-weight:300;max-width:700px;margin-bottom:30px;text-wrap:pretty;">After a long pulse, many channels sit in the light-adapted closed state and take seconds in darkness to return. Flash again too soon and the second peak is smaller. Drag the dark interval to see how long the protein needs.</p>
+    <label style="display:flex;flex-direction:column;gap:8px;max-width:520px;margin-bottom:18px;">
+      <span style="display:flex;justify-content:space-between;gap:10px;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#7d889c;"><span>Dark interval S1 → S2</span><span style="color:#f1d49a;letter-spacing:0.02em;text-transform:none;white-space:nowrap;">{{ gapLabel }} s</span></span>
+      <input type="range" min="0.5" max="25" step="0.5" value="{{ gap }}" onChange="{{ onGap }}" style="width:100%;accent-color:#e6b667;">
+    </label>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:16px;">
+      <figure style="min-width:0;background:#0d1422;border:1px solid rgba(255,255,255,0.07);border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:12px;">
+        <canvas ref="{{ cvRecT }}" data-fig="opto" role="img" aria-label="Second response overlaid on the first" style="width:100%;height:280px;display:block;"></canvas>
+        <div style="display:flex;gap:16px;flex-wrap:wrap;font-family:'Geist Mono',monospace;font-size:11px;color:#aab3c3;">
+          <span style="display:flex;align-items:center;gap:7px;"><span style="width:16px;height:2px;background:#7d889c;"></span>S1</span>
+          <span style="display:flex;align-items:center;gap:7px;"><span style="width:16px;height:2px;background:#f1d49a;"></span>S2, after {{ gapLabel }} s dark</span>
+        </div>
+      </figure>
+      <figure style="min-width:0;background:#0d1422;border:1px solid rgba(255,255,255,0.07);border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:12px;">
+        <canvas ref="{{ cvRecC }}" data-fig="opto" role="img" aria-label="Recovery of the second peak against dark interval" style="width:100%;height:280px;display:block;"></canvas>
+        <div style="font-family:'Geist Mono',monospace;font-size:11px;color:#aab3c3;">I<sub>p2</sub>/I<sub>p1</sub> · dashed: fitted 1 − A·e<sup>−Δt/τR</sup></div>
+      </figure>
+    </div>
+    <div style="margin-top:16px;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.07);border-radius:12px;overflow:hidden;max-width:900px;">
+      <sc-for list="{{ recReadouts }}" as="r" hint-placeholder-count="3">
+        <div style="background:#0d1422;padding:12px 14px;display:flex;flex-direction:column;gap:4px;">
+          <div style="font-family:'Geist Mono',monospace;font-size:12px;color:#7d889c;">{{ r.k }}</div>
+          <div style="display:flex;align-items:baseline;gap:5px;"><span style="font-size:22px;font-weight:500;letter-spacing:-0.02em;font-variant-numeric:tabular-nums;">{{ r.v }}</span><span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:#aab3c3;">{{ r.u }}</span></div>
+        </div>
+      </sc-for>
+    </div>
+    <p style="margin-top:14px;font-family:'Geist Mono',monospace;font-size:10.5px;line-height:1.6;color:#7d889c;max-width:900px;text-wrap:pretty;">{{ capShared }} · two 500 ms pulses, dark-adapted before S1</p>
+    <details style="margin-top:16px;max-width:900px;border-top:1px solid rgba(255,255,255,0.08);border-bottom:1px solid rgba(255,255,255,0.08);">
+      <summary style="cursor:pointer;padding:16px 0;display:flex;justify-content:space-between;gap:12px;font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#f1d49a;"><span>The detail</span><span aria-hidden="true">+</span></summary>
+      <div style="padding:4px 0 24px;display:flex;flex-direction:column;gap:14px;font-size:15px;line-height:1.75;color:#aab3c3;font-weight:300;">
+        <p style="text-wrap:pretty;">At the end of S1 the open channels have closed within tens of milliseconds, but a large fraction of the protein is left in C2. C2 opens only into the low-conductance O2 state, so channels in C2 contribute little to the S2 peak. The S2 peak recovers as C2 empties back into C1 at the rate Gr, which in the published set is a fraction of a per-second and voltage dependent.</p>
+        <p style="text-wrap:pretty;">For experiments this sets a practical limit. Repeated pulses at short intervals give a smaller, plateau-sized response after the first. Either space them by the recovery time or treat the first response as different from the rest.</p>
+      </div>
+    </details>
+    <p style="margin-top:14px;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.04em;color:#7d889c;">Sources · Lin et al. 2009 <a href="#ref-4">[4]</a> · Williams et al. 2013 <a href="#ref-9">[9]</a></p>
+  </section>
+
+  <section id="spectrum" style="max-width:1360px;margin:clamp(72px,9vw,120px) auto 0;padding:clamp(40px,5vw,64px) clamp(20px,5vw,40px) 0;border-top:1px solid rgba(255,255,255,0.08);">
+    <div style="font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.2em;color:#e6b667;text-transform:uppercase;margin-bottom:16px;">05 · Colour and temperature</div>
+    <h2 style="font-weight:500;font-size:clamp(28px,3.6vw,46px);line-height:1.03;letter-spacing:-0.035em;margin-bottom:14px;text-wrap:balance;">Blue works best; warm runs faster</h2>
+    <p style="font-size:16.5px;line-height:1.7;color:#aab3c3;font-weight:300;max-width:700px;margin-bottom:30px;text-wrap:pretty;">ChR2 responds most strongly to blue light near 470 nm. At body temperature every step of the cycle runs faster, and a larger share of the current is sustained through the pulse.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:16px;">
+      <figure style="min-width:0;background:#0d1422;border:1px solid rgba(255,255,255,0.07);border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:12px;">
+        <canvas ref="{{ cvSpec }}" data-fig="opto" role="img" aria-label="Peak response against wavelength" style="width:100%;height:280px;display:block;"></canvas>
+        <div style="font-family:'Geist Mono',monospace;font-size:11px;color:#aab3c3;">Peak current at equal photon flux, normalised to the maximum</div>
+      </figure>
+      <figure style="min-width:0;background:#0d1422;border:1px solid rgba(255,255,255,0.07);border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:12px;">
+        <canvas ref="{{ cvTemp }}" data-fig="opto" role="img" aria-label="The same pulse at 22 and 37 degrees" style="width:100%;height:280px;display:block;"></canvas>
+        <div style="display:flex;gap:16px;flex-wrap:wrap;font-family:'Geist Mono',monospace;font-size:11px;color:#aab3c3;">
+          <span style="display:flex;align-items:center;gap:7px;"><span style="width:16px;height:2px;background:#8fb4e8;"></span>22 °C</span>
+          <span style="display:flex;align-items:center;gap:7px;"><span style="width:16px;height:2px;background:#f1d49a;"></span>37 °C</span>
+        </div>
+      </figure>
+    </div>
+    <div style="margin-top:16px;max-width:900px;display:grid;">
+      <div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.14);font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.06em;color:#7d889c;">
+        <div>Temperature</div><div>I<sub>p</sub></div><div>τ<sub>ON</sub></div><div>τ<sub>OFF</sub></div><div>I<sub>SS</sub>/I<sub>p</sub></div>
+      </div>
+      <sc-for list="{{ tempRows }}" as="r" hint-placeholder-count="2">
+        <div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.07);font-size:14px;color:#aab3c3;font-weight:300;font-variant-numeric:tabular-nums;">
+          <div style="font-family:'Geist Mono',monospace;font-size:12.5px;color:#f1d49a;">{{ r.T }}</div><div>{{ r.ip }}</div><div>{{ r.on }}</div><div>{{ r.off }}</div><div>{{ r.ratio }}</div>
+        </div>
+      </sc-for>
+    </div>
+    <p style="margin-top:14px;font-family:'Geist Mono',monospace;font-size:10.5px;line-height:1.6;color:#7d889c;max-width:900px;text-wrap:pretty;">{{ capSpec }}</p>
+    <details style="margin-top:16px;max-width:900px;border-top:1px solid rgba(255,255,255,0.08);border-bottom:1px solid rgba(255,255,255,0.08);">
+      <summary style="cursor:pointer;padding:16px 0;display:flex;justify-content:space-between;gap:12px;font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#f1d49a;"><span>The detail</span><span aria-hidden="true">+</span></summary>
+      <div style="padding:4px 0 24px;display:flex;flex-direction:column;gap:14px;font-size:15px;line-height:1.75;color:#aab3c3;font-weight:300;">
+        <p style="text-wrap:pretty;">The spectral sensitivity is an asymmetric bell centred on 470 nm, broader on the blue side, approximated here to the published action spectrum. It scales the light-driven rates only. The plot uses equal photon flux at every wavelength; at equal power, longer wavelengths deliver slightly more photons.</p>
+        <p style="text-wrap:pretty;">Temperature scales each rate by its own Q<sub>10</sub>, referenced to 22 °C: light-driven steps 1.46, Gd1 1.97, Gd2 1.77, e12 1.46, e21 2.77, Gr 2.56. Because the steps that refill the open state (e21, Gr) are more temperature sensitive than those that empty it, the plateau is a larger fraction of the peak when warm. Treat these Q<sub>10</sub> values as approximate.</p>
+      </div>
+    </details>
+    <p style="margin-top:14px;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.04em;color:#7d889c;">Sources · Nagel et al. 2003 <a href="#ref-1">[1]</a> · Williams et al. 2013 <a href="#ref-9">[9]</a></p>
+  </section>
+
+  <section id="methods" style="max-width:1360px;margin:clamp(72px,9vw,120px) auto 0;padding:clamp(40px,5vw,64px) clamp(20px,5vw,40px) 0;border-top:1px solid rgba(255,255,255,0.08);">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:28px 64px;">
+      <div>
+        <div style="font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.2em;color:#e6b667;text-transform:uppercase;margin-bottom:18px;">Methods note</div>
+        <h2 style="font-weight:500;font-size:clamp(28px,3.6vw,46px);line-height:1.03;letter-spacing:-0.035em;text-wrap:balance;">What this model is, and what it is not</h2>
+      </div>
+      <div style="font-size:15.5px;line-height:1.75;color:#aab3c3;font-weight:300;display:flex;flex-direction:column;gap:14px;">
+        <p style="text-wrap:pretty;">The published, fully parameterised four-state set is for ChR2(H134R) expressed in HEK cells (Williams et al. 2013), fitted to five holding voltages, four irradiances and a sixty-condition recovery protocol. That set is the default here. The wild-type and ChETA options keep the same scheme with rates rescaled by us towards published off-kinetics and desensitisation; their captions say so.</p>
+        <p style="text-wrap:pretty;">Currents are normalised so that H134R at −60 mV, 22 °C and 5.5 mW/mm² of 470 nm light peaks at −1 nA. Real amplitudes depend on expression level and cell size. The spectral shape and the Q<sub>10</sub> values are approximations stated in sections 05.</p>
+        <p style="text-wrap:pretty;">These are simulations of a published model, computed in your browser. They are for explanation. Experimental data appear in the papers cited below.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="refs" style="max-width:1360px;margin:clamp(56px,7vw,88px) auto 0;padding:0 clamp(20px,5vw,40px);">
+    <div style="font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.2em;color:#e6b667;text-transform:uppercase;margin-bottom:18px;">References</div>
+    <ol style="list-style:none;display:grid;gap:11px;max-width:900px;font-size:14px;line-height:1.6;color:#aab3c3;font-weight:300;">
+      <li id="ref-1" style="display:grid;grid-template-columns:34px 1fr;gap:8px;"><span style="font-family:'Geist Mono',monospace;font-size:12px;color:#f1d49a;">[1]</span><span>Nagel G, Szellas T, Huhn W, et al., Bamberg E (2003). Channelrhodopsin-2, a directly light-gated cation-selective membrane channel. <i>PNAS</i> 100:13940–13945.</span></li>
+      <li id="ref-2" style="display:grid;grid-template-columns:34px 1fr;gap:8px;"><span style="font-family:'Geist Mono',monospace;font-size:12px;color:#f1d49a;">[2]</span><span>Hegemann P, Ehlenbeck S, Gradmann D (2005). Multiple photocycles of channelrhodopsin. <i>Biophys J</i> 89:3911–3918.</span></li>
+      <li id="ref-3" style="display:grid;grid-template-columns:34px 1fr;gap:8px;"><span style="font-family:'Geist Mono',monospace;font-size:12px;color:#f1d49a;">[3]</span><span>Feldbauer K, Zimmermann D, Pintschovius V, Spitz J, Bamann C, Bamberg E (2009). Channelrhodopsin-2 is a leaky proton pump. <i>PNAS</i> 106:12317–12322.</span></li>
+      <li id="ref-4" style="display:grid;grid-template-columns:34px 1fr;gap:8px;"><span style="font-family:'Geist Mono',monospace;font-size:12px;color:#f1d49a;">[4]</span><span>Lin JY, Lin MZ, Steinbach P, Tsien RY (2009). Characterization of engineered channelrhodopsin variants with improved properties and kinetics. <i>Biophys J</i> 96:1803–1814.</span></li>
+      <li id="ref-5" style="display:grid;grid-template-columns:34px 1fr;gap:8px;"><span style="font-family:'Geist Mono',monospace;font-size:12px;color:#f1d49a;">[5]</span><span>Nikolic K, Grossman N, Grubb MS, Burrone J, Toumazou C, Degenaar P (2009). Photocycles of channelrhodopsin-2. <i>Photochem Photobiol</i> 85:400–411.</span></li>
+      <li id="ref-6" style="display:grid;grid-template-columns:34px 1fr;gap:8px;"><span style="font-family:'Geist Mono',monospace;font-size:12px;color:#f1d49a;">[6]</span><span>Gunaydin LA, Yizhar O, Berndt A, Sohal VS, Deisseroth K, Hegemann P (2010). Ultrafast optogenetic control. <i>Nat Neurosci</i> 13:387–392.</span></li>
+      <li id="ref-7" style="display:grid;grid-template-columns:34px 1fr;gap:8px;"><span style="font-family:'Geist Mono',monospace;font-size:12px;color:#f1d49a;">[7]</span><span>Lin JY (2011). A user's guide to channelrhodopsin variants. <i>Exp Physiol</i> 96:19–25.</span></li>
+      <li id="ref-8" style="display:grid;grid-template-columns:34px 1fr;gap:8px;"><span style="font-family:'Geist Mono',monospace;font-size:12px;color:#f1d49a;">[8]</span><span>Mattis J, Tye KM, Ferenczi EA, et al., Deisseroth K (2011). Principles for applying optogenetic tools derived from direct comparative analysis of microbial opsins. <i>Nat Methods</i> 9:159–172.</span></li>
+      <li id="ref-9" style="display:grid;grid-template-columns:34px 1fr;gap:8px;"><span style="font-family:'Geist Mono',monospace;font-size:12px;color:#f1d49a;">[9]</span><span>Williams JC, Xu J, Lu Z, Klimas A, Chen X, Ambrosi CM, Cohen IS, Entcheva E (2013). Computational optogenetics: empirically-derived voltage- and light-sensitive channelrhodopsin-2 model. <i>PLoS Comput Biol</i> 9:e1003220.</span></li>
+    </ol>
+  </section>
+
+  <div style="height:clamp(80px,10vw,128px);"></div>
+  <dc-import name="SiteFooter" hint-size="100%,340px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  static DEF = { v: 'h134r', irr: 1, dur: 500, V: -60, T: 22, wl: 470, gap: 5 };
+  static DURS = [2, 5, 10, 20, 50, 100, 200, 500, 1000];
+  constructor(p) {
+    super(p);
+    const s = Object.assign({}, Component.DEF);
+    try {
+      const q = new URLSearchParams((location.hash || '').slice(1));
+      if (['h134r', 'wt', 'cheta'].includes(q.get('v'))) s.v = q.get('v');
+      const num = (k, a, b) => { const x = parseFloat(q.get(k)); if (isFinite(x)) s[k] = Math.max(a, Math.min(b, x)); };
+      num('irr', 0.05, 10); num('dur', 2, 1000); num('V', -80, 40); num('wl', 400, 600); num('gap', 0.5, 25);
+      if (q.get('T') === '37') s.T = 37;
+      s.dur = Component.DURS.reduce((a, b) => Math.abs(b - s.dur) < Math.abs(a - s.dur) ? b : a);
+      s.V = Math.round(s.V / 10) * 10; s.wl = Math.round(s.wl / 5) * 5; s.gap = Math.round(s.gap * 2) / 2;
+    } catch (e) {}
+    this.state = Object.assign(s, { stage: 6, copied: false, ready: false, n: 0 });
+    ['cvBench', 'cvIrrT', 'cvIrrC', 'cvIV', 'cvIVr', 'cvRecT', 'cvRecC', 'cvSpec', 'cvTemp'].forEach(k => { this[k] = React.createRef(); });
+    this.prog = 1;
+  }
+  componentDidMount() {
+    const go = () => {
+      if (!window.OPTO || !window.LAB_CONTENT) { this._poll = setTimeout(go, 40); return; }
+      this.computeBench(); this.computeShared(); this.computeRec();
+      this.setState({ ready: true }, () => requestAnimationFrame(() => this.drawAll()));
+      if ('ResizeObserver' in window) { this._ro = new ResizeObserver(() => { cancelAnimationFrame(this._rof); this._rof = requestAnimationFrame(() => this.drawAll()); }); ['cvBench', 'cvIrrT', 'cvIrrC', 'cvIV', 'cvIVr', 'cvRecT', 'cvRecC', 'cvSpec', 'cvTemp'].forEach(k => this[k].current && this._ro.observe(this[k].current)); }
+      this._rs = () => { cancelAnimationFrame(this._rsf); this._rsf = requestAnimationFrame(() => this.drawAll()); };
+      window.addEventListener('resize', this._rs);
+      const cv = this.cvBench.current;
+      if (cv && 'IntersectionObserver' in window && !OPTO.reduce) {
+        this.prog = 0; this.setState({ stage: 0 });
+        this._io = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { this._io.disconnect(); this.sweep(); } }, { threshold: 0.35 });
+        this._io.observe(cv);
+      }
+    };
+    go();
+  }
+  componentWillUnmount() {
+    clearTimeout(this._poll); clearTimeout(this._deb); clearTimeout(this._cp); cancelAnimationFrame(this._raf); cancelAnimationFrame(this._rsf);
+    if (this._io) this._io.disconnect();
+    if (this._ro) this._ro.disconnect(); cancelAnimationFrame(this._rof);
+    window.removeEventListener('resize', this._rs);
+  }
+  componentDidUpdate(pp, ps) {
+    if (!this.state.ready) return;
+    const s = this.state, keys = ['v', 'irr', 'dur', 'V', 'T', 'wl', 'gap'];
+    if (!ps || keys.some(k => ps[k] !== s[k])) {
+      const q = keys.map(k => k + '=' + s[k]).join('&');
+      try { history.replaceState(null, '', '#' + q); } catch (e) {}
+    }
+    this.drawAll();
+  }
+  cond() { const s = this.state; return { variant: s.v, V: s.V, T: s.T, wl: s.wl }; }
+  computeBench() {
+    const s = this.state, D = s.dur, dt = D <= 20 ? 0.05 : 0.1, pre = 50, post = 300;
+    const r = OPTO.protocol(this.cond(), [{ d: pre }, { d: D, irr: s.irr }, { d: post }], dt);
+    const y = OPTO.noisy(r.i, dt, 0.005, 1, 11);
+    this.bench = { y, dt, tOn: pre, tOff: pre + D, tEnd: pre + D + post, m: OPTO.measure(y, dt, pre, pre + D), key: [s.v, s.irr, D, s.V, s.T, s.wl].join('|') };
+  }
+  pulse(c, irr, D, post, seed, h) {
+    const dt = 0.1, cc = Object.assign({}, c, { h });
+    const r = OPTO.protocol(cc, [{ d: 30 }, { d: D, irr }, { d: post }], dt);
+    const y = OPTO.noisy(r.i, dt, 0.005, 1, seed);
+    return { y, dt, m: OPTO.measure(y, dt, 30, 30 + D) };
+  }
+  computeShared() {
+    const s = this.state, c = this.cond(), H = 0.05;
+    const series = [0.34, 1.0, 1.6, 5.5].map((irr, k) => Object.assign({ irr }, this.pulse(c, irr, 500, 250, 21 + k)));
+    const irrs = [0.05, 0.1, 0.2, 0.34, 0.6, 1, 1.6, 2.5, 4, 5.5, 10];
+    const curve = irrs.map((irr, k) => { const p = this.pulse(c, irr, 500, 40, 41 + k, H); return { irr, Ip: p.m.Ip, Iss: p.m.Iss }; });
+    const Vs = []; for (let V = -80; V <= 40; V += 10) Vs.push(V);
+    const iv = Vs.map((V, k) => { const p = this.pulse(Object.assign({}, c, { V }), s.irr, 500, 40, 61 + k, H); return { V, Ip: p.m.Ip, Iss: p.m.Iss }; });
+    const wls = []; for (let w = 400; w <= 600; w += 10) wls.push(w);
+    const spec = wls.map(wl => { const r = OPTO.protocol(Object.assign({}, c, { wl, h: H }), [{ d: 30 }, { d: 200, irr: 0.5 * 470 / wl }, { d: 20 }], 0.1); return { wl, Ip: Math.abs(OPTO.measure(r.i, 0.1, 30, 230).Ip) }; });
+    const smax = Math.max.apply(null, spec.map(d => d.Ip)) || 1; spec.forEach(d => { d.n = d.Ip / smax; });
+    const temp = [22, 37].map((T, k) => Object.assign({ T }, this.pulse(Object.assign({}, c, { T }), s.irr, 500, 250, 101 + k)));
+    const gaps = [0.5, 1, 2, 3, 5, 7.5, 10, 15, 20, 25];
+    const rec = gaps.map(g => ({ g, r: this.recPair(c, s.irr, g, H).ratio }));
+    // fit 1 − A e^(−t/τ) on the non-uniform Δt grid
+    let best = null;
+    for (let lt = Math.log(0.3); lt <= Math.log(100); lt += 0.01) {
+      const tau = Math.exp(lt); let sx = 0, sy = 0, sxx = 0, sxy = 0; const n = rec.length;
+      rec.forEach(d => { const x = Math.exp(-d.g / tau); sx += x; sy += d.r; sxx += x * x; sxy += x * d.r; });
+      const A = (n * sxy - sx * sy) / (n * sxx - sx * sx), C0 = (sy - A * sx) / n;
+      let e = 0; rec.forEach(d => { const q = d.r - C0 - A * Math.exp(-d.g / tau); e += q * q; });
+      if (!best || e < best.e) best = { e, tau, A, C: C0 };
+    }
+    this.shared = { series, curve, iv, spec, temp, rec, recFit: best, key: [s.v, s.irr, s.V, s.T, s.wl].join('|') };
+  }
+  recPair(c, irr, g, h) {
+    const cc = Object.assign({}, c, { h }), y = OPTO.dark(), dt = 0.1;
+    const a = OPTO.protocol(cc, [{ d: 20 }, { d: 500, irr }, { d: 50 }], dt, y);
+    OPTO.protocol(cc, [{ d: g * 1000 - 70, record: false }], dt, y);
+    const b = OPTO.protocol(cc, [{ d: 20 }, { d: 500, irr }, { d: 50 }], dt, y);
+    const ya = OPTO.noisy(a.i, dt, 0.005, 1, 131), yb = OPTO.noisy(b.i, dt, 0.005, 1, 137);
+    const m1 = OPTO.measure(ya, dt, 20, 520), m2 = OPTO.measure(yb, dt, 20, 520);
+    return { ya, yb, dt, m1, m2, ratio: m2.Ip / m1.Ip };
+  }
+  computeRec() { const s = this.state; this.rec = Object.assign({ key: [s.v, s.irr, s.V, s.T, s.wl, s.gap].join('|') }, this.recPair(this.cond(), s.irr, s.gap)); }
+  set(patch) {
+    this.setState(patch, () => {
+      this.computeBench(); this.prog = 1;
+      cancelAnimationFrame(this._raf);
+      clearTimeout(this._deb);
+      this._deb = setTimeout(() => { this.computeShared(); this.computeRec(); this.setState({ n: this.state.n + 1 }); }, 160);
+      this.setState({ stage: 6, n: this.state.n + 1 });
+    });
+  }
+  sweep() {
+    if (OPTO.reduce) { this.prog = 1; this.setState({ stage: 6 }); return; }
+    cancelAnimationFrame(this._raf);
+    const t0 = performance.now(), dur = 1900;
+    const tick = () => {
+      this.prog = Math.min(1, (performance.now() - t0) / dur);
+      const st = this.stageAt(this.prog);
+      if (st !== this.state.stage) this.setState({ stage: st }); else this.drawBench();
+      if (this.prog < 1) this._raf = requestAnimationFrame(tick);
+    };
+    this.prog = 0; this.setState({ stage: 0 });
+    this._raf = requestAnimationFrame(tick);
+  }
+  stageAt(p) {
+    const b = this.bench; if (!b) return 6;
+    const t = p * b.tEnd;
+    return p >= 1 ? 6 : t >= b.tOff + 2 ? 5 : t >= b.m.tPeak + 1 ? 2 : 0;
+  }
+  drawAll() { if (!this.state.ready) return; this.drawBench(); this.drawShared(); }
+  range(arrs, pad) {
+    let lo = 0, hi = 0;
+    arrs.forEach(a => { for (let i = 0; i < a.length; i++) { const v = a[i]; if (v == null || !isFinite(v)) continue; if (v < lo) lo = v; if (v > hi) hi = v; } });
+    if (hi - lo < 0.03) { lo -= 0.03; hi += 0.03; }
+    const p = (hi - lo) * (pad || 0.08); return [lo - p, hi + p];
+  }
+  drawBench() {
+    const b = this.bench, cv = this.cvBench.current; if (!b || !cv) return;
+    const s = this.state, C = OPTO.C, st = this.state.stage, m = b.m;
+    const series = [{ y: b.y, x0: 0, dx: b.dt, color: C.ink, width: 1.2, upto: this.prog }];
+    const fit = (f, need) => { if (f && st >= need) { const e = OPTO.expCurve(f, b.dt); series.push({ y: e.y, x0: e.x0, dx: e.dx, color: C.gold, width: 1.8, dash: [5, 4] }); } };
+    fit(m.on, 2); fit(m.inact, 5); fit(m.off, 6);
+    const labels = [];
+    const big = Math.abs(m.Ip) >= 0.015;
+    if (big && st >= 2) labels.push({ x: m.tPeak, y: m.Ip, text: 'Iₚ', color: C.gold, dx: 8, dy: m.Ip < 0 ? 4 : -4 });
+    if (big && m.Iss != null && st >= 5) labels.push({ x: b.tOff, y: m.Iss, text: 'Iₛₛ', color: C.gold, dx: -8, dy: m.Iss < 0 ? 14 : -14, align: 'right' });
+    if (big && m.off && st >= 6) labels.push({ x: b.tOff + 6 + 2 * Math.min(m.off.tau, 60), y: m.Iss != null ? m.Iss * 0.4 : m.Ip * 0.4, text: 'τ OFF ' + OPTO.fmtT(m.off.tau).v + ' ms', color: C.soft, dx: 6 });
+    OPTO.plot(cv, {
+      x: [0, b.tEnd], y: this.range([b.y]), top: 22, xlabel: 'ms', ylabel: 'nA', zeroY: true,
+      bars: [{ a: b.tOn, b: b.tOff, color: OPTO.wlColor(s.wl), y: 4, h: 6 }],
+      series, labels
+    });
+  }
+  drawShared() {
+    const sh = this.shared, rc = this.rec, C = OPTO.C; if (!sh) return;
+    const cols = ['#7d889c', '#aab3c3', '#e6b667', '#f1d49a'], wlc = OPTO.wlColor(this.state.wl);
+    const tEnd = 30 + 500 + 250;
+    OPTO.plot(this.cvIrrT.current, { x: [0, tEnd], y: this.range(sh.series.map(d => d.y)), top: 20, xlabel: 'ms', ylabel: 'nA', zeroY: true,
+      bars: [{ a: 30, b: 530, color: wlc, y: 4, h: 6 }],
+      series: sh.series.map((d, k) => ({ y: d.y, x0: 0, dx: d.dt, color: cols[k], width: 1.2 })) });
+    const xs = sh.curve.map(d => d.irr);
+    OPTO.plot(this.cvIrrC.current, { x: [0.04, 12], xlog: true, xgrid: true, y: this.range([sh.curve.map(d => d.Ip), sh.curve.map(d => d.Iss)], 0.1), zeroY: true, xlabel: 'mW/mm²', ylabel: 'nA',
+      series: [{ xs, y: sh.curve.map(d => d.Ip), color: C.gold, width: 1.2 }, { xs, y: sh.curve.map(d => d.Iss), color: C.soft, width: 1.2 }],
+      points: [{ xs, ys: sh.curve.map(d => d.Ip), color: C.gold }, { xs, ys: sh.curve.map(d => d.Iss), color: C.soft, hollow: true }] });
+    const vx = sh.iv.map(d => d.V);
+    OPTO.plot(this.cvIV.current, { x: [-85, 45], y: this.range([sh.iv.map(d => d.Ip), sh.iv.map(d => d.Iss)], 0.1), zeroX: true, zeroY: true, xlabel: 'mV', ylabel: 'nA', xticks: [-80, -60, -40, -20, 0, 20, 40],
+      series: [{ xs: vx, y: sh.iv.map(d => d.Ip), color: C.gold, width: 1.2 }, { xs: vx, y: sh.iv.map(d => d.Iss), color: C.soft, width: 1.2 }],
+      points: [{ xs: vx, ys: sh.iv.map(d => d.Ip), color: C.gold }, { xs: vx, ys: sh.iv.map(d => d.Iss), color: C.soft, hollow: true }] });
+    const rv = sh.iv.filter(d => Math.abs(d.V) >= 10 && d.Iss != null);
+    OPTO.plot(this.cvIVr.current, { x: [-85, 45], y: [0, 1], yticks: [0, 0.25, 0.5, 0.75, 1], xticks: [-80, -60, -40, -20, 0, 20, 40], zeroX: true, xlabel: 'mV', ylabel: 'Iss / Ip',
+      series: [{ xs: rv.filter(d => d.V < 0).map(d => d.V), y: rv.filter(d => d.V < 0).map(d => d.Iss / d.Ip), color: C.gold, width: 1.2 }, { xs: rv.filter(d => d.V > 0).map(d => d.V), y: rv.filter(d => d.V > 0).map(d => d.Iss / d.Ip), color: C.gold, width: 1.2 }],
+      points: [{ xs: rv.map(d => d.V), ys: rv.map(d => d.Iss / d.Ip), color: C.gold }] });
+    if (rc) {
+      OPTO.plot(this.cvRecT.current, { x: [-20, 550], y: this.range([rc.ya, rc.yb]), top: 20, xlabel: 'ms from pulse onset', ylabel: 'nA', zeroY: true,
+        bars: [{ a: 0, b: 500, color: wlc, y: 4, h: 6 }],
+        series: [{ y: rc.ya, x0: -20, dx: rc.dt, color: '#7d889c', width: 1.2 }, { y: rc.yb, x0: -20, dx: rc.dt, color: C.gold, width: 1.3 }] });
+    }
+    const f = sh.recFit, fx = [], fy = [];
+    for (let t = 0; t <= 26; t += 0.2) { fx.push(t); fy.push(f.C + f.A * Math.exp(-t / f.tau)); }
+    OPTO.plot(this.cvRecC.current, { x: [0, 26], y: [0, 1.1], yticks: [0, 0.25, 0.5, 0.75, 1], xlabel: 'dark interval (s)', ylabel: 'Ip2 / Ip1',
+      series: [{ xs: fx, y: fy, color: C.gold, width: 1.4, dash: [5, 4] }],
+      points: [{ xs: sh.rec.map(d => d.g), ys: sh.rec.map(d => d.r), color: C.soft, hollow: true }, rc ? { xs: [this.state.gap], ys: [rc.ratio], color: C.gold, r: 4.5 } : { xs: [], ys: [] }] });
+    const sx = sh.spec.map(d => d.wl);
+    OPTO.plot(this.cvSpec.current, { x: [395, 605], y: [0, 1.1], yticks: [0, 0.25, 0.5, 0.75, 1], xticks: [400, 450, 500, 550, 600], xlabel: 'nm', ylabel: 'relative Ip', bottom: 46,
+      series: [{ xs: sx, y: sh.spec.map(d => d.n), color: C.gold, width: 1.4 }],
+      points: [{ xs: sx, ys: sh.spec.map(d => d.n), color: C.gold, r: 2.6 }] });
+    const sp = this.cvSpec.current;
+    if (sp) { // spectral strip under the axis
+      const g = sp.getContext('2d'), W = sp.clientWidth, H = sp.clientHeight, L = 56, R = 12, pw = W - L - R;
+      for (let w = 400; w < 600; w += 2) { g.fillStyle = OPTO.wlColor(w); const x0 = L + (w - 395) / 210 * pw; g.fillRect(x0, H - 9, pw * 2 / 210 + 0.6, 5); }
+    }
+    OPTO.plot(this.cvTemp.current, { x: [0, tEnd], y: this.range(sh.temp.map(d => d.y)), top: 20, xlabel: 'ms', ylabel: 'nA', zeroY: true,
+      bars: [{ a: 30, b: 530, color: wlc, y: 4, h: 6 }],
+      series: sh.temp.map((d, k) => ({ y: d.y, x0: 0, dx: d.dt, color: k ? C.gold : C.blue, width: 1.25 })) });
+  }
+  renderVals() {
+    const s = this.state, O = window.OPTO, ready = s.ready && O;
+    const V = ready ? O.VARIANTS[s.v] : { name: 'ChR2(H134R)', src: 'Williams et al. 2013 parameter set' };
+    const seg = (on) => ({ bg: on ? '#f1d49a' : 'transparent', fg: on ? '#070c16' : '#aab3c3', bd: on ? '#f1d49a' : 'rgba(255,255,255,0.18)', pressed: on ? 'true' : 'false' });
+    const variants = [['h134r', 'H134R'], ['wt', 'Wild type'], ['cheta', 'ChETA']].map(([id, label]) => Object.assign({ label, pick: () => this.set({ v: id }) }, seg(s.v === id)));
+    const temps = [22, 37].map(T => Object.assign({ label: T + ' °C', pick: () => this.set({ T }) }, seg(s.T === T)));
+    const irrPos = Math.round(Math.log(s.irr / 0.05) / Math.log(200) * 100);
+    const irrFmt = x => x >= 1 ? x.toFixed(x >= 10 ? 0 : 1) : x.toPrecision(2);
+    const neg = x => String(x).replace('-', '−');
+    const b = ready && this.bench, m = b && b.m, st = s.stage, big = m && Math.abs(m.Ip) >= 0.015;
+    const fI = x => O ? O.fmtI(x) : { v: '—', u: '' }, fT = x => O ? O.fmtT(x) : { v: '—', u: '' };
+    const show = (need, val) => (m && st >= need && big ? val : { v: '·', u: '' });
+    const rd = (a, as, b2, bs, need, val) => { const r = show(need, val); return { k1: a, s1: as, k2: b2, s2: bs, v: r.v, u: r.u, op: m && st >= need ? 1 : 0.35 }; };
+    const readouts = [
+      rd('I', 'p', '', '', 2, m ? fI(m.Ip) : null),
+      rd('τ', 'ON', '', '', 2, m ? fT(m.on && m.on.tau) : null),
+      rd('τ', 'INACT', '', '', 5, m ? fT(m.inact && m.inact.tau) : null),
+      rd('I', 'SS', '', '', 5, m ? fI(m.Iss) : null),
+      rd('I', 'SS', '/I', 'p', 5, m ? { v: m.ratio != null ? m.ratio.toFixed(2) : '—', u: '' } : null),
+      rd('τ', 'OFF', '', '', 6, m ? fT(m.off && m.off.tau) : null)
+    ];
+    let benchNote = '';
+    if (m && !big) benchNote = 'At ' + neg(s.V) + ' mV the driving force is close to zero, so almost no net current flows. Move the holding voltage away from 0 mV.';
+    else if (s.dur < 20) benchNote = 'Pulses this short end before the current sags, so τINACT and ISS are not measured.';
+    else if (s.dur < 100) benchNote = 'The pulse ends before the current reaches its plateau, so ISS is not measured.';
+    const cond = O ? (s.wl + ' nm, ' + irrFmt(s.irr) + ' mW/mm², ' + neg(s.V) + ' mV, ' + s.T + ' °C') : '';
+    const capBench = 'Simulated · four-state ' + V.name + ' model, ' + V.src + '; ' + cond + '; ' + s.dur + ' ms pulse · dashed: live mono-exponential fits';
+    const capShared = 'Simulated · ' + V.name + ', ' + (V.published ? 'Williams et al. 2013' : 'rates rescaled here') + '; ' + s.wl + ' nm, ' + neg(s.V) + ' mV, ' + s.T + ' °C';
+    const sh = ready && this.shared, rc = ready && this.rec;
+    const irrRows = sh ? sh.series.map(d => ({ irr: d.irr.toFixed(2), ip: fI(d.m.Ip).v + ' ' + fI(d.m.Ip).u, on: fT(d.m.on && d.m.on.tau).v + ' ms', inact: fT(d.m.inact && d.m.inact.tau).v + ' ms', off: fT(d.m.off && d.m.off.tau).v + ' ms' })) : [];
+    let ivReadouts = [];
+    if (sh) {
+      let er = null; const iv = sh.iv;
+      for (let k = 1; k < iv.length; k++) if (iv[k - 1].Ip < 0 && iv[k].Ip >= 0) { er = iv[k - 1].V + (0 - iv[k - 1].Ip) / (iv[k].Ip - iv[k - 1].Ip) * 10; break; }
+      const a = iv[0], z = iv[iv.length - 1];
+      ivReadouts = [
+        { k: 'Reversal (interpolated)', v: er == null ? '—' : neg(er.toFixed(1)), u: 'mV' },
+        { k: '|Ip(−80)| / |Ip(+40)|', v: (Math.abs(a.Ip) / Math.abs(z.Ip)).toFixed(1), u: '' },
+        { k: 'Iss/Ip at −80 mV', v: a.Iss != null ? (a.Iss / a.Ip).toFixed(2) : '—', u: '' }
+      ];
+    }
+    const recReadouts = sh && rc ? [
+      { k: 'Ip2 / Ip1 after ' + s.gap + ' s', v: rc.ratio.toFixed(2), u: '' },
+      { k: 'Recovery τR (fitted)', v: sh.recFit.tau.toFixed(1), u: 's' },
+      { k: '95% recovered by', v: (sh.recFit.tau * Math.log(Math.abs(sh.recFit.A) / (0.05 * sh.recFit.C)) > 0 ? (sh.recFit.tau * Math.log(Math.abs(sh.recFit.A) / (0.05 * sh.recFit.C))).toFixed(1) : '—'), u: 's' }
+    ] : [];
+    const tempRows = sh ? sh.temp.map(d => ({ T: d.T + ' °C', ip: fI(d.m.Ip).v + ' ' + fI(d.m.Ip).u, on: fT(d.m.on && d.m.on.tau).v + ' ms', off: fT(d.m.off && d.m.off.tau).v + ' ms', ratio: d.m.ratio != null ? d.m.ratio.toFixed(2) : '—' })) : [];
+    const capIV = capShared.replace(', ' + neg(s.V) + ' mV', '') + '; ' + irrFmt(s.irr) + ' mW/mm², 500 ms pulses, −80 to +40 mV in 10 mV steps';
+    const capSpec = 'Simulated · ' + V.name + '; spectrum at a photon flux equal to 0.5 mW/mm² of 470 nm, noise-free, ' + neg(s.V) + ' mV; temperature panel at ' + s.wl + ' nm, ' + irrFmt(s.irr) + ' mW/mm²; spectral shape and Q₁₀ values approximate';
+    return {
+      variants, temps, irrPos, irrLabel: irrFmt(s.irr), durPos: Component.DURS.indexOf(s.dur), durLabel: s.dur, V: s.V, vLabel: neg(s.V), wl: s.wl,
+      gap: s.gap, gapLabel: s.gap % 1 ? s.gap.toFixed(1) : String(s.gap),
+      onIrr: e => { const x = 0.05 * Math.pow(200, +e.target.value / 100); this.set({ irr: +x.toPrecision(2) }); },
+      onDur: e => this.set({ dur: Component.DURS[+e.target.value] }),
+      onV: e => this.set({ V: +e.target.value }),
+      onWl: e => this.set({ wl: +e.target.value }),
+      onGap: e => { this.setState({ gap: +e.target.value }, () => { this.computeRec(); this.setState({ n: this.state.n + 1 }); }); },
+      replay: () => this.sweep(),
+      reset: () => this.set(Object.assign({}, Component.DEF)),
+      copyLink: () => { const done = () => { this.setState({ copied: true }); clearTimeout(this._cp); this._cp = setTimeout(() => this.setState({ copied: false }), 1800); }; try { navigator.clipboard.writeText(location.href).then(done, done); } catch (e) { done(); } },
+      copyLabel: s.copied ? 'Link copied' : 'Copy link',
+      readouts, benchNote, capBench, capShared, capIV, capSpec, irrRows, ivReadouts, recReadouts, tempRows,
+      benchAria: 'Simulated whole-cell ChR2 photocurrent during a ' + s.dur + ' ms light pulse',
+      cvBench: this.cvBench, cvIrrT: this.cvIrrT, cvIrrC: this.cvIrrC, cvIV: this.cvIV, cvIVr: this.cvIVr, cvRecT: this.cvRecT, cvRecC: this.cvRecC, cvSpec: this.cvSpec, cvTemp: this.cvTemp
+    };
+  }
+}
+</script>
+</body>
+</html>

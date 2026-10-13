@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A fear memory, written with light — Explore · Nayak Lab · IIT Delhi</title>
+<meta name="description" content="Simulate Nabavi et al. 2014: pair light at an auditory input to the lateral amygdala with a shock, watch the synapse potentiate, then erase the memory with optical LTD and restore it with LTP.">
+<meta property="og:title" content="A fear memory, written with light — Nayak Lab">
+<meta property="og:description" content="Condition with light, erase with LTD, restore with LTP: a calcium-based plasticity model of the auditory-to-amygdala synapse, with the published controls.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://channellab.iitd.ac.in/explore-fear">
+<meta property="og:image" content="https://channellab.iitd.ac.in/assets/logos/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://channellab.iitd.ac.in/explore-fear">
+<script src="./support.js"></script>
+<script src="./js/theme.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="icon" type="image/svg+xml" href="assets/logos/tkn-favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/logos/tkn-favicon-32.png">
+<link rel="apple-touch-icon" href="assets/logos/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&amp;family=Geist+Mono:wght@400;500&amp;family=Newsreader:ital,opsz,wght@1,6..72,400&amp;display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#070c16;-webkit-font-smoothing:antialiased;}
+:focus-visible{outline:2px solid #f1d49a;outline-offset:3px;}
+::selection{background:#e0a53a;color:#070c16;}
+a{text-decoration:none;color:#f1d49a;}
+a:hover{color:#fbe7bf;}
+img{max-width:100%;}
+details>summary{list-style:none;}
+details>summary::-webkit-details-marker{display:none;}
+@media (prefers-reduced-motion:reduce){*{transition-duration:.01ms !important;}}
+</style>
+<script src="./data/content.js"></script>
+<script src="./js/site-fx.js"></script>
+<script src="./js/tap-fix.js"></script>
+<script src="./js/opto-engine.js"></script>
+<script src="./js/opto-fear.js"></script>
+</helmet>
+<div style="font-family:'Geist',sans-serif;color:#e8ecf3;background:#070c16;min-height:100vh;overflow-x:clip;">
+  <dc-import name="SiteNav" active="explore" hint-size="100%,64px" style="position:sticky;top:0;z-index:200;"></dc-import>
+
+  <section id="main" style="border-bottom:1px solid rgba(255,255,255,0.07);">
+    <div style="max-width:1360px;margin:0 auto;padding:clamp(56px,8vw,112px) clamp(20px,5vw,40px) clamp(44px,6vw,72px);">
+      <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.2em;text-transform:uppercase;margin-bottom:22px;">
+        <a href="explore.html" style="color:#7d889c;transition:color .15s;" style-hover="color:#f1d49a;">← Explore</a>
+        <span style="color:#e6b667;">03 · Amygdala</span>
+      </div>
+      <h1 style="font-weight:500;font-size:clamp(36px,5.6vw,78px);line-height:1;letter-spacing:-0.04em;margin-bottom:26px;max-width:980px;text-wrap:balance;">A fear memory, written with <span style="font-family:'Newsreader',serif;font-style:italic;font-weight:400;color:#f1d49a;letter-spacing:-0.02em;">light</span></h1>
+      <p style="font-size:clamp(16px,1.5vw,18px);line-height:1.65;color:#aab3c3;max-width:680px;font-weight:300;text-wrap:pretty;">In 2014 Nabavi and colleagues put a light-gated channel into the auditory inputs to the rat lateral amygdala. Light paired with a mild footshock made light alone frightening. The paired synapse had potentiated. Optical LTD at that synapse erased the memory, and optical LTP brought it back. This page runs that experiment on a model synapse, with the controls that make the result mean something.</p>
+    </div>
+  </section>
+
+  <section id="bench" style="max-width:1360px;margin:0 auto;padding:clamp(48px,6vw,88px) clamp(20px,5vw,40px) 0;">
+    <div style="font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.2em;color:#e6b667;text-transform:uppercase;margin-bottom:16px;">01 · The experiment</div>
+    <h2 style="font-weight:500;font-size:clamp(28px,3.6vw,46px);line-height:1.03;letter-spacing:-0.035em;margin-bottom:14px;text-wrap:balance;">Condition, test, erase, restore</h2>
+    <p style="font-size:16.5px;line-height:1.7;color:#aab3c3;font-weight:300;max-width:700px;margin-bottom:26px;text-wrap:pretty;">Build a sequence of days. Each protocol changes the strength of the light-driven synapse; each test plays the optical cue alone and measures how much the animal stops pressing a lever for food. Start from a published sequence, or add steps yourself.</p>
+
+    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:18px;font-family:'Geist Mono',monospace;font-size:11.5px;">
+      <span style="color:#7d889c;letter-spacing:0.12em;text-transform:uppercase;font-size:11px;margin-right:4px;">Sequences</span>
+      <sc-for list="{{ presets }}" as="o" hint-placeholder-count="5">
+        <button type="button" onClick="{{ o.pick }}" aria-pressed="{{ o.pressed }}" style="min-height:36px;padding:0 13px;border-radius:999px;font-family:'Geist Mono',monospace;font-size:11.5px;cursor:pointer;transition:background .15s,color .15s,border-color .15s;background:{{ o.bg }};color:{{ o.fg }};border:1px solid {{ o.bd }};">{{ o.label }}</button>
+      </sc-for>
+    </div>
+
+    <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:stretch;">
+      <div style="flex:1 1 280px;max-width:100%;background:#0d1422;border:1px solid rgba(255,255,255,0.07);border-radius:18px;padding:20px;display:flex;flex-direction:column;gap:18px;">
+        <div style="display:flex;flex-direction:column;gap:9px;">
+          <div style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#7d889c;">Add a day</div>
+          <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;">
+            <sc-for list="{{ actions }}" as="o" hint-placeholder-count="7">
+              <button type="button" onClick="{{ o.pick }}" disabled="{{ o.disabled }}" title="{{ o.note }}" style="min-height:40px;padding:6px 10px;border-radius:12px;border:1px solid {{ o.bd }};background:transparent;color:{{ o.fg }};font-family:'Geist',sans-serif;font-size:13px;line-height:1.25;text-align:left;cursor:pointer;" style-hover="border-color:#f1d49a;">{{ o.label }}</button>
+            </sc-for>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#7d889c;">This animal</div>
+          <ol style="list-style:none;display:flex;flex-direction:column;gap:0;border-top:1px solid rgba(255,255,255,0.07);">
+            <sc-for list="{{ steps }}" as="h" hint-placeholder-count="4">
+              <li style="display:grid;grid-template-columns:24px 1fr auto;gap:10px;align-items:baseline;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.07);font-size:13.5px;">
+                <span style="font-family:'Geist Mono',monospace;font-size:11px;color:#7d889c;">{{ h.n }}</span>
+                <span style="color:#e8ecf3;">{{ h.label }}</span>
+                <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:{{ h.col }};">{{ h.out }}</span>
+              </li>
+            </sc-for>
+          </ol>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:auto;padding-top:14px;border-top:1px solid rgba(255,255,255,0.07);">
+          <button type="button" onClick="{{ undo }}" style="flex:1 1 auto;min-height:40px;padding:0 14px;border-radius:999px;border:1px solid rgba(255,255,255,0.18);background:transparent;color:#e8ecf3;font-family:'Geist',sans-serif;font-size:13.5px;cursor:pointer;">Undo</button>
+          <button type="button" onClick="{{ fresh }}" style="flex:1 1 auto;min-height:40px;padding:0 14px;border-radius:999px;border:1px solid rgba(255,255,255,0.18);background:transparent;color:#aab3c3;font-family:'Geist',sans-serif;font-size:13.5px;cursor:pointer;">New animal</button>
+          <button type="button" onClick="{{ copyLink }}" style="flex:1 1 auto;min-height:40px;padding:0 14px;border-radius:999px;border:1px solid rgba(255,255,255,0.18);background:transparent;color:#e8ecf3;font-family:'Geist',sans-serif;font-size:13.5px;cursor:pointer;">{{ copyLabel }}</button>
+        </div>
+      </div>
+
+      <div style="flex:3 1 560px;min-width:0;max-width:100%;display:flex;flex-direction:column;gap:16px;">
+        <div style="background:#0d1422;border:1px solid rgba(255,255,255,0.07);border-radius:18px;padding:16px 18px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;font-family:'Geist Mono',monospace;font-size:11.5px;color:#aab3c3;" role="img" aria-label="{{ circuitAria }}">
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <span style="padding:7px 11px;border:1px solid rgba(143,180,232,0.5);border-radius:10px;color:#8fb4e8;">MGN + auditory cortex · oChIEF</span>
+            <span style="padding:7px 11px;border:1px solid rgba(255,255,255,0.14);border-radius:10px;">Footshock (US)</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:2px;min-width:70px;">
+            <span style="color:#f1d49a;font-size:12px;">w = {{ wNow }}×</span>
+            <span aria-hidden="true" style="color:#7d889c;">────▶</span>
+          </div>
+          <span style="padding:7px 11px;border:1px solid rgba(241,212,154,0.5);border-radius:10px;color:#f1d49a;">Lateral amygdala</span>
+          <span aria-hidden="true" style="color:#7d889c;">──▶</span>
+          <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-start;">
+            <span style="padding:7px 11px;border:1px solid rgba(255,255,255,0.14);border-radius:10px;">Central amygdala</span>
+            <span style="padding:4px 9px;border:1px dashed rgba(143,180,232,{{ inhOp }});border-radius:10px;color:#8fb4e8;font-size:11px;opacity:{{ inhOp }};">extinction inhibition {{ inhNow }}</span>
+          </div>
+          <span aria-hidden="true" style="color:#7d889c;">──▶</span>
+          <span style="padding:7px 11px;border:1px solid rgba(255,255,255,0.14);border-radius:10px;">Lever press · freezing</span>
+        </div>
+
+        <figure style="background:#0d1422;border:1px solid rgba(255,255,255,0.07);border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:12px;">
+          <canvas ref="{{ cvTime }}" role="img" aria-label="{{ timeAria }}" style="width:100%;height:270px;display:block;"></canvas>
+          <div style="display:flex;gap:16px;flex-wrap:wrap;font-family:'Geist Mono',monospace;font-size:11px;color:#aab3c3;">
+            <span style="display:flex;align-items:center;gap:7px;"><span style="width:16px;height:2px;background:#f1d49a;"></span>synaptic strength (naive = 1)</span>
+            <span style="display:flex;align-items:center;gap:7px;"><span style="width:16px;height:0;border-top:2px dashed #8fb4e8;"></span>strength minus extinction inhibition</span>
+            <span style="display:flex;align-items:center;gap:7px;"><span style="width:16px;height:0;border-top:1px dashed #7d889c;"></span>response threshold</span>
+          </div>
+        </figure>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:16px;">
+          <figure style="min-width:0;background:#0d1422;border:1px solid rgba(255,255,255,0.07);border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:10px;">
+            <div style="font-family:'Geist Mono',monospace;font-size:11px;color:#aab3c3;">{{ leverTitle }}</div>
+            <canvas ref="{{ cvLever }}" role="img" aria-label="Cumulative lever presses in the last test" style="width:100%;height:200px;display:block;"></canvas>
+          </figure>
+          <figure style="min-width:0;background:#0d1422;border:1px solid rgba(255,255,255,0.07);border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:10px;">
+            <div style="display:flex;gap:14px;flex-wrap:wrap;font-family:'Geist Mono',monospace;font-size:11px;color:#aab3c3;">
+              <span style="display:flex;align-items:center;gap:7px;"><span style="width:9px;height:9px;background:#f1d49a;"></span>lever-press suppression</span>
+              <span style="display:flex;align-items:center;gap:7px;"><span style="width:9px;height:9px;background:#8fb4e8;"></span>freezing</span>
+            </div>
+            <canvas ref="{{ cvBars }}" role="img" aria-label="Suppression and freezing in each test" style="width:100%;height:200px;display:block;"></canvas>
+          </figure>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.07);border-radius:12px;overflow:hidden;">
+          <sc-for list="{{ readouts }}" as="r" hint-placeholder-count="5">
+            <div style="background:#0d1422;padding:12px 14px;display:flex;flex-direction:column;gap:4px;">
+              <div style="font-family:'Geist Mono',monospace;font-size:11.5px;color:#7d889c;">{{ r.k }}</div>
+              <div style="display:flex;align-items:baseline;gap:5px;"><span style="font-size:21px;font-weight:500;letter-spacing:-0.02em;font-variant-numeric:tabular-nums;">{{ r.v }}</span><span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:#aab3c3;">{{ r.u }}</span></div>
+            </div>
+          </sc-for>
+        </div>
+        <p style="font-family:'Geist Mono',monospace;font-size:10.5px;line-height:1.6;color:#7d889c;text-wrap:pretty;">Simulated · calcium-based bistable synapse (Graupner &amp; Brunel 2012, published parameters) at the auditory → lateral amygdala input; calcium per light pulse and the behavioural read-out calibrated here to Nabavi et al. 2014. Each test is a 2 min optical CS (10 Hz, 2 ms pulses) between 2 min baselines. Expected values over a population of synapses; lever presses drawn with a fixed seed.</p>
+      </div>
+    </div>
+    <p style="margin-top:14px;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.04em;color:#7d889c;">Sources · Nabavi et al. 2014 <a href="#ref-1">[1]</a> · Graupner &amp; Brunel 2012 <a href="#ref-2">[2]</a> · Pape &amp; Paré 2010 <a href="#ref-3">[3]</a></p>
+  </section>
+
+  <section id="rule" style="max-width:1360px;margin:clamp(72px,9vw,120px) auto 0;padding:clamp(40px,5vw,64px) clamp(20px,5vw,40px) 0;border-top:1px solid rgba(255,255,255,0.08);">
+    <div style="font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.2em;color:#e6b667;text-transform:uppercase;margin-bottom:16px;">02 · The plasticity rule</div>
+    <h2 style="font-weight:500;font-size:clamp(28px,3.6vw,46px);line-height:1.03;letter-spacing:-0.035em;margin-bottom:14px;text-wrap:balance;">Calcium decides: a little depresses, a lot potentiates</h2>
+    <p style="font-size:16.5px;line-height:1.7;color:#aab3c3;font-weight:300;max-width:700px;margin-bottom:30px;text-wrap:pretty;">Every protocol raises calcium in the synapse. While calcium is above a lower threshold, the synapse is pushed towards depression; above a higher threshold, towards potentiation. What the protocol does depends on how long calcium spends in each band. Slow light pulses stay in the lower band. Fast trains, or light during a shock, reach the upper one.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:stretch;">
+      <div style="flex:1 1 260px;max-width:100%;background:#0d1422;border:1px solid rgba(255,255,255,0.07);border-radius:18px;padding:20px;display:flex;flex-direction:column;gap:18px;">
+        <div style="display:flex;flex-direction:column;gap:9px;">
+          <div style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#7d889c;">Protocol</div>
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <sc-for list="{{ ruleOpts }}" as="o" hint-placeholder-count="6">
+              <button type="button" onClick="{{ o.pick }}" aria-pressed="{{ o.pressed }}" style="min-height:38px;padding:0 14px;border-radius:999px;font-family:'Geist Mono',monospace;font-size:12px;text-align:left;cursor:pointer;transition:background .15s,color .15s,border-color .15s;background:{{ o.bg }};color:{{ o.fg }};border:1px solid {{ o.bd }};">{{ o.label }}</button>
+            </sc-for>
+          </div>
+        </div>
+        <div style="display:grid;gap:1px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.07);border-radius:12px;overflow:hidden;">
+          <sc-for list="{{ ruleReadouts }}" as="r" hint-placeholder-count="5">
+            <div style="background:#0d1422;padding:11px 13px;display:flex;justify-content:space-between;align-items:baseline;gap:10px;">
+              <div style="font-family:'Geist Mono',monospace;font-size:11.5px;color:#7d889c;">{{ r.k }}</div>
+              <div style="display:flex;align-items:baseline;gap:5px;"><span style="font-size:17px;font-weight:500;font-variant-numeric:tabular-nums;">{{ r.v }}</span><span style="font-family:'Geist Mono',monospace;font-size:11px;color:#aab3c3;">{{ r.u }}</span></div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <figure style="flex:3 1 520px;min-width:0;max-width:100%;background:#0d1422;border:1px solid rgba(255,255,255,0.07);border-radius:18px;padding:18px 18px 16px;display:flex;flex-direction:column;gap:12px;">
+        <canvas ref="{{ cvCa }}" role="img" aria-label="{{ caAria }}" style="width:100%;height:320px;display:block;"></canvas>
+        <div style="display:flex;gap:16px;flex-wrap:wrap;font-family:'Geist Mono',monospace;font-size:11px;color:#aab3c3;">
+          <span style="display:flex;align-items:center;gap:7px;"><span style="width:16px;height:2px;background:#f1d49a;"></span>calcium</span>
+          <span style="display:flex;align-items:center;gap:7px;"><span style="width:16px;height:8px;background:rgba(143,180,232,0.18);"></span><span>depression band, θd to θp</span></span>
+          <span style="display:flex;align-items:center;gap:7px;"><span style="width:16px;height:8px;background:rgba(241,212,154,0.14);"></span><span>potentiation band, above θp</span></span>
+          <span style="display:flex;align-items:center;gap:7px;"><span style="width:16px;height:6px;background:#e8ecf3;opacity:0.5;"></span>shock</span>
+        </div>
+        <figcaption style="font-family:'Geist Mono',monospace;font-size:10.5px;line-height:1.6;color:#7d889c;text-wrap:pretty;">{{ capCa }}</figcaption>
+      </figure>
+    </div>
+    <div style="margin-top:22px;max-width:960px;display:grid;">
+      <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.14);font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.06em;color:#7d889c;">
+        <div>Measure</div><div>Published</div><div>This model</div>
+      </div>
+      <sc-for list="{{ calRows }}" as="r" hint-placeholder-count="6">
+        <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.07);font-size:14px;color:#aab3c3;font-weight:300;font-variant-numeric:tabular-nums;">
+          <div>{{ r.k }}</div><div style="color:#e8ecf3;">{{ r.p }}</div><div style="font-family:'Geist Mono',monospace;font-size:13px;color:#f1d49a;">{{ r.m }}</div>
+        </div>
+      </sc-for>
+    </div>
+    <p style="margin-top:12px;font-family:'Geist Mono',monospace;font-size:10.5px;line-height:1.6;color:#7d889c;max-width:960px;text-wrap:pretty;">Published values from Nabavi et al. 2014: in vivo field EPSP slope 30–40 min after each optical protocol, and AMPA/NMDA ratios measured in slices after conditioning. Model values are computed live from naive synapses (field EPSPs) or after each conditioning protocol (AMPA/NMDA, with NMDA unchanged).</p>
+    <details style="margin-top:16px;max-width:900px;border-top:1px solid rgba(255,255,255,0.08);border-bottom:1px solid rgba(255,255,255,0.08);">
+      <summary style="cursor:pointer;padding:16px 0;display:flex;justify-content:space-between;gap:12px;font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#f1d49a;"><span>The detail · the synapse model</span><span aria-hidden="true">+</span></summary>
+      <div style="padding:4px 0 24px;display:flex;flex-direction:column;gap:16px;font-size:15px;line-height:1.75;color:#aab3c3;font-weight:300;">
+        <p style="text-wrap:pretty;">Each synapse carries a variable ρ between 0 and 1 with two stable states, DOWN and UP; its strength is w<sub>0</sub> in DOWN and w<sub>1</sub> = 5·w<sub>0</sub> in UP. Calcium c(t) drives it:</p>
+        <div style="background:#070c16;border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:18px 20px;font-family:'Geist Mono',monospace;font-size:13px;line-height:1.95;color:#e8ecf3;overflow-x:auto;">
+          <div>τ dρ/dt = −ρ(1 − ρ)(ρ* − ρ) + γ<sub>p</sub>(1 − ρ)Θ[c − θ<sub>p</sub>] − γ<sub>d</sub>ρΘ[c − θ<sub>d</sub>] + noise</div>
+          <div style="height:8px;"></div>
+          <div>θ<sub>d</sub> = 1, θ<sub>p</sub> = 1.3, γ<sub>d</sub> = 200, γ<sub>p</sub> = 321.8, τ = 150 s, σ = 2.83, ρ* = 0.5, τ<sub>Ca</sub> = 20 ms</div>
+        </div>
+        <p style="text-wrap:pretty;">These are Graupner &amp; Brunel's published values. During a protocol the potentiation and depression terms dominate, so, as in their own analysis, ρ is treated as an Ornstein–Uhlenbeck process whose drift and noise switch with the calcium band. Calcium decays exponentially between events, so the time spent in each band is computed exactly, and the probability that a DOWN synapse ends UP (or an UP synapse ends DOWN) follows from the resulting Gaussian without random sampling. The fraction of synapses in UP, β, then gives the mean strength 1 + 4β (in units of w<sub>0</sub>).</p>
+        <p style="text-wrap:pretty;">The calcium each light pulse produces is ours. Release depresses with use (U = 0.71, recovery 2.7 s), so slow pulses each release fully and fast trains release less per pulse. An NMDA term grows with postsynaptic depolarisation, which builds up during a fast train and is strong during the shock; the shock also adds back-propagating spikes at 40 Hz. MK-801 removes 90% of the NMDA calcium. These eight numbers were fitted together so that the published field-EPSP changes and the conditioning AMPA/NMDA change are reproduced; naive synapses start with 13% UP.</p>
+      </div>
+    </details>
+    <p style="margin-top:14px;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.04em;color:#7d889c;">Sources · Graupner &amp; Brunel 2012 <a href="#ref-2">[2]</a> · Nabavi et al. 2014 <a href="#ref-1">[1]</a> · Tsodyks &amp; Markram 1997 <a href="#ref-4">[4]</a></p>
+  </section>
+
+  <section id="controls" style="max-width:1360px;margin:clamp(72px,9vw,120px) auto 0;padding:clamp(40px,5vw,64px) clamp(20px,5vw,40px) 0;border-top:1px solid rgba(255,255,255,0.08);">
+    <div style="font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.2em;color:#e6b667;text-transform:uppercase;margin-bottom:16px;">03 · The controls</div>
+    <h2 style="font-weight:500;font-size:clamp(28px,3.6vw,46px);line-height:1.03;letter-spacing:-0.035em;margin-bottom:14px;text-wrap:balance;">Why the result means what it says</h2>
+    <p style="font-size:16.5px;line-height:1.7;color:#aab3c3;font-weight:300;max-width:700px;margin-bottom:30px;text-wrap:pretty;">The headline alone could have other explanations. Each control below rules one out, and each was part of the published study. The numbers are computed by the same model as the bench.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:16px;">
+      <sc-for list="{{ controls }}" as="c" hint-placeholder-count="4">
+        <div style="background:#0d1422;border:1px solid rgba(255,255,255,0.07);border-radius:18px;padding:22px;display:flex;flex-direction:column;gap:12px;">
+          <div style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.12em;color:#e6b667;text-transform:uppercase;">{{ c.tag }}</div>
+          <h3 style="font-weight:500;font-size:19px;letter-spacing:-0.02em;line-height:1.25;">{{ c.title }}</h3>
+          <p style="font-size:14px;line-height:1.6;color:#8792a6;font-weight:300;flex:1;text-wrap:pretty;">{{ c.text }}</p>
+          <div style="display:flex;flex-direction:column;gap:0;border-top:1px solid rgba(255,255,255,0.07);">
+            <sc-for list="{{ c.rows }}" as="r" hint-placeholder-count="3">
+              <div style="display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.05);font-family:'Geist Mono',monospace;font-size:11.5px;"><span style="color:#aab3c3;">{{ r.k }}</span><span style="color:{{ r.col }};">{{ r.v }}</span></div>
+            </sc-for>
+          </div>
+          <button type="button" onClick="{{ c.run }}" style="align-self:flex-start;min-height:38px;padding:0 14px;border-radius:999px;border:1px solid rgba(255,255,255,0.18);background:transparent;color:#e8ecf3;font-family:'Geist',sans-serif;font-size:13px;cursor:pointer;" style-hover="border-color:#f1d49a;">Run on the bench ↑</button>
+        </div>
+      </sc-for>
+    </div>
+    <p style="margin-top:14px;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.04em;color:#7d889c;">Sources · Nabavi et al. 2014 <a href="#ref-1">[1]</a> · Pape &amp; Paré 2010 <a href="#ref-3">[3]</a></p>
+  </section>
+
+  <section id="context" style="max-width:1360px;margin:clamp(72px,9vw,120px) auto 0;padding:clamp(40px,5vw,64px) clamp(20px,5vw,40px) 0;border-top:1px solid rgba(255,255,255,0.08);">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:28px 64px;">
+      <div>
+        <div style="font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.2em;color:#e6b667;text-transform:uppercase;margin-bottom:18px;">Context</div>
+        <h2 style="font-weight:500;font-size:clamp(28px,3.6vw,46px);line-height:1.03;letter-spacing:-0.035em;text-wrap:balance;">From a potentiated synapse to an engram</h2>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:0;">
+        <div style="display:grid;grid-template-columns:minmax(0,64px) 1fr;gap:16px;padding:14px 0;border-top:1px solid rgba(255,255,255,0.07);font-size:14.5px;line-height:1.65;color:#aab3c3;font-weight:300;"><span style="font-family:'Geist Mono',monospace;font-size:12.5px;color:#f1d49a;">1997</span><span>Two groups showed that fear conditioning itself potentiates synapses in the amygdala: in vivo responses to the auditory cue grow after pairing, and synaptic currents in slices from conditioned animals are larger. <a href="#ref-5">[5]</a> <a href="#ref-6">[6]</a></span></div>
+        <div style="display:grid;grid-template-columns:minmax(0,64px) 1fr;gap:16px;padding:14px 0;border-top:1px solid rgba(255,255,255,0.07);font-size:14.5px;line-height:1.65;color:#aab3c3;font-weight:300;"><span style="font-family:'Geist Mono',monospace;font-size:12.5px;color:#f1d49a;">2010</span><span>Optical activation of lateral amygdala pyramidal cells could stand in for the shock and instruct fear learning to a tone. <a href="#ref-7">[7]</a></span></div>
+        <div style="display:grid;grid-template-columns:minmax(0,64px) 1fr;gap:16px;padding:14px 0;border-top:1px solid rgba(255,255,255,0.07);font-size:14.5px;line-height:1.65;color:#aab3c3;font-weight:300;"><span style="font-family:'Geist Mono',monospace;font-size:12.5px;color:#f1d49a;">2012–13</span><span>Hippocampal cells active during learning were tagged with ChR2. Reactivating them with light later produced freezing, and pairing them with a shock in a different context created a false memory. <a href="#ref-8">[8]</a> <a href="#ref-9">[9]</a></span></div>
+        <div style="display:grid;grid-template-columns:minmax(0,64px) 1fr;gap:16px;padding:14px 0;border-top:1px solid rgba(255,255,255,0.07);border-bottom:1px solid rgba(255,255,255,0.07);font-size:14.5px;line-height:1.65;color:#aab3c3;font-weight:300;"><span style="font-family:'Geist Mono',monospace;font-size:12.5px;color:#f1d49a;">2014</span><span>Nabavi and colleagues closed the loop at a single input: memory written by LTP, removed by LTD and restored by LTP, all with light. <a href="#ref-1">[1]</a></span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="methods" style="max-width:1360px;margin:clamp(72px,9vw,120px) auto 0;padding:clamp(40px,5vw,64px) clamp(20px,5vw,40px) 0;border-top:1px solid rgba(255,255,255,0.08);">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:28px 64px;">
+      <div>
+        <div style="font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.2em;color:#e6b667;text-transform:uppercase;margin-bottom:18px;">Methods note</div>
+        <h2 style="font-weight:500;font-size:clamp(28px,3.6vw,46px);line-height:1.03;letter-spacing:-0.035em;text-wrap:balance;">What this model is, and what it is not</h2>
+      </div>
+      <div style="font-size:15.5px;line-height:1.75;color:#aab3c3;font-weight:300;display:flex;flex-direction:column;gap:14px;">
+        <p style="text-wrap:pretty;">The plasticity rule and its parameters are published (Graupner &amp; Brunel 2012). The protocols are those of Nabavi et al. 2014. The calcium each protocol produces, the naive fraction of potentiated synapses and the behavioural read-out are ours, fitted so that the model reproduces the paper's field-EPSP and AMPA/NMDA numbers; the fitted values are listed in section 02.</p>
+        <p style="text-wrap:pretty;">The circuit is reduced. Individual neurons are not simulated: the lateral amygdala's response to the optical cue is taken as proportional to the mean strength of the light-driven synapses, and the central amygdala output as a steep sigmoid of that response, with its threshold placed between the strength after LTD and after LTP. Extinction is modelled as inhibition added downstream of the lateral amygdala, which grows with each unreinforced cue that still evokes a response (after Pape &amp; Paré 2010). Freezing is drawn as a smaller response moving with lever-press suppression; the paper reports the two correlate with R² = 0.4.</p>
+        <p style="text-wrap:pretty;">These are simulations of a published plasticity model, for explanation. Experimental data appear in the papers cited below.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="refs" style="max-width:1360px;margin:clamp(56px,7vw,88px) auto 0;padding:0 clamp(20px,5vw,40px);">
+    <div style="font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.2em;color:#e6b667;text-transform:uppercase;margin-bottom:18px;">References</div>
+    <ol style="list-style:none;display:grid;gap:11px;max-width:900px;font-size:14px;line-height:1.6;color:#aab3c3;font-weight:300;">
+      <li id="ref-1" style="display:grid;grid-template-columns:34px 1fr;gap:8px;"><span style="font-family:'Geist Mono',monospace;font-size:12px;color:#f1d49a;">[1]</span><span>Nabavi S, Fox R, Proulx CD, Lin JY, Tsien RY, Malinow R (2014). Engineering a memory with LTD and LTP. <i>Nature</i> 511:348–352.</span></li>
+      <li id="ref-2" style="display:grid;grid-template-columns:34px 1fr;gap:8px;"><span style="font-family:'Geist Mono',monospace;font-size:12px;color:#f1d49a;">[2]</span><span>Graupner M, Brunel N (2012). Calcium-based plasticity model explains sensitivity of synaptic changes to spike pattern, rate and dendritic location. <i>PNAS</i> 109:3991–3996.</span></li>
+      <li id="ref-3" style="display:grid;grid-template-columns:34px 1fr;gap:8px;"><span style="font-family:'Geist Mono',monospace;font-size:12px;color:#f1d49a;">[3]</span><span>Pape H-C, Paré D (2010). Plastic synaptic networks of the amygdala for the acquisition, expression, and extinction of conditioned fear. <i>Physiol Rev</i> 90:419–463.</span></li>
+      <li id="ref-4" style="display:grid;grid-template-columns:34px 1fr;gap:8px;"><span style="font-family:'Geist Mono',monospace;font-size:12px;color:#f1d49a;">[4]</span><span>Tsodyks MV, Markram H (1997). The neural code between neocortical pyramidal neurons depends on neurotransmitter release probability. <i>PNAS</i> 94:719–723.</span></li>
+      <li id="ref-5" style="display:grid;grid-template-columns:34px 1fr;gap:8px;"><span style="font-family:'Geist Mono',monospace;font-size:12px;color:#f1d49a;">[5]</span><span>Rogan MT, Stäubli UV, LeDoux JE (1997). Fear conditioning induces associative long-term potentiation in the amygdala. <i>Nature</i> 390:604–607.</span></li>
+      <li id="ref-6" style="display:grid;grid-template-columns:34px 1fr;gap:8px;"><span style="font-family:'Geist Mono',monospace;font-size:12px;color:#f1d49a;">[6]</span><span>McKernan MG, Shinnick-Gallagher P (1997). Fear conditioning induces a lasting potentiation of synaptic currents in vitro. <i>Nature</i> 390:607–611.</span></li>
+      <li id="ref-7" style="display:grid;grid-template-columns:34px 1fr;gap:8px;"><span style="font-family:'Geist Mono',monospace;font-size:12px;color:#f1d49a;">[7]</span><span>Johansen JP, Hamanaka H, Monfils MH, et al., LeDoux JE (2010). Optical activation of lateral amygdala pyramidal cells instructs associative fear learning. <i>PNAS</i> 107:12692–12697.</span></li>
+      <li id="ref-8" style="display:grid;grid-template-columns:34px 1fr;gap:8px;"><span style="font-family:'Geist Mono',monospace;font-size:12px;color:#f1d49a;">[8]</span><span>Liu X, Ramirez S, Pang PT, Puryear CB, Govindarajan A, Deisseroth K, Tonegawa S (2012). Optogenetic stimulation of a hippocampal engram activates fear memory recall. <i>Nature</i> 484:381–385.</span></li>
+      <li id="ref-9" style="display:grid;grid-template-columns:34px 1fr;gap:8px;"><span style="font-family:'Geist Mono',monospace;font-size:12px;color:#f1d49a;">[9]</span><span>Ramirez S, Liu X, Lin P-A, et al., Tonegawa S (2013). Creating a false memory in the hippocampus. <i>Science</i> 341:387–391.</span></li>
+    </ol>
+  </section>
+
+  <div style="height:clamp(80px,10vw,128px);"></div>
+  <dc-import name="SiteFooter" hint-size="100%,340px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  static ACT = {
+    paired: { label: 'Paired conditioning', short: 'Pair', proto: 'paired' },
+    unpaired: { label: 'Unpaired light + shock', short: 'Unp', proto: 'unpaired' },
+    mk: { label: 'Paired + MK-801', short: 'MK', proto: 'paired', mk: true },
+    ltd: { label: 'Optical LTD · 1 Hz', short: 'LTD', proto: 'ltd' },
+    ltp: { label: 'Optical LTP · 100 Hz', short: 'LTP', proto: 'ltp' },
+    ext: { label: 'Extinction session', short: 'Ext' },
+    test: { label: 'Test: light alone', short: 'Test' }
+  };
+  static PRESETS = [
+    { id: 'nabavi', label: 'Nabavi 2014', seq: ['paired', 'test', 'ltd', 'test', 'ltp', 'test'] },
+    { id: 'unpaired', label: 'Unpaired control', seq: ['unpaired', 'test'] },
+    { id: 'mk', label: 'NMDA block', seq: ['mk', 'test', 'paired', 'test'] },
+    { id: 'naive', label: 'LTP in a naive animal', seq: ['ltp', 'test'] },
+    { id: 'ext', label: 'Extinction vs LTD', seq: ['paired', 'test', 'ext', 'ext', 'test', 'ltp', 'test'] }
+  ];
+  static RULE = [
+    { id: 'ltd', label: '1 Hz · 900 pulses', tEnd: 3200, opt: {} },
+    { id: 'cs', label: '10 Hz · optical CS', tEnd: 1500, opt: {} },
+    { id: 'ltp', label: '100 Hz · 100 pulses', tEnd: 1200, opt: {} },
+    { id: 'paired', label: 'Light + shock (paired)', tEnd: 1200, opt: {} },
+    { id: 'pairedMK', proto: 'paired', label: 'Paired, with MK-801', tEnd: 1200, opt: { mk: 1 } },
+    { id: 'shock', proto: 'unpaired', label: 'Shock alone (unpaired)', tEnd: 800, opt: { block: 1 } }
+  ];
+  constructor(p) {
+    super(p);
+    let seq = Component.PRESETS[0].seq.slice(), rule = 'paired';
+    try {
+      const q = new URLSearchParams((location.hash || '').slice(1));
+      const s = (q.get('seq') || '').split(',').filter(x => Component.ACT[x]);
+      if (q.has('seq')) seq = s.slice(0, 16);
+      if (Component.RULE.some(r => r.id === q.get('rule'))) rule = q.get('rule');
+    } catch (e) {}
+    this.state = { seq, rule, ready: false, copied: false, n: 0 };
+    ['cvTime', 'cvLever', 'cvBars', 'cvCa'].forEach(k => { this[k] = React.createRef(); });
+  }
+  componentDidMount() {
+    const go = () => {
+      if (!window.OPTO || !window.FEAR || !window.LAB_CONTENT) { this._poll = setTimeout(go, 40); return; }
+      this.cal = this.calibrate();
+      this._th = window.TKNTheme && TKNTheme.on(() => requestAnimationFrame(() => this.drawAll()));
+      this.setState({ ready: true }, () => requestAnimationFrame(() => this.drawAll()));
+      if ('ResizeObserver' in window) { this._ro = new ResizeObserver(() => { cancelAnimationFrame(this._rof); this._rof = requestAnimationFrame(() => this.drawAll()); }); ['cvTime', 'cvLever', 'cvBars', 'cvCa'].forEach(k => this[k].current && this._ro.observe(this[k].current)); }
+    };
+    go();
+  }
+  componentWillUnmount() { if (this._th) this._th(); clearTimeout(this._poll); clearTimeout(this._cp); cancelAnimationFrame(this._rof); if (this._ro) this._ro.disconnect(); }
+  componentDidUpdate(pp, ps) {
+    if (!this.state.ready) return;
+    if (!ps || ps.seq !== this.state.seq || ps.rule !== this.state.rule) { try { history.replaceState(null, '', '#seq=' + this.state.seq.join(',') + '&rule=' + this.state.rule); } catch (e) {} }
+    this.drawAll();
+  }
+  /* ---------- model ---------- */
+  run(seq) {
+    const F = FEAR, b0 = F.P.beta0;
+    let beta = b0, inh = 0;
+    const out = [{ type: 'naive', beta, inh, w: 1 }];
+    seq.forEach((t, k) => {
+      const A = Component.ACT[t], w0 = F.rel(beta), item = { type: t, label: A.label, short: A.short };
+      if (A.proto) { beta = F.apply(beta, A.proto, A.mk ? { mk: 1 } : {}).beta; item.fepsp = F.rel(beta) / w0; }
+      if (t === 'ext') { const cr = F.cr(F.rel(beta), inh); inh += F.B.extRate * cr; item.crStart = cr; }
+      item.beta = beta; item.inh = inh; item.w = F.rel(beta); item.an = F.N2A * item.w;
+      if (t === 'test') { const cr = F.cr(item.w, inh); item.cr = cr; item.sup = 0.02 + F.B.supMax * cr; item.frz = F.B.frzBase + F.B.frzMax * cr; item.seed = 50 + k; }
+      out.push(item);
+    });
+    return out;
+  }
+  calibrate() {
+    const F = FEAR, b0 = F.P.beta0, r = n => F.rel(F.apply(b0, n).beta);
+    return { ltd: r('ltd'), cs: r('cs'), ltp: r('ltp'), paired: F.N2A * r('paired'), unpaired: F.N2A * r('unpaired'), mk: F.N2A * F.rel(F.apply(b0, 'paired', { mk: 1 }).beta) };
+  }
+  /* ---------- drawing ---------- */
+  drawAll() { if (!this.state.ready) return; const H = this.run(this.state.seq); this.drawTime(H); this.drawLever(H); this.drawBars(H); this.drawCa(); }
+  drawTime(H) {
+    const C = OPTO.C, n = H.length, th = FEAR.B.th, xs = H.map((_, k) => k);
+    let hi = 2.1; H.forEach(h => { hi = Math.max(hi, h.w + 0.1); });
+    const anyInh = H.some(h => h.inh > 0);
+    const ser = [{ xs: [-0.5, n - 0.5], y: [th, th], color: C.mute, width: 1, dash: [3, 4] }];
+    const stepX = [], stepY = [], effY = [];
+    H.forEach((h, k) => { stepX.push(k - 0.5, k + 0.5); stepY.push(h.w, h.w); effY.push(h.w - h.inh, h.w - h.inh); });
+    ser.push({ xs: stepX, y: stepY, color: C.gold, width: 1.8 });
+    if (anyInh) ser.push({ xs: stepX, y: effY, color: C.blue, width: 1.4, dash: [5, 4] });
+    const ax = OPTO.plot(this.cvTime.current, { x: [-0.5, Math.max(n, 4) - 0.5], y: [0.4, hi], xticks: [], yticks: OPTO.ticks(0.5, hi, 4), bottom: 40, ylabel: 'strength', series: ser,
+      points: [{ xs, ys: H.map(h => h.w), color: C.gold, r: 3.6 }],
+      labels: [{ x: -0.45, y: th, text: 'threshold', color: C.mute, dy: -9 }] });
+    if (!ax) return;
+    const g = this.cvTime.current.getContext('2d'); g.font = '10.5px ' + OPTO.MONO; g.textAlign = 'center'; g.textBaseline = 'top';
+    H.forEach((h, k) => {
+      g.fillStyle = h.type === 'test' ? (h.cr > 0.5 ? C.gold : C.soft) : C.mute;
+      g.fillText(h.type === 'naive' ? 'Naive' : h.short, ax.X(k), ax.T + ax.ph + 8);
+      if (h.type === 'test') g.fillText(Math.round(h.sup * 100) + '%', ax.X(k), ax.T + ax.ph + 22);
+    });
+  }
+  drawLever(H) {
+    const C = OPTO.C, tests = H.filter(h => h.type === 'test'), last = tests[tests.length - 1];
+    const cv = this.cvLever.current; if (!cv) return;
+    const pr = last ? FEAR.lever(last.sup, last.seed) : [], xs = [0], ys = [0];
+    pr.forEach((t, i) => { xs.push(t / 60000, t / 60000); ys.push(i, i + 1); }); xs.push(6); ys.push(pr.length);
+    OPTO.plot(cv, { x: [0, 6], y: [0, Math.max(10, pr.length * 1.1)], top: 16, xlabel: 'min', ylabel: 'presses', xticks: [0, 1, 2, 3, 4, 5, 6],
+      bars: [{ a: 2, b: 4, color: OPTO.wlColor(470), y: 4, h: 6 }], series: last ? [{ xs, y: ys, color: C.gold, width: 1.5 }] : [],
+      labels: last ? [] : [{ px: 70, py: 60, text: 'Add a test to record lever presses', color: C.mute }] });
+  }
+  drawBars(H) {
+    const C = OPTO.C, tests = H.map((h, k) => Object.assign({ k }, h)).filter(h => h.type === 'test'), n = Math.max(tests.length, 3);
+    const ax = OPTO.plot(this.cvBars.current, { x: [0, n], y: [0, 0.8], yticks: [0, 0.2, 0.4, 0.6, 0.8], xticks: [], bottom: 30, ylabel: 'fraction' });
+    if (!ax) return;
+    const g = this.cvBars.current.getContext('2d'), bw = ax.pw / n;
+    tests.forEach((t, i) => {
+      const x0 = ax.L + i * bw + bw * 0.2, w = bw * 0.28;
+      g.fillStyle = C.gold; g.fillRect(x0, ax.Y(t.sup), w, ax.Y(0) - ax.Y(t.sup));
+      g.fillStyle = C.blue; g.fillRect(x0 + w + 3, ax.Y(t.frz), w, ax.Y(0) - ax.Y(t.frz));
+      g.fillStyle = C.soft; g.font = '10.5px ' + OPTO.MONO; g.textAlign = 'center'; g.textBaseline = 'top';
+      g.fillText('Test · day ' + t.k, ax.L + (i + 0.5) * bw, ax.T + ax.ph + 8);
+    });
+  }
+  drawCa() {
+    const C = OPTO.C, R = Component.RULE.find(r => r.id === this.state.rule), G = FEAR.GB, dt = 0.2;
+    const y = FEAR.trace(R.proto || R.id, R.tEnd, dt, R.opt);
+    let mx = 2; for (let i = 0; i < y.length; i++) mx = Math.max(mx, y[i]);
+    const pr = FEAR.PROTOCOLS[R.proto || R.id].blocks[R.opt.block || 0];
+    const bars = pr.pre.filter(t => t < R.tEnd).map(t => ({ a: t, b: t + 2, color: OPTO.wlColor(470), y: 4, h: 6 }));
+    if (pr.shock) bars.push({ a: pr.shock[0], b: pr.shock[1], color: '#e8ecf3', y: 12, h: 4, alpha: 0.5 });
+    OPTO.plot(this.cvCa.current, { x: [0, R.tEnd], y: [0, mx * 1.08], top: 22, xlabel: 'ms', ylabel: 'calcium (a.u.)', bars,
+      bands: [{ y0: G.thD, y1: G.thP, color: 'rgba(143,180,232,0.12)' }, { y0: G.thP, y1: mx * 1.08, color: 'rgba(241,212,154,0.08)' }],
+      series: [{ y, x0: 0, dx: dt, color: C.gold, width: 1.3 }],
+      labels: [{ x: R.tEnd, y: G.thD, text: 'θd', color: C.blue, dx: -6, dy: -8, align: 'right' }, { x: R.tEnd, y: G.thP, text: 'θp', color: C.gold, dx: -6, dy: -8, align: 'right' }] });
+  }
+  /* ---------- template ---------- */
+  renderVals() {
+    const s = this.state, ready = s.ready && window.FEAR;
+    const seg = on => ({ bg: on ? '#f1d49a' : 'transparent', fg: on ? '#070c16' : '#aab3c3', bd: on ? '#f1d49a' : 'rgba(255,255,255,0.18)', pressed: on ? 'true' : 'false' });
+    const pct = x => Math.round(x * 100) + '%';
+    const H = ready ? this.run(s.seq) : null, last = H && H[H.length - 1];
+    const sameSeq = a => a.length === s.seq.length && a.every((x, i) => x === s.seq[i]);
+    const presets = Component.PRESETS.map(p => Object.assign({ label: p.label, pick: () => this.setState({ seq: p.seq.slice() }) }, seg(sameSeq(p.seq))));
+    const full = s.seq.length >= 16;
+    const actions = Object.keys(Component.ACT).map(k => ({ label: Component.ACT[k].label, note: k === 'ext' ? 'Ten optical CS presentations without shock' : (FEAR && FEAR.PROTOCOLS[Component.ACT[k].proto] ? FEAR.PROTOCOLS[Component.ACT[k].proto].note : 'Optical CS alone, 2 min at 10 Hz'), disabled: full, fg: k === 'test' ? '#f1d49a' : '#e8ecf3', bd: k === 'test' ? 'rgba(241,212,154,0.5)' : 'rgba(255,255,255,0.14)', pick: () => { if (!full) this.setState({ seq: s.seq.concat([k]) }); } }));
+    const steps = H ? H.slice(1).map((h, i) => {
+      let out = '', col = '#aab3c3';
+      if (h.type === 'test') { out = 'suppression ' + pct(h.sup); col = h.cr > 0.5 ? '#f1d49a' : '#7d889c'; }
+      else if (h.type === 'ext') out = 'inhibition ' + h.inh.toFixed(2);
+      else if (h.type === 'ltd' || h.type === 'ltp') out = 'fEPSP ' + pct(h.fepsp);
+      else out = 'AMPA/NMDA ' + h.an.toFixed(1);
+      return { n: String(i + 1), label: h.label, out, col };
+    }) : [];
+    if (H && !steps.length) steps.push({ n: '·', label: 'Naive animal. Add a day.', out: '', col: '#7d889c' });
+    const tests = H ? H.filter(h => h.type === 'test') : [], lt = tests[tests.length - 1];
+    const lastPlastic = H ? H.slice().reverse().find(h => h.fepsp != null) : null;
+    const readouts = H ? [
+      { k: 'Synaptic strength', v: last.w.toFixed(2), u: '× naive' },
+      { k: 'AMPA/NMDA', v: (FEAR.N2A * last.w).toFixed(1), u: '' },
+      { k: 'Last protocol, fEPSP', v: lastPlastic ? pct(lastPlastic.fepsp) : '—', u: lastPlastic ? lastPlastic.short : '' },
+      { k: 'Last test, suppression', v: lt ? pct(lt.sup) : '—', u: '' },
+      { k: 'Last test, freezing', v: lt ? pct(lt.frz) : '—', u: '' }
+    ] : [];
+    // rule section
+    const RR = Component.RULE.find(r => r.id === s.rule);
+    let ruleReadouts = [], capCa = '';
+    if (ready) {
+      const t = FEAR.transitions(RR.proto || RR.id, RR.opt.block != null ? null : RR.opt);
+      let tt = t;
+      if (RR.id === 'shock') { const pr = FEAR.PROTOCOLS.unpaired; tt = FEAR.transitions({ blocks: [pr.blocks[1]] }); }
+      const b0 = FEAR.P.beta0, nb = b0 * (1 - tt.D) + (1 - b0) * tt.U;
+      ruleReadouts = [
+        { k: 'Time above θp', v: (tt.Tp / 1000).toFixed(2), u: 's' },
+        { k: 'Time in depression band', v: (tt.Td / 1000).toFixed(2), u: 's' },
+        { k: 'P(DOWN → UP)', v: tt.U.toFixed(3), u: '' },
+        { k: 'P(UP → DOWN)', v: tt.D.toFixed(3), u: '' },
+        { k: 'Naive synapse after', v: pct(FEAR.weight(nb) / FEAR.weight(b0)), u: '' }
+      ];
+      const P = FEAR.PROTOCOLS[RR.proto || RR.id];
+      capCa = 'Simulated · calcium at a light-driven synapse during the first ' + (RR.tEnd >= 1000 ? (RR.tEnd / 1000).toFixed(1) + ' s' : RR.tEnd + ' ms') + ' of: ' + (RR.id === 'shock' ? 'a shock with no light' : P.label.toLowerCase() + ', ' + P.note) + (RR.opt.mk ? ', MK-801 present' : '') + '; thresholds and rule from Graupner & Brunel 2012; calcium amplitudes ours. Totals in the panel are for the whole protocol.';
+    }
+    const ruleOpts = Component.RULE.map(r => Object.assign({ label: r.label, pick: () => this.setState({ rule: r.id }) }, seg(s.rule === r.id)));
+    const c = this.cal;
+    const calRows = c ? [
+      { k: 'fEPSP after 10 Hz optical CS', p: '102.2 ± 5%', m: pct(c.cs) },
+      { k: 'fEPSP after 1 Hz × 900 (LTD)', p: '82 ± 8%', m: pct(c.ltd) },
+      { k: 'fEPSP after 100 Hz × 5 trains (LTP)', p: '118 ± 9%', m: pct(c.ltp) },
+      { k: 'AMPA/NMDA, unconditioned', p: '2.4 ± 0.2', m: FEAR.N2A.toFixed(1) },
+      { k: 'AMPA/NMDA, unpaired', p: '2.1 ± 0.2', m: c.unpaired.toFixed(1) },
+      { k: 'AMPA/NMDA, paired', p: '4.4 ± 0.6', m: c.paired.toFixed(1) }
+    ] : [];
+    // controls
+    const ctl = (tag, title, text, seq, pick) => {
+      const R = ready ? this.run(seq) : [], rows = [];
+      R.slice(1).forEach(h => { if (pick.includes(h.type)) rows.push(h.type === 'test' ? { k: 'Test after ' + ({ Pair: 'pairing', Unp: 'unpaired', MK: 'MK-801 pairing', LTD: 'LTD', LTP: 'LTP', Ext: 'extinction' }[R[R.indexOf(h) - 1].short] || 'naive'), v: 'suppression ' + pct(h.sup), col: h.cr > 0.5 ? '#f1d49a' : '#7d889c' } : { k: h.label, v: 'strength ' + h.w.toFixed(2) + '×', col: '#aab3c3' }); });
+      return { tag, title, text, rows, run: () => { this.setState({ seq: seq.slice() }); const el = document.getElementById('bench'); if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 70, behavior: OPTO.reduce ? 'auto' : 'smooth' }); } };
+    };
+    const controls = [
+      ctl('Control 1', 'Unpaired light and shock', 'The same light and the same shocks, separated by at least a minute. Calcium never reaches the potentiation band, the synapse does not change, and the cue alone does nothing.', ['unpaired', 'test'], ['unpaired', 'test']),
+      ctl('Control 2', 'NMDA receptors blocked', 'MK-801 during pairing removes most of the calcium, so learning fails. Paired again later without the drug, the same animal learns.', ['mk', 'test', 'paired', 'test'], ['mk', 'paired', 'test']),
+      ctl('Control 3', 'LTP without pairing', 'Optical LTP in a naive animal strengthens the synapse but not enough to drive a response. Potentiation at this input is needed for the memory, but this amount alone does not create it.', ['ltp', 'test'], ['ltp', 'test']),
+      ctl('Control 4', 'Extinction is not LTD', 'Repeating the cue without shock removes the response while the synapse stays potentiated. LTP then cannot bring the response back, because the change happened downstream.', ['paired', 'test', 'ext', 'ext', 'test', 'ltp', 'test'], ['ext', 'test', 'ltp'])
+    ];
+    return {
+      cvTime: this.cvTime, cvLever: this.cvLever, cvBars: this.cvBars, cvCa: this.cvCa,
+      presets, actions, steps, readouts, ruleOpts, ruleReadouts, capCa, calRows, controls,
+      wNow: last ? last.w.toFixed(2) : '1.00', inhNow: last ? last.inh.toFixed(2) : '0.00', inhOp: last && last.inh > 0 ? 1 : 0.35,
+      circuitAria: 'Circuit: oChIEF-expressing auditory inputs to the lateral amygdala, synaptic strength ' + (last ? last.w.toFixed(2) : '1.00') + ' times naive, then central amygdala and behaviour',
+      timeAria: 'Synaptic strength after each day of the sequence, with the response threshold',
+      leverTitle: lt ? 'Last test · cumulative lever presses, light from 2 to 4 min' : 'Cumulative lever presses',
+      caAria: 'Simulated calcium during ' + RR.label,
+      undo: () => this.setState({ seq: s.seq.slice(0, -1) }),
+      fresh: () => this.setState({ seq: [] }),
+      copyLink: () => { const done = () => { this.setState({ copied: true }); clearTimeout(this._cp); this._cp = setTimeout(() => this.setState({ copied: false }), 1800); }; try { navigator.clipboard.writeText(location.href).then(done, done); } catch (e) { done(); } },
+      copyLabel: s.copied ? 'Link copied' : 'Copy link'
+    };
+  }
+}
+</script>
+</body>
+</html>

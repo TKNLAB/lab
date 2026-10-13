@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>From one photon to a network — Explore · Nayak Lab · IIT Delhi</title>
+<meta name="description" content="Six linked simulations: channelrhodopsin-2 in the membrane, its photocycle, single channels summing to a whole-cell current, light-driven spikes, pulse trains and a spiking network.">
+<meta property="og:title" content="From one photon to a network — Nayak Lab">
+<meta property="og:description" content="Follow light from retinal isomerisation to a single femtosiemens channel, a nanoamp current, a spike and an entrained network.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://channellab.iitd.ac.in/explore-network">
+<meta property="og:image" content="https://channellab.iitd.ac.in/assets/logos/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://channellab.iitd.ac.in/explore-network">
+<script src="./support.js"></script>
+<script src="./js/theme.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="icon" type="image/svg+xml" href="assets/logos/tkn-favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/logos/tkn-favicon-32.png">
+<link rel="apple-touch-icon" href="assets/logos/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&amp;family=Geist+Mono:wght@400;500&amp;family=Newsreader:ital,opsz,wght@1,6..72,400&amp;display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#070c16;-webkit-font-smoothing:antialiased;}
+:focus-visible{outline:2px solid #f1d49a;outline-offset:3px;}
+::selection{background:#e0a53a;color:#070c16;}
+a{text-decoration:none;color:#f1d49a;}
+a:hover{color:#fbe7bf;}
+img{max-width:100%;}
+details>summary{list-style:none;}
+details>summary::-webkit-details-marker{display:none;}
+@media (prefers-reduced-motion:reduce){*{transition-duration:.01ms !important;}}
+</style>
+<script src="./data/content.js"></script>
+<script src="./js/site-fx.js"></script>
+<script src="./js/tap-fix.js"></script>
+<script src="./js/opto-engine.js"></script>
+<script src="./js/opto-neuron.js"></script>
+</helmet>
+<div style="font-family:'Geist',sans-serif;color:#e8ecf3;background:#070c16;min-height:100vh;overflow-x:clip;">
+  <dc-import name="SiteNav" active="explore" hint-size="100%,64px" style="position:sticky;top:0;z-index:200;"></dc-import>
+
+  <section id="main" style="border-bottom:1px solid rgba(255,255,255,0.07);">
+    <div style="max-width:1360px;margin:0 auto;padding:clamp(56px,8vw,112px) clamp(20px,5vw,40px) clamp(44px,6vw,72px);">
+      <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.2em;text-transform:uppercase;margin-bottom:22px;">
+        <a href="explore.html" style="color:#7d889c;transition:color .15s;" style-hover="color:#f1d49a;">← Explore</a>
+        <span style="color:#e6b667;">02 · Photon to network</span>
+      </div>
+      <h1 style="font-weight:500;font-size:clamp(36px,5.6vw,78px);line-height:1;letter-spacing:-0.04em;margin-bottom:26px;max-width:980px;text-wrap:balance;">From one photon to a <span style="font-family:'Newsreader',serif;font-style:italic;font-weight:400;color:#f1d49a;letter-spacing:-0.02em;">network</span></h1>
+      <p style="font-size:clamp(16px,1.5vw,18px);line-height:1.65;color:#aab3c3;max-width:680px;font-weight:300;text-wrap:pretty;">A photon bends one bond in retinal. The protein around it opens a pore that carries a few femtoamps. A hundred thousand such pores carry nanoamps, enough to fire a neuron, and a few hundred neurons firing together move a network. Each scene below adds one step in scale and keeps the recording beside the explanation.</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:30px;font-family:'Geist Mono',monospace;font-size:11.5px;letter-spacing:0.06em;">
+        <a href="#protein" style="padding:7px 12px;border:1px solid rgba(255,255,255,0.14);border-radius:999px;color:#aab3c3;" style-hover="border-color:#f1d49a;color:#f1d49a;">01 Protein</a>
+        <a href="#photocycle" style="padding:7px 12px;border:1px solid rgba(255,255,255,0.14);border-radius:999px;color:#aab3c3;" style-hover="border-color:#f1d49a;color:#f1d49a;">02 Photocycle</a>
+        <a href="#channels" style="padding:7px 12px;border:1px solid rgba(255,255,255,0.14);border-radius:999px;color:#aab3c3;" style-hover="border-color:#f1d49a;color:#f1d49a;">03 One to many</a>
+        <a href="#spike" style="padding:7px 12px;border:1px solid rgba(255,255,255,0.14);border-radius:999px;color:#aab3c3;" style-hover="border-color:#f1d49a;color:#f1d49a;">04 Spike</a>
+        <a href="#trains" style="padding:7px 12px;border:1px solid rgba(255,255,255,0.14);border-radius:999px;color:#aab3c3;" style-hover="border-color:#f1d49a;color:#f1d49a;">05 Trains</a>
+        <a href="#network" style="padding:7px 12px;border:1px solid rgba(255,255,255,0.14);border-radius:999px;color:#aab3c3;" style-hover="border-color:#f1d49a;color:#f1d49a;">06 Network</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="protein" style="max-width:1360px;margin:0 auto;padding:clamp(48px,6vw,88px) clamp(20px,5vw,40px) 0;">
+    <div style="font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.2em;color:#e6b667;text-transform:uppercase;margin-bottom:16px;">01 · The protein in the membrane</div>
+    <h2 style="font-weight:500;font-size:clamp(28px,3.6vw,46px);line-height:1.03;letter-spacing:-0.035em;margin-bottom:14px;text-wrap:balance;">Seven helices, one retinal, three gates</h2>
+    <p style="font-size:16.5px;line-height:1.7;color:#aab3c3;font-weight:300;max-width:700px;margin-bottom:30px;text-wrap:pretty;">ChR2 crosses the membrane seven times. Retinal, the light-absorbing molecule, is bonded to a lysine on the seventh helix. The pore runs between helices 1, 2, 3 and 7 and is closed in the dark at three places along its length.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:16px;align-items:start;">
+      <figure style="min-width:0;background:#0d1422;border:1px solid rgba(255,255,255,0.07);border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:12px;">
+        <canvas ref="{{ cvProt }}" role="img" aria-label="Schematic cut through ChR2 in the membrane, dark state, with the three gates closed" style="width:100%;height:420px;display:block;"></canvas>
+        <figcaption style="font-family:'Geist Mono',monospace;font-size:10.5px;line-height:1.6;color:#7d889c;text-wrap:pretty;">Schematic · cut through the pore of wild-type ChR2, dark state. Helix assignment, gate positions and retinal attachment as described for PDB 6EID (X-ray, 2.39 Å; Volkov et al. 2017). TM4–TM6 lie behind the cut and are not drawn. Positions are not to scale.</figcaption>
+      </figure>
+      <div style="display:flex;flex-direction:column;gap:0;">
+        <div style="display:grid;grid-template-columns:minmax(0,150px) 1fr;gap:8px 20px;padding:14px 0;border-top:1px solid rgba(255,255,255,0.07);font-size:14.5px;line-height:1.6;"><div style="font-family:'Geist Mono',monospace;font-size:12px;color:#f1d49a;">Structure</div><div style="color:#aab3c3;font-weight:300;">PDB 6EID: wild-type ChR2 crystallised as a dimer. Each protomer has its own retinal and its own pore.</div></div>
+        <div style="display:grid;grid-template-columns:minmax(0,150px) 1fr;gap:8px 20px;padding:14px 0;border-top:1px solid rgba(255,255,255,0.07);font-size:14.5px;line-height:1.6;"><div style="font-family:'Geist Mono',monospace;font-size:12px;color:#f1d49a;">Retinal</div><div style="color:#aab3c3;font-weight:300;">All-<i>trans</i> retinal joined to K257 on TM7 through a protonated Schiff base, in a pocket between TM3 and TM7.</div></div>
+        <div style="display:grid;grid-template-columns:minmax(0,150px) 1fr;gap:8px 20px;padding:14px 0;border-top:1px solid rgba(255,255,255,0.07);font-size:14.5px;line-height:1.6;"><div style="font-family:'Geist Mono',monospace;font-size:12px;color:#f1d49a;">Gates</div><div style="color:#aab3c3;font-weight:300;">Extracellular, central and intracellular. The central gate holds E90 on TM2. At the intracellular gate the side chains of H134 and R268 block the pore.</div></div>
+        <div style="display:grid;grid-template-columns:minmax(0,150px) 1fr;gap:8px 20px;padding:14px 0;border-top:1px solid rgba(255,255,255,0.07);border-bottom:1px solid rgba(255,255,255,0.07);font-size:14.5px;line-height:1.6;"><div style="font-family:'Geist Mono',monospace;font-size:12px;color:#f1d49a;">What is missing</div><div style="color:#aab3c3;font-weight:300;">No structure of the open channel has been solved. The open state in the next scene is a molecular-dynamics model.</div></div>
+      </div>
+    </div>
+    <p style="margin-top:14px;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.04em;color:#7d889c;">Sources · Volkov et al. 2017 <a href="#ref-1">[1]</a> · Xin et al. 2023 <a href="#ref-2">[2]</a></p>
+  </section>
+
+  <section id="photocycle" style="max-width:1360px;margin:clamp(72px,9vw,120px) auto 0;padding:clamp(40px,5vw,64px) clamp(20px,5vw,40px) 0;border-top:1px solid rgba(255,255,255,0.08);">
+    <div style="font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.2em;color:#e6b667;text-transform:uppercase;margin-bottom:16px;">02 · Blue light, and the photocycle</div>
+    <h2 style="font-weight:500;font-size:clamp(28px,3.6vw,46px);line-height:1.03;letter-spacing:-0.035em;margin-bottom:14px;text-wrap:balance;">One bond twists, and the pore fills with water</h2>
+    <p style="font-size:16.5px;line-height:1.7;color:#aab3c3;font-weight:300;max-width:700px;margin-bottom:30px;text-wrap:pretty;">After a 470 nm photon is absorbed, the protein passes through a series of intermediates, each named after the colour it absorbs. Step through them to see when the gates open and when ions can pass.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:stretch;">
+      <figure style="flex:1 1 340px;min-width:0;max-width:100%;background:#0d1422;border:1px solid rgba(255,255,255,0.07);border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:14px;">
+        <canvas ref="{{ cvRing }}" role="img" aria-label="{{ ringAria }}" style="width:100%;height:330px;display:block;"></canvas>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <sc-for list="{{ pcStates }}" as="o" hint-placeholder-count="6">
+            <button type="button" onClick="{{ o.pick }}" aria-pressed="{{ o.pressed }}" style="flex:1 1 auto;min-height:38px;padding:0 10px;border-radius:999px;font-family:'Geist Mono',monospace;font-size:11.5px;cursor:pointer;transition:background .15s,color .15s,border-color .15s;background:{{ o.bg }};color:{{ o.fg }};border:1px solid {{ o.bd }};">{{ o.label }}</button>
+          </sc-for>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button type="button" onClick="{{ pcPrev }}" style="flex:1 1 auto;min-height:40px;padding:0 14px;border-radius:999px;border:1px solid rgba(255,255,255,0.18);background:transparent;color:#e8ecf3;font-family:'Geist',sans-serif;font-size:13.5px;cursor:pointer;">← Previous</button>
+          <button type="button" onClick="{{ pcPlay }}" style="flex:1 1 auto;min-height:40px;padding:0 14px;border-radius:999px;border:none;background:#f1d49a;color:#070c16;font-family:'Geist',sans-serif;font-size:13.5px;font-weight:500;cursor:pointer;">{{ pcPlayLabel }}</button>
+          <button type="button" onClick="{{ pcNext }}" style="flex:1 1 auto;min-height:40px;padding:0 14px;border-radius:999px;border:1px solid rgba(255,255,255,0.18);background:transparent;color:#e8ecf3;font-family:'Geist',sans-serif;font-size:13.5px;cursor:pointer;">Next →</button>
+        </div>
+      </figure>
+      <figure style="flex:1.4 1 420px;min-width:0;max-width:100%;background:#0d1422;border:1px solid rgba(255,255,255,0.07);border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:14px;">
+        <canvas ref="{{ cvProt2 }}" role="img" aria-label="{{ protAria }}" style="width:100%;height:330px;display:block;"></canvas>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:baseline;">
+            <div style="font-size:22px;font-weight:500;letter-spacing:-0.02em;">{{ pc.name }}</div>
+            <div style="font-family:'Geist Mono',monospace;font-size:11.5px;color:#f1d49a;">{{ pc.cond }}</div>
+          </div>
+          <p style="font-size:14.5px;line-height:1.65;color:#aab3c3;font-weight:300;text-wrap:pretty;">{{ pc.text }}</p>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:1px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.07);border-radius:12px;overflow:hidden;margin-top:4px;">
+            <sc-for list="{{ pcFacts }}" as="r" hint-placeholder-count="4">
+              <div style="background:#0d1422;padding:10px 12px;display:flex;flex-direction:column;gap:3px;">
+                <div style="font-family:'Geist Mono',monospace;font-size:11px;color:#7d889c;">{{ r.k }}</div>
+                <div style="font-size:14.5px;color:#e8ecf3;">{{ r.v }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <figcaption style="font-family:'Geist Mono',monospace;font-size:10.5px;line-height:1.6;color:#7d889c;text-wrap:pretty;">Schematic · D470 to P520 follow the molecular-dynamics models of Xin, Zhang &amp; Yuan 2023 (water at the central gate in their stepwise ratio; P520 pore radius &gt; 6 Å). P480 was not modelled there and is drawn closed. Timescales are orders of magnitude from photocycle spectroscopy.</figcaption>
+      </figure>
+    </div>
+    <details style="margin-top:16px;max-width:900px;border-top:1px solid rgba(255,255,255,0.08);border-bottom:1px solid rgba(255,255,255,0.08);">
+      <summary style="cursor:pointer;padding:16px 0;display:flex;justify-content:space-between;gap:12px;font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#f1d49a;"><span>The detail · from photocycle to the four-state model</span><span aria-hidden="true">+</span></summary>
+      <div style="padding:4px 0 24px;display:flex;flex-direction:column;gap:14px;font-size:15px;line-height:1.75;color:#aab3c3;font-weight:300;">
+        <p style="text-wrap:pretty;">In the dark state a hydrogen-bond network joins K93 and E90 on TM2, E123 on TM3 and D253 on TM7, and water cannot reach the central gate. In the simulations E90 loses its proton as P390-early turns into P390-late, which breaks the link between TM2 and TM7. The number of waters at the central gate rises in steps: low in P390-early, about 70% of the open value in P390-late, and the full value in P520. The free energy for a Na⁺ ion crossing the central gate of P520 is almost flat.</p>
+        <p style="text-wrap:pretty;">The whole-cell model used in Module 1 and in the scenes below compresses this cycle into four states. D470 corresponds to C1, the conducting P520 to O1, and the desensitised P480 to C2, which opens only weakly (O2) and returns to the dark state over seconds. The model reproduces the current; it does not resolve the intermediates.</p>
+      </div>
+    </details>
+    <p style="margin-top:14px;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.04em;color:#7d889c;">Sources · Xin et al. 2023 <a href="#ref-2">[2]</a> · Lórenz-Fonfría et al. 2013 <a href="#ref-3">[3]</a> · Bamann et al. 2008 <a href="#ref-4">[4]</a></p>
+  </section>
+
+  <section id="channels" style="max-width:1360px;margin:clamp(72px,9vw,120px) auto 0;padding:clamp(40px,5vw,64px) clamp(20px,5vw,40px) 0;border-top:1px solid rgba(255,255,255,0.08);">
+    <div style="font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.2em;color:#e6b667;text-transform:uppercase;margin-bottom:16px;">03 · Microscopic to macroscopic</div>
+    <h2 style="font-weight:500;font-size:clamp(28px,3.6vw,46px);line-height:1.03;letter-spacing:-0.035em;margin-bottom:14px;text-wrap:balance;">A channel too small to record</h2>
+    <p style="font-size:16.5px;line-height:1.7;color:#aab3c3;font-weight:300;max-width:700px;margin-bottom:30px;text-wrap:pretty;">One open ChR2 channel conducts 40–90 femtosiemens, about 0.005 pA at −60 mV. The quietest patch recording has noise of around 0.1 pA, twenty times larger. So single ChR2 openings are not recorded directly. Add channels and the current climbs out of the noise; at a million it is the nanoamp photocurrent of Module 1.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:stretch;">
+      <div style="flex:1 1 260px;max-width:100%;background:#0d1422;border:1px solid rgba(255,255,255,0.07);border-radius:18px;padding:20px;display:flex;flex-direction:column;gap:20px;">
+        <label style="display:flex;flex-direction:column;gap:8px;">
+          <span style="display:flex;justify-content:space-between;gap:10px;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#7d889c;"><span>Irradiance</span><span style="color:#f1d49a;letter-spacing:0.02em;text-transform:none;white-space:nowrap;">{{ ciLabel }} mW/mm²</span></span>
+          <input type="range" min="0" max="100" step="1" value="{{ ciPos }}" onChange="{{ onCi }}" style="width:100%;accent-color:#e6b667;">
+        </label>
+        <div style="display:flex;flex-direction:column;gap:9px;">
+          <div style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#7d889c;">Recording noise</div>
+          <div style="display:flex;gap:6px;">
+            <sc-for list="{{ noiseOpts }}" as="o" hint-placeholder-count="2">
+              <button type="button" onClick="{{ o.pick }}" aria-pressed="{{ o.pressed }}" style="flex:1 1 0;min-height:38px;padding:0 12px;border-radius:999px;font-family:'Geist Mono',monospace;font-size:12px;cursor:pointer;transition:background .15s,color .15s,border-color .15s;background:{{ o.bg }};color:{{ o.fg }};border:1px solid {{ o.bd }};">{{ o.label }}</button>
+            </sc-for>
+          </div>
+        </div>
+        <div style="display:grid;gap:1px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.07);border-radius:12px;overflow:hidden;">
+          <sc-for list="{{ chReadouts }}" as="r" hint-placeholder-count="4">
+            <div style="background:#0d1422;padding:11px 13px;display:flex;justify-content:space-between;align-items:baseline;gap:10px;">
+              <div style="font-family:'Geist Mono',monospace;font-size:11.5px;color:#7d889c;">{{ r.k }}</div>
+              <div style="display:flex;align-items:baseline;gap:5px;"><span style="font-size:17px;font-weight:500;font-variant-numeric:tabular-nums;">{{ r.v }}</span><span style="font-family:'Geist Mono',monospace;font-size:11px;color:#aab3c3;">{{ r.u }}</span></div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:auto;padding-top:14px;border-top:1px solid rgba(255,255,255,0.07);">
+          <button type="button" onClick="{{ chAgain }}" style="flex:1 1 auto;min-height:40px;padding:0 14px;border-radius:999px;border:none;background:#f1d49a;color:#070c16;font-family:'Geist',sans-serif;font-size:13.5px;font-weight:500;cursor:pointer;">Next sweep</button>
+        </div>
+      </div>
+      <figure style="flex:3 1 520px;min-width:0;max-width:100%;background:#0d1422;border:1px solid rgba(255,255,255,0.07);border-radius:18px;padding:18px 18px 16px;display:flex;flex-direction:column;gap:10px;">
+        <sc-for list="{{ chPanels }}" as="p" hint-placeholder-count="5">
+          <div style="display:flex;flex-direction:column;gap:2px;">
+            <div style="display:flex;justify-content:space-between;gap:10px;font-family:'Geist Mono',monospace;font-size:11px;color:#aab3c3;"><span style="color:#e8ecf3;">{{ p.title }}</span><span>{{ p.sn }}</span></div>
+            <canvas ref="{{ p.ref }}" role="img" aria-label="{{ p.aria }}" style="width:100%;height:118px;display:block;"></canvas>
+          </div>
+        </sc-for>
+        <div style="display:flex;gap:16px;flex-wrap:wrap;font-family:'Geist Mono',monospace;font-size:11px;color:#aab3c3;">
+          <span style="display:flex;align-items:center;gap:7px;"><span style="width:16px;height:2px;background:#7d889c;"></span>recorded</span>
+          <span style="display:flex;align-items:center;gap:7px;"><span style="width:16px;height:2px;background:#f1d49a;"></span>channel current, noise-free</span>
+          <span style="display:flex;align-items:center;gap:7px;"><span style="width:16px;height:0;border-top:2px dashed #8fb4e8;"></span>N·i·P<sub>o</sub></span>
+        </div>
+        <figcaption style="font-family:'Geist Mono',monospace;font-size:10.5px;line-height:1.6;color:#7d889c;text-wrap:pretty;">{{ capCh }}</figcaption>
+      </figure>
+    </div>
+    <details style="margin-top:16px;max-width:900px;border-top:1px solid rgba(255,255,255,0.08);border-bottom:1px solid rgba(255,255,255,0.08);">
+      <summary style="cursor:pointer;padding:16px 0;display:flex;justify-content:space-between;gap:12px;font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#f1d49a;"><span>The detail</span><span aria-hidden="true">+</span></summary>
+      <div style="padding:4px 0 24px;display:flex;flex-direction:column;gap:14px;font-size:15px;line-height:1.75;color:#aab3c3;font-weight:300;">
+        <p style="text-wrap:pretty;">Each channel follows the same four-state scheme as Module 1, but as a random process: in every 50 µs step, the number of channels leaving each state is drawn from a binomial distribution with the transition probabilities of that step. With one channel you see single openings to O1 and the smaller O2 level; with many, the fluctuations average out and the sum converges on N·i·P<sub>o</sub>(t), where P<sub>o</sub> is the open-equivalent fraction (O1 + 0.1·O2) of the deterministic model.</p>
+        <p style="text-wrap:pretty;">The single-channel conductance of ChR2 has been estimated from noise analysis rather than seen directly; published values fall between 40 and 90 fS. The page uses −0.005 pA for a full O1 opening at −60 mV. Background noise is 0.1 pA rms filtered at 1 kHz, close to the floor of a good single-channel patch. For comparison, the lab records muscle acetylcholine receptor openings of several picoamps, a thousand times larger.</p>
+      </div>
+    </details>
+    <p style="margin-top:14px;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.04em;color:#7d889c;">Sources · Nagel et al. 2003 <a href="#ref-5">[5]</a> · Feldbauer et al. 2009 <a href="#ref-6">[6]</a> · Williams et al. 2013 <a href="#ref-7">[7]</a></p>
+  </section>
+
+  <section id="spike" style="max-width:1360px;margin:clamp(72px,9vw,120px) auto 0;padding:clamp(40px,5vw,64px) clamp(20px,5vw,40px) 0;border-top:1px solid rgba(255,255,255,0.08);">
+    <div style="font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.2em;color:#e6b667;text-transform:uppercase;margin-bottom:16px;">04 · The action potential</div>
+    <h2 style="font-weight:500;font-size:clamp(28px,3.6vw,46px);line-height:1.03;letter-spacing:-0.035em;margin-bottom:14px;text-wrap:balance;">A flash of light, a spike within milliseconds</h2>
+    <p style="font-size:16.5px;line-height:1.7;color:#aab3c3;font-weight:300;max-width:700px;margin-bottom:30px;text-wrap:pretty;">Put the photocurrent into a neuron and a brief pulse of blue light fires a single spike a few milliseconds later. A dimmer or shorter pulse depolarises the membrane without firing it. The threshold belongs to the neuron: a shorter pulse needs brighter light.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:stretch;">
+      <div style="flex:1 1 260px;max-width:100%;background:#0d1422;border:1px solid rgba(255,255,255,0.07);border-radius:18px;padding:20px;display:flex;flex-direction:column;gap:20px;">
+        <div style="display:flex;flex-direction:column;gap:9px;">
+          <div style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#7d889c;">Variant</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <sc-for list="{{ apVariants }}" as="o" hint-placeholder-count="3">
+              <button type="button" onClick="{{ o.pick }}" aria-pressed="{{ o.pressed }}" style="flex:1 1 auto;min-height:38px;padding:0 12px;border-radius:999px;font-family:'Geist Mono',monospace;font-size:12px;cursor:pointer;transition:background .15s,color .15s,border-color .15s;background:{{ o.bg }};color:{{ o.fg }};border:1px solid {{ o.bd }};">{{ o.label }}</button>
+            </sc-for>
+          </div>
+        </div>
+        <label style="display:flex;flex-direction:column;gap:8px;">
+          <span style="display:flex;justify-content:space-between;gap:10px;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#7d889c;"><span>Irradiance</span><span style="color:#f1d49a;letter-spacing:0.02em;text-transform:none;white-space:nowrap;">{{ aiLabel }} mW/mm²</span></span>
+          <input type="range" min="0" max="100" step="1" value="{{ aiPos }}" onChange="{{ onAi }}" style="width:100%;accent-color:#e6b667;">
+        </label>
+        <label style="display:flex;flex-direction:column;gap:8px;">
+          <span style="display:flex;justify-content:space-between;gap:10px;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#7d889c;"><span>Pulse</span><span style="color:#f1d49a;letter-spacing:0.02em;text-transform:none;white-space:nowrap;">{{ ad }} ms</span></span>
+          <input type="range" min="0" max="7" step="1" value="{{ adPos }}" onChange="{{ onAd }}" style="width:100%;accent-color:#e6b667;">
+        </label>
+        <div style="display:grid;gap:1px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.07);border-radius:12px;overflow:hidden;">
+          <sc-for list="{{ apReadouts }}" as="r" hint-placeholder-count="4">
+            <div style="background:#0d1422;padding:11px 13px;display:flex;justify-content:space-between;align-items:baseline;gap:10px;">
+              <div style="font-family:'Geist Mono',monospace;font-size:11.5px;color:#7d889c;">{{ r.k }}</div>
+              <div style="display:flex;align-items:baseline;gap:5px;"><span style="font-size:17px;font-weight:500;font-variant-numeric:tabular-nums;">{{ r.v }}</span><span style="font-family:'Geist Mono',monospace;font-size:11px;color:#aab3c3;">{{ r.u }}</span></div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <figure style="flex:3 1 520px;min-width:0;max-width:100%;background:#0d1422;border:1px solid rgba(255,255,255,0.07);border-radius:18px;padding:18px 18px 16px;display:flex;flex-direction:column;gap:8px;">
+        <canvas ref="{{ cvApV }}" role="img" aria-label="{{ apAria }}" style="width:100%;height:250px;display:block;"></canvas>
+        <canvas ref="{{ cvApI }}" role="img" aria-label="ChR2 current during the same pulse" style="width:100%;height:130px;display:block;"></canvas>
+        <figcaption style="font-family:'Geist Mono',monospace;font-size:10.5px;line-height:1.6;color:#7d889c;text-wrap:pretty;">{{ capAp }}</figcaption>
+      </figure>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:16px;margin-top:16px;">
+      <figure style="min-width:0;background:#0d1422;border:1px solid rgba(255,255,255,0.07);border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:12px;">
+        <canvas ref="{{ cvSD }}" role="img" aria-label="Strength-duration curve: threshold irradiance against pulse length" style="width:100%;height:280px;display:block;"></canvas>
+        <div style="display:flex;gap:16px;flex-wrap:wrap;font-family:'Geist Mono',monospace;font-size:11px;color:#aab3c3;">
+          <span style="display:flex;align-items:center;gap:7px;"><span style="width:8px;height:8px;border-radius:50%;border:1.4px solid #f1d49a;"></span>threshold</span>
+          <span style="display:flex;align-items:center;gap:7px;"><span style="width:9px;height:9px;border-radius:50%;background:#8fb4e8;"></span>your pulse: {{ apHit }}</span>
+        </div>
+      </figure>
+      <div style="display:flex;flex-direction:column;gap:14px;font-size:15px;line-height:1.75;color:#aab3c3;font-weight:300;padding:8px 4px;">
+        <p style="text-wrap:pretty;">The curve is the lowest irradiance that fires one spike, found by bisection for each pulse length. Above it, every point fires; below it, none does. It flattens for long pulses at the light level that produces the neuron's rheobase current, and rises steeply for pulses shorter than the membrane can integrate.</p>
+        <p style="text-wrap:pretty;">Boyden and colleagues showed in 2005 that millisecond pulses of blue light on ChR2-expressing hippocampal neurons fire spikes with millisecond precision. This scene reproduces that result in the Hodgkin–Huxley membrane used on the Teaching page and in HHsim.</p>
+      </div>
+    </div>
+    <details style="margin-top:16px;max-width:900px;border-top:1px solid rgba(255,255,255,0.08);border-bottom:1px solid rgba(255,255,255,0.08);">
+      <summary style="cursor:pointer;padding:16px 0;display:flex;justify-content:space-between;gap:12px;font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#f1d49a;"><span>The detail</span><span aria-hidden="true">+</span></summary>
+      <div style="padding:4px 0 24px;display:flex;flex-direction:column;gap:14px;font-size:15px;line-height:1.75;color:#aab3c3;font-weight:300;">
+        <p style="text-wrap:pretty;">The membrane is the Hodgkin–Huxley squid axon (resting near −65 mV), with its gating rates scaled from 6.3 °C to 12 °C using Q<sub>10</sub> = 3 so that it can follow the pulse trains in the next scene. The ChR2 current is added as a membrane current, I<sub>ChR2</sub> = g·(O1 + 0.1·O2)·G(V), with the photocycle integrated together with V, m, h and n by fourth-order Runge–Kutta at 10 µs. Because the closing rate Gd1 and the rectification depend on voltage, the channel feels the spike it causes.</p>
+        <p style="text-wrap:pretty;">The size of the ChR2 conductance relative to the membrane (25 µA/cm² for the normalised −1 nA peak) is ours. It sets where the strength–duration curve sits on the irradiance axis, not its shape. A spike is counted when V crosses 0 mV; latency is measured from light onset to that crossing.</p>
+      </div>
+    </details>
+    <p style="margin-top:14px;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.04em;color:#7d889c;">Sources · Boyden et al. 2005 <a href="#ref-8">[8]</a> · Hodgkin &amp; Huxley 1952 <a href="#ref-9">[9]</a> · Williams et al. 2013 <a href="#ref-7">[7]</a></p>
+  </section>
+
+  <section id="trains" style="max-width:1360px;margin:clamp(72px,9vw,120px) auto 0;padding:clamp(40px,5vw,64px) clamp(20px,5vw,40px) 0;border-top:1px solid rgba(255,255,255,0.08);">
+    <div style="font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.2em;color:#e6b667;text-transform:uppercase;margin-bottom:16px;">05 · Pulse trains, and why kinetics matter</div>
+    <h2 style="font-weight:500;font-size:clamp(28px,3.6vw,46px);line-height:1.03;letter-spacing:-0.035em;margin-bottom:14px;text-wrap:balance;">Following the light, then falling behind</h2>
+    <p style="font-size:16.5px;line-height:1.7;color:#aab3c3;font-weight:300;max-width:700px;margin-bottom:30px;text-wrap:pretty;">Twenty 2 ms pulses at a fixed rate. At low rates every pulse fires a spike. As the rate rises, each pulse arrives before the protein has recovered from the last one, the current per pulse shrinks, and spikes drop out. ChETA, with faster kinetics, keeps up for longer.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:stretch;">
+      <div style="flex:1 1 260px;max-width:100%;background:#0d1422;border:1px solid rgba(255,255,255,0.07);border-radius:18px;padding:20px;display:flex;flex-direction:column;gap:20px;">
+        <div style="display:flex;flex-direction:column;gap:9px;">
+          <div style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#7d889c;">Variant</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <sc-for list="{{ trVariants }}" as="o" hint-placeholder-count="3">
+              <button type="button" onClick="{{ o.pick }}" aria-pressed="{{ o.pressed }}" style="flex:1 1 auto;min-height:38px;padding:0 12px;border-radius:999px;font-family:'Geist Mono',monospace;font-size:12px;cursor:pointer;transition:background .15s,color .15s,border-color .15s;background:{{ o.bg }};color:{{ o.fg }};border:1px solid {{ o.bd }};">{{ o.label }}</button>
+            </sc-for>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:9px;">
+          <div style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#7d889c;">Rate</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <sc-for list="{{ trFreqs }}" as="o" hint-placeholder-count="6">
+              <button type="button" onClick="{{ o.pick }}" aria-pressed="{{ o.pressed }}" style="flex:1 1 auto;min-height:38px;padding:0 10px;border-radius:999px;font-family:'Geist Mono',monospace;font-size:12px;cursor:pointer;transition:background .15s,color .15s,border-color .15s;background:{{ o.bg }};color:{{ o.fg }};border:1px solid {{ o.bd }};">{{ o.label }}</button>
+            </sc-for>
+          </div>
+        </div>
+        <div style="display:grid;gap:1px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.07);border-radius:12px;overflow:hidden;">
+          <sc-for list="{{ trReadouts }}" as="r" hint-placeholder-count="4">
+            <div style="background:#0d1422;padding:11px 13px;display:flex;justify-content:space-between;align-items:baseline;gap:10px;">
+              <div style="font-family:'Geist Mono',monospace;font-size:11.5px;color:#7d889c;">{{ r.k }}</div>
+              <div style="display:flex;align-items:baseline;gap:5px;"><span style="font-size:17px;font-weight:500;font-variant-numeric:tabular-nums;">{{ r.v }}</span><span style="font-family:'Geist Mono',monospace;font-size:11px;color:#aab3c3;">{{ r.u }}</span></div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <figure style="flex:3 1 520px;min-width:0;max-width:100%;background:#0d1422;border:1px solid rgba(255,255,255,0.07);border-radius:18px;padding:18px 18px 16px;display:flex;flex-direction:column;gap:8px;">
+        <canvas ref="{{ cvTrV }}" role="img" aria-label="{{ trAria }}" style="width:100%;height:240px;display:block;"></canvas>
+        <canvas ref="{{ cvTrI }}" role="img" aria-label="ChR2 current during the train" style="width:100%;height:120px;display:block;"></canvas>
+        <figcaption style="font-family:'Geist Mono',monospace;font-size:10.5px;line-height:1.6;color:#7d889c;text-wrap:pretty;">{{ capTr }}</figcaption>
+      </figure>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:16px;margin-top:16px;">
+      <figure style="min-width:0;background:#0d1422;border:1px solid rgba(255,255,255,0.07);border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:12px;">
+        <canvas ref="{{ cvFid }}" role="img" aria-label="Spike fidelity against stimulation rate for three variants" style="width:100%;height:280px;display:block;"></canvas>
+        <div style="display:flex;gap:16px;flex-wrap:wrap;font-family:'Geist Mono',monospace;font-size:11px;color:#aab3c3;">
+          <span style="display:flex;align-items:center;gap:7px;"><span style="width:16px;height:2px;background:#aab3c3;"></span>H134R</span>
+          <span style="display:flex;align-items:center;gap:7px;"><span style="width:16px;height:2px;background:#e6b667;"></span>Wild type</span>
+          <span style="display:flex;align-items:center;gap:7px;"><span style="width:16px;height:2px;background:#8fb4e8;"></span>ChETA</span>
+          <span>{{ fidNote }}</span>
+        </div>
+      </figure>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#7d889c;">Modulating, not driving</div>
+        <p style="font-size:15px;line-height:1.7;color:#aab3c3;font-weight:300;text-wrap:pretty;">Most experiments do not impose every spike. Here the same neuron fires irregularly on a noisy input, and dim continuous light is added for half a second in eight trials. The rate goes up and the spike times shift; no spike is dictated by the light.</p>
+        <label style="display:flex;flex-direction:column;gap:8px;max-width:420px;">
+          <span style="display:flex;justify-content:space-between;gap:10px;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#7d889c;"><span>Irradiance</span><span style="color:#f1d49a;letter-spacing:0.02em;text-transform:none;white-space:nowrap;">{{ miLabel }} mW/mm²</span></span>
+          <input type="range" min="0" max="0.15" step="0.005" value="{{ mi }}" onChange="{{ onMi }}" style="width:100%;accent-color:#e6b667;">
+        </label>
+        <figure style="min-width:0;background:#0d1422;border:1px solid rgba(255,255,255,0.07);border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:6px;">
+          <canvas ref="{{ cvModR }}" role="img" aria-label="Spike raster, eight trials, light in the middle half second" style="width:100%;height:150px;display:block;"></canvas>
+          <canvas ref="{{ cvModP }}" role="img" aria-label="Average firing rate across trials" style="width:100%;height:110px;display:block;"></canvas>
+          <div style="font-family:'Geist Mono',monospace;font-size:11px;color:#aab3c3;">{{ modNote }}</div>
+        </figure>
+      </div>
+    </div>
+    <details style="margin-top:16px;max-width:900px;border-top:1px solid rgba(255,255,255,0.08);border-bottom:1px solid rgba(255,255,255,0.08);">
+      <summary style="cursor:pointer;padding:16px 0;display:flex;justify-content:space-between;gap:12px;font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#f1d49a;"><span>The detail</span><span aria-hidden="true">+</span></summary>
+      <div style="padding:4px 0 24px;display:flex;flex-direction:column;gap:14px;font-size:15px;line-height:1.75;color:#aab3c3;font-weight:300;">
+        <p style="text-wrap:pretty;">To compare kinetics rather than current size, each variant is driven at three times its own 2 ms single-spike threshold. Fidelity is the fraction of pulses followed by at least one spike within the shorter of one period and 15 ms; extra spikes are any others. With the rescaled rates used here, wild-type ChR2 desensitises more during a train than H134R, so its per-pulse current falls and spikes are lost first; ChETA closes about three times faster and loses less current between pulses. At the highest rates the neuron's own refractory period also limits following.</p>
+        <p style="text-wrap:pretty;">The wild-type and ChETA rates are the H134R set rescaled by us towards published off-kinetics and desensitisation (Module 1, methods note). The ranking follows Gunaydin et al. 2010; the exact rates at which each variant fails depend on the neuron and should not be read as measured values. The modulation panel uses a bias current of 3 µA/cm² plus Ornstein–Uhlenbeck noise (σ = 1.5 µA/cm², τ = 5 ms), with a fixed seed per trial.</p>
+      </div>
+    </details>
+    <p style="margin-top:14px;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.04em;color:#7d889c;">Sources · Gunaydin et al. 2010 <a href="#ref-10">[10]</a> · Lin et al. 2009 <a href="#ref-11">[11]</a> · Boyden et al. 2005 <a href="#ref-8">[8]</a></p>
+  </section>
+
+  <section id="network" style="max-width:1360px;margin:clamp(72px,9vw,120px) auto 0;padding:clamp(40px,5vw,64px) clamp(20px,5vw,40px) 0;border-top:1px solid rgba(255,255,255,0.08);">
+    <div style="font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.2em;color:#e6b667;text-transform:uppercase;margin-bottom:16px;">06 · The network</div>
+    <h2 style="font-weight:500;font-size:clamp(28px,3.6vw,46px);line-height:1.03;letter-spacing:-0.035em;margin-bottom:14px;text-wrap:balance;">Choose who sees the light</h2>
+    <p style="font-size:16.5px;line-height:1.7;color:#aab3c3;font-weight:300;max-width:700px;margin-bottom:30px;text-wrap:pretty;">Four hundred neurons, 80% excitatory and 20% inhibitory, sparsely connected and firing irregularly. Genetic targeting decides which cells make ChR2. Light the excitatory cells and the network follows the pulses; light the inhibitory cells and the whole network goes quiet.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:stretch;">
+      <div style="flex:1 1 260px;max-width:100%;background:#0d1422;border:1px solid rgba(255,255,255,0.07);border-radius:18px;padding:20px;display:flex;flex-direction:column;gap:20px;">
+        <div style="display:flex;flex-direction:column;gap:9px;">
+          <div style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#7d889c;">ChR2 in</div>
+          <div style="display:flex;gap:6px;">
+            <sc-for list="{{ netTargets }}" as="o" hint-placeholder-count="2">
+              <button type="button" onClick="{{ o.pick }}" aria-pressed="{{ o.pressed }}" style="flex:1 1 0;min-height:38px;padding:0 12px;border-radius:999px;font-family:'Geist Mono',monospace;font-size:12px;cursor:pointer;transition:background .15s,color .15s,border-color .15s;background:{{ o.bg }};color:{{ o.fg }};border:1px solid {{ o.bd }};">{{ o.label }}</button>
+            </sc-for>
+          </div>
+        </div>
+        <label style="display:flex;flex-direction:column;gap:8px;">
+          <span style="display:flex;justify-content:space-between;gap:10px;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#7d889c;"><span>Fraction expressing</span><span style="color:#f1d49a;letter-spacing:0.02em;text-transform:none;white-space:nowrap;">{{ nfLabel }}%</span></span>
+          <input type="range" min="0" max="1" step="0.05" value="{{ nf }}" onChange="{{ onNf }}" style="width:100%;accent-color:#e6b667;">
+        </label>
+        <div style="display:flex;flex-direction:column;gap:9px;">
+          <div style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#7d889c;">Light</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <sc-for list="{{ netLights }}" as="o" hint-placeholder-count="4">
+              <button type="button" onClick="{{ o.pick }}" aria-pressed="{{ o.pressed }}" style="flex:1 1 auto;min-height:38px;padding:0 10px;border-radius:999px;font-family:'Geist Mono',monospace;font-size:12px;cursor:pointer;transition:background .15s,color .15s,border-color .15s;background:{{ o.bg }};color:{{ o.fg }};border:1px solid {{ o.bd }};">{{ o.label }}</button>
+            </sc-for>
+          </div>
+        </div>
+        <label style="display:flex;flex-direction:column;gap:8px;">
+          <span style="display:flex;justify-content:space-between;gap:10px;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#7d889c;"><span>Irradiance at the fibre</span><span style="color:#f1d49a;letter-spacing:0.02em;text-transform:none;white-space:nowrap;">{{ niLabel }} mW/mm²</span></span>
+          <input type="range" min="0" max="100" step="1" value="{{ niPos }}" onChange="{{ onNi }}" style="width:100%;accent-color:#e6b667;">
+        </label>
+        <div style="display:flex;flex-direction:column;gap:9px;">
+          <div style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#7d889c;">Light in tissue</div>
+          <div style="display:flex;gap:6px;">
+            <sc-for list="{{ netGrads }}" as="o" hint-placeholder-count="2">
+              <button type="button" onClick="{{ o.pick }}" aria-pressed="{{ o.pressed }}" style="flex:1 1 0;min-height:38px;padding:0 12px;border-radius:999px;font-family:'Geist Mono',monospace;font-size:12px;cursor:pointer;transition:background .15s,color .15s,border-color .15s;background:{{ o.bg }};color:{{ o.fg }};border:1px solid {{ o.bd }};">{{ o.label }}</button>
+            </sc-for>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:auto;padding-top:14px;border-top:1px solid rgba(255,255,255,0.07);">
+          <button type="button" onClick="{{ copyLink }}" style="flex:1 1 auto;min-height:40px;padding:0 14px;border-radius:999px;border:1px solid rgba(255,255,255,0.18);background:transparent;color:#e8ecf3;font-family:'Geist',sans-serif;font-size:13.5px;cursor:pointer;">{{ copyLabel }}</button>
+          <button type="button" onClick="{{ reset }}" style="flex:1 1 auto;min-height:40px;padding:0 14px;border-radius:999px;border:1px solid rgba(255,255,255,0.18);background:transparent;color:#aab3c3;font-family:'Geist',sans-serif;font-size:13.5px;cursor:pointer;">Reset page</button>
+        </div>
+      </div>
+      <figure style="flex:3 1 520px;min-width:0;max-width:100%;background:#0d1422;border:1px solid rgba(255,255,255,0.07);border-radius:18px;padding:18px 18px 16px;display:flex;flex-direction:column;gap:8px;">
+        <canvas ref="{{ cvRas }}" role="img" aria-label="{{ netAria }}" style="width:100%;height:280px;display:block;"></canvas>
+        <canvas ref="{{ cvRate }}" role="img" aria-label="Population firing rate, excitatory and inhibitory" style="width:100%;height:130px;display:block;"></canvas>
+        <canvas ref="{{ cvProbe }}" role="img" aria-label="Membrane potential of one expressing cell" style="width:100%;height:120px;display:block;"></canvas>
+        <div style="display:flex;gap:16px;flex-wrap:wrap;font-family:'Geist Mono',monospace;font-size:11px;color:#aab3c3;">
+          <span style="display:flex;align-items:center;gap:7px;"><span style="width:8px;height:8px;background:#f1d49a;"></span>expresses ChR2</span>
+          <span style="display:flex;align-items:center;gap:7px;"><span style="width:8px;height:8px;background:#7d889c;"></span>excitatory</span>
+          <span style="display:flex;align-items:center;gap:7px;"><span style="width:8px;height:8px;background:#8fb4e8;"></span>inhibitory</span>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:1px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.07);border-radius:12px;overflow:hidden;margin-top:6px;">
+          <sc-for list="{{ netReadouts }}" as="r" hint-placeholder-count="4">
+            <div style="background:#0d1422;padding:12px 14px;display:flex;flex-direction:column;gap:4px;">
+              <div style="font-family:'Geist Mono',monospace;font-size:11.5px;color:#7d889c;">{{ r.k }}</div>
+              <div style="display:flex;align-items:baseline;gap:5px;"><span style="font-size:20px;font-weight:500;letter-spacing:-0.02em;font-variant-numeric:tabular-nums;">{{ r.v }}</span><span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:#aab3c3;">{{ r.u }}</span></div>
+            </div>
+          </sc-for>
+        </div>
+        <figcaption style="font-family:'Geist Mono',monospace;font-size:10.5px;line-height:1.6;color:#7d889c;text-wrap:pretty;">{{ capNet }}</figcaption>
+      </figure>
+    </div>
+    <details style="margin-top:16px;max-width:900px;border-top:1px solid rgba(255,255,255,0.08);border-bottom:1px solid rgba(255,255,255,0.08);">
+      <summary style="cursor:pointer;padding:16px 0;display:flex;justify-content:space-between;gap:12px;font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#f1d49a;"><span>The detail</span><span aria-hidden="true">+</span></summary>
+      <div style="padding:4px 0 24px;display:flex;flex-direction:column;gap:14px;font-size:15px;line-height:1.75;color:#aab3c3;font-weight:300;">
+        <p style="text-wrap:pretty;">Cells are conductance-based leaky integrate-and-fire units (τ<sub>m</sub> 20 ms, threshold −50 mV, reset −60 mV, refractory 5 ms for excitatory and 2 ms for inhibitory cells) with exponential excitatory (5 ms, 0 mV) and inhibitory (10 ms, −80 mV) synapses, after the benchmark networks of Vogels &amp; Abbott 2005 and Brette et al. 2007. Each cell receives 32 excitatory and 8 inhibitory recurrent inputs chosen at random, plus independent Poisson background input that holds the network in an asynchronous, irregular state. Integration is forward Euler at 0.1 ms.</p>
+        <p style="text-wrap:pretty;">Expressing cells receive the H134R photocurrent computed once at −60 mV for each light level, rescaled by each cell's driving force with the same inward rectification. With "Scattered", each cell is given a random depth and the irradiance it receives falls exponentially to 5% at the deepest cells, so cells near the fibre are driven harder than cells far from it. "Locked" is the fraction of excitatory spikes during the light that fall within 10 ms of a pulse onset; the chance level is that window as a fraction of the period. The network is generic and is not a model of a particular brain area.</p>
+      </div>
+    </details>
+    <p style="margin-top:14px;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.04em;color:#7d889c;">Sources · Brunel 2000 <a href="#ref-12">[12]</a> · Vogels &amp; Abbott 2005 <a href="#ref-13">[13]</a> · Brette et al. 2007 <a href="#ref-14">[14]</a></p>
+  </section>
+
+  <section id="methods" style="max-width:1360px;margin:clamp(72px,9vw,120px) auto 0;padding:clamp(40px,5vw,64px) clamp(20px,5vw,40px) 0;border-top:1px solid rgba(255,255,255,0.08);">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:28px 64px;">
+      <div>
+        <div style="font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.2em;color:#e6b667;text-transform:uppercase;margin-bottom:18px;">Methods note</div>
+        <h2 style="font-weight:500;font-size:clamp(28px,3.6vw,46px);line-height:1.03;letter-spacing:-0.035em;text-wrap:balance;">What is measured, what is modelled, what is ours</h2>
+      </div>
+      <div style="font-size:15.5px;line-height:1.75;color:#aab3c3;font-weight:300;display:flex;flex-direction:column;gap:14px;">
+        <p style="text-wrap:pretty;">Scenes 01 and 02 are schematics. The dark-state layout follows the crystal structure 6EID; the intermediates follow a published molecular-dynamics study, which is a model of the open channel, not a structure of it.</p>
+        <p style="text-wrap:pretty;">Scenes 03 to 06 are computed in your browser from the four-state ChR2 model of Module 1 (Williams et al. 2013, H134R; other variants rescaled by us). The Hodgkin–Huxley equations are the published ones with temperature scaling; the network follows standard benchmark parameters. The coupling strengths between the photocurrent and each cell, the light attenuation and the background input are our choices, stated in each detail block. Every number printed beside a figure is measured from the simulated trace.</p>
+        <p style="text-wrap:pretty;">These are simulations, for explanation. Experimental data appear in the papers cited below.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="refs" style="max-width:1360px;margin:clamp(56px,7vw,88px) auto 0;padding:0 clamp(20px,5vw,40px);">
+    <div style="font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.2em;color:#e6b667;text-transform:uppercase;margin-bottom:18px;">References</div>
+    <ol style="list-style:none;display:grid;gap:11px;max-width:900px;font-size:14px;line-height:1.6;color:#aab3c3;font-weight:300;">
+      <li id="ref-1" style="display:grid;grid-template-columns:34px 1fr;gap:8px;"><span style="font-family:'Geist Mono',monospace;font-size:12px;color:#f1d49a;">[1]</span><span>Volkov O, Kovalev K, Polovinkin V, et al., Gordeliy V (2017). Structural insights into ion conduction by channelrhodopsin 2. <i>Science</i> 358:eaan8862. PDB 6EID.</span></li>
+      <li id="ref-2" style="display:grid;grid-template-columns:34px 1fr;gap:8px;"><span style="font-family:'Geist Mono',monospace;font-size:12px;color:#f1d49a;">[2]</span><span>Xin Q, Zhang W, Yuan S (2023). The mechanism of the channel opening in channelrhodopsin-2: a molecular dynamics simulation. <i>Int J Mol Sci</i> 24:5667.</span></li>
+      <li id="ref-3" style="display:grid;grid-template-columns:34px 1fr;gap:8px;"><span style="font-family:'Geist Mono',monospace;font-size:12px;color:#f1d49a;">[3]</span><span>Lórenz-Fonfría VA, Resler T, Krause N, et al., Heberle J (2013). Transient protonation changes in channelrhodopsin-2 and their relevance to channel gating. <i>PNAS</i> 110:E1273–E1281.</span></li>
+      <li id="ref-4" style="display:grid;grid-template-columns:34px 1fr;gap:8px;"><span style="font-family:'Geist Mono',monospace;font-size:12px;color:#f1d49a;">[4]</span><span>Bamann C, Kirsch T, Nagel G, Bamberg E (2008). Spectral characteristics of the photocycle of channelrhodopsin-2 and its implication for channel function. <i>J Mol Biol</i> 375:686–694.</span></li>
+      <li id="ref-5" style="display:grid;grid-template-columns:34px 1fr;gap:8px;"><span style="font-family:'Geist Mono',monospace;font-size:12px;color:#f1d49a;">[5]</span><span>Nagel G, Szellas T, Huhn W, et al., Bamberg E (2003). Channelrhodopsin-2, a directly light-gated cation-selective membrane channel. <i>PNAS</i> 100:13940–13945.</span></li>
+      <li id="ref-6" style="display:grid;grid-template-columns:34px 1fr;gap:8px;"><span style="font-family:'Geist Mono',monospace;font-size:12px;color:#f1d49a;">[6]</span><span>Feldbauer K, Zimmermann D, Pintschovius V, Spitz J, Bamann C, Bamberg E (2009). Channelrhodopsin-2 is a leaky proton pump. <i>PNAS</i> 106:12317–12322.</span></li>
+      <li id="ref-7" style="display:grid;grid-template-columns:34px 1fr;gap:8px;"><span style="font-family:'Geist Mono',monospace;font-size:12px;color:#f1d49a;">[7]</span><span>Williams JC, Xu J, Lu Z, Klimas A, Chen X, Ambrosi CM, Cohen IS, Entcheva E (2013). Computational optogenetics: empirically-derived voltage- and light-sensitive channelrhodopsin-2 model. <i>PLoS Comput Biol</i> 9:e1003220.</span></li>
+      <li id="ref-8" style="display:grid;grid-template-columns:34px 1fr;gap:8px;"><span style="font-family:'Geist Mono',monospace;font-size:12px;color:#f1d49a;">[8]</span><span>Boyden ES, Zhang F, Bamberg E, Nagel G, Deisseroth K (2005). Millisecond-timescale, genetically targeted optical control of neural activity. <i>Nat Neurosci</i> 8:1263–1268.</span></li>
+      <li id="ref-9" style="display:grid;grid-template-columns:34px 1fr;gap:8px;"><span style="font-family:'Geist Mono',monospace;font-size:12px;color:#f1d49a;">[9]</span><span>Hodgkin AL, Huxley AF (1952). A quantitative description of membrane current and its application to conduction and excitation in nerve. <i>J Physiol</i> 117:500–544.</span></li>
+      <li id="ref-10" style="display:grid;grid-template-columns:34px 1fr;gap:8px;"><span style="font-family:'Geist Mono',monospace;font-size:12px;color:#f1d49a;">[10]</span><span>Gunaydin LA, Yizhar O, Berndt A, Sohal VS, Deisseroth K, Hegemann P (2010). Ultrafast optogenetic control. <i>Nat Neurosci</i> 13:387–392.</span></li>
+      <li id="ref-11" style="display:grid;grid-template-columns:34px 1fr;gap:8px;"><span style="font-family:'Geist Mono',monospace;font-size:12px;color:#f1d49a;">[11]</span><span>Lin JY, Lin MZ, Steinbach P, Tsien RY (2009). Characterization of engineered channelrhodopsin variants with improved properties and kinetics. <i>Biophys J</i> 96:1803–1814.</span></li>
+      <li id="ref-12" style="display:grid;grid-template-columns:34px 1fr;gap:8px;"><span style="font-family:'Geist Mono',monospace;font-size:12px;color:#f1d49a;">[12]</span><span>Brunel N (2000). Dynamics of sparsely connected networks of excitatory and inhibitory spiking neurons. <i>J Comput Neurosci</i> 8:183–208.</span></li>
+      <li id="ref-13" style="display:grid;grid-template-columns:34px 1fr;gap:8px;"><span style="font-family:'Geist Mono',monospace;font-size:12px;color:#f1d49a;">[13]</span><span>Vogels TP, Abbott LF (2005). Signal propagation and logic gating in networks of integrate-and-fire neurons. <i>J Neurosci</i> 25:10786–10795.</span></li>
+      <li id="ref-14" style="display:grid;grid-template-columns:34px 1fr;gap:8px;"><span style="font-family:'Geist Mono',monospace;font-size:12px;color:#f1d49a;">[14]</span><span>Brette R, Rudolph M, Carnevale T, et al., Destexhe A (2007). Simulation of networks of spiking neurons: a review of tools and strategies. <i>J Comput Neurosci</i> 23:349–398.</span></li>
+    </ol>
+  </section>
+
+  <div style="height:clamp(80px,10vw,128px);"></div>
+  <dc-import name="SiteFooter" hint-size="100%,340px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  static DEF = { ci: 1, av: 'h134r', ai: 1, ad: 5, tv: 'wt', tf: 20, mi: 0.05, nt: 'E', nf: 0.5, nl: 10, ni: 2, ng: 0 };
+  static ADS = [0.5, 1, 2, 5, 10, 20, 50, 100];
+  static FREQS = [5, 10, 20, 40, 60, 100];
+  static NS = [1, 10, 1000, 100000, 1000000];
+  static STATES = [
+    { id: 'D470', name: 'D470 · dark-adapted', time: 'stable in the dark', ret: 'all-trans', sb: 'protonated', e90: 'protonated', open: [0, 0, 0], water: 0.12, na: 0, model: 'C1', cond: 'Closed',
+      text: 'Retinal is all-trans and its Schiff base is protonated. A hydrogen-bond network joining K93 and E90 on TM2, E123 on TM3 and D253 on TM7 keeps water out of the central gate. All three gates are shut.' },
+    { id: 'P500', name: 'P500', time: 'within a nanosecond', ret: '13-cis', sb: 'protonated', e90: 'protonated', open: [0, 0.05, 0], water: 0.12, na: 0, model: '—', cond: 'Closed',
+      text: 'The photon isomerises the C13=C14 bond: retinal is now 13-cis. The Schiff-base nitrogen turns toward the cytoplasm, but K93 still bonds D253 and E90 and the gates stay shut.' },
+    { id: 'P390e', name: 'P390-early', time: 'microseconds', ret: '13-cis', sb: 'deprotonated', e90: 'protonated', open: [0.2, 0.2, 0.15], water: 0.25, na: 0, model: '—', cond: 'Water only',
+      text: 'The Schiff base hands its proton to a counter-ion, E123 or D253. The protein starts to loosen and water begins to enter, but ions cannot yet cross.' },
+    { id: 'P390l', name: 'P390-late', time: 'sub-millisecond', ret: '13-cis', sb: 'deprotonated', e90: 'deprotonated', open: [0.6, 0.7, 0.55], water: 0.7, na: 0.4, model: 'O1 (rising)', cond: 'Partly open',
+      text: 'E90 loses its proton, breaking the link between TM2 and TM7. Water at the central gate reaches about 70% of its open-state count and the channel is partly open.' },
+    { id: 'P520', name: 'P520 · conducting', time: 'milliseconds', ret: '13-cis', sb: 'reprotonated (D156)', e90: 'deprotonated', open: [1, 1, 1], water: 1, na: 1, model: 'O1', cond: 'Open',
+      text: 'D156 reprotonates the Schiff base. All three gates are open, the pore radius exceeds 6 Å, and a Na⁺ ion crosses the central gate with almost no energy barrier. This is the state that carries the photocurrent.' },
+    { id: 'P480', name: 'P480 · desensitised', time: 'returns over seconds', ret: 'not modelled', sb: 'protonated', e90: '—', open: [0.05, 0.05, 0.05], water: 0.2, na: 0, model: 'C2', cond: 'Closed',
+      text: 'The pore has closed but the protein has not returned to the dark state. From here a second photon opens it only weakly. It relaxes back to D470 over seconds, which is the slow recovery measured in Module 1.' }
+  ];
+  constructor(p) {
+    super(p);
+    const s = Object.assign({}, Component.DEF);
+    try {
+      const q = new URLSearchParams((location.hash || '').slice(1));
+      const num = (k, a, b) => { const x = parseFloat(q.get(k)); if (isFinite(x)) s[k] = Math.max(a, Math.min(b, x)); };
+      num('ci', 0.05, 10); num('ai', 0.02, 20); num('mi', 0, 0.15); num('nf', 0, 1); num('ni', 0.05, 10);
+      ['av', 'tv'].forEach(k => { if (['h134r', 'wt', 'cheta'].includes(q.get(k))) s[k] = q.get(k); });
+      const ad = parseFloat(q.get('ad')); if (Component.ADS.includes(ad)) s.ad = ad;
+      const tf = parseFloat(q.get('tf')); if (Component.FREQS.includes(tf)) s.tf = tf;
+      if (['E', 'I'].includes(q.get('nt'))) s.nt = q.get('nt');
+      const nl = parseFloat(q.get('nl')); if ([0, 10, 20, 40].includes(nl)) s.nl = nl;
+      if (q.get('ng') === '1') s.ng = 1;
+    } catch (e) {}
+    this.state = Object.assign(s, { pc: 0, playing: false, noise: true, seed: 1, ready: false, copied: false, n: 0 });
+    this.K = ['cvProt', 'cvRing', 'cvProt2', 'cvApV', 'cvApI', 'cvSD', 'cvTrV', 'cvTrI', 'cvFid', 'cvModR', 'cvModP', 'cvRas', 'cvRate', 'cvProbe'];
+    this.K.forEach(k => { this[k] = React.createRef(); });
+    this.cvCh = Component.NS.map(() => React.createRef());
+    this.fid = {}; this.thr = {};
+  }
+  componentDidMount() {
+    const go = () => {
+      if (!window.OPTO || !window.NEURO || !window.LAB_CONTENT) { this._poll = setTimeout(go, 40); return; }
+      this._th = window.TKNTheme && TKNTheme.on(() => requestAnimationFrame(() => this.drawAll()));
+      this.computeCh(); this.computeAp(); this.computeSD(); this.computeTr(); this.computeMod(); this.computeNet();
+      this.setState({ ready: true }, () => { requestAnimationFrame(() => this.drawAll()); this.fillFid(); });
+      const all = this.K.map(k => this[k]).concat(this.cvCh);
+      if ('ResizeObserver' in window) { this._ro = new ResizeObserver(() => { cancelAnimationFrame(this._rof); this._rof = requestAnimationFrame(() => this.drawAll()); }); all.forEach(r => r.current && this._ro.observe(r.current)); }
+    };
+    go();
+  }
+  componentWillUnmount() {
+    if (this._th) this._th(); clearTimeout(this._poll); clearInterval(this._play); clearTimeout(this._cp); cancelAnimationFrame(this._rof);
+    Object.keys(this._deb || {}).forEach(k => clearTimeout(this._deb[k])); clearTimeout(this._fidT);
+    if (this._ro) this._ro.disconnect();
+  }
+  componentDidUpdate(pp, ps) {
+    if (!this.state.ready) return;
+    const s = this.state, keys = Object.keys(Component.DEF);
+    if (!ps || keys.some(k => ps[k] !== s[k])) {
+      const q = keys.filter(k => s[k] !== Component.DEF[k]).map(k => k + '=' + s[k]).join('&');
+      try { history.replaceState(null, '', q ? '#' + q : location.pathname); } catch (e) {}
+    }
+    this.drawAll();
+  }
+  debounce(key, fn, ms) { this._deb = this._deb || {}; clearTimeout(this._deb[key]); this._deb[key] = setTimeout(() => { fn(); this.setState({ n: this.state.n + 1 }); }, ms || 120); }
+  set(patch, which) {
+    this.setState(patch, () => {
+      const run = { ch: () => this.computeCh(), ap: () => { this.computeAp(); }, sd: () => this.computeSD(), tr: () => this.computeTr(), mod: () => this.computeMod(), net: () => this.computeNet() };
+      (which || []).forEach(w => this.debounce(w, run[w], w === 'sd' || w === 'net' || w === 'mod' ? 160 : 60));
+    });
+  }
+  /* ---------- compute ---------- */
+  computeCh() {
+    const s = this.state, U = NEURO.UNIT_PA, c = { variant: 'h134r', irr: s.ci, V: -60, T: 22, wl: 470, pre: 20, dur: 100, post: 100 };
+    const po = NEURO.openFraction(c, 0.05);
+    this.ch = Component.NS.map((N, k) => {
+      const r = NEURO.channels(Object.assign({ N, seed: s.seed * 97 + k * 13 }, c));
+      const sig = new Float64Array(r.open.length); for (let i = 0; i < sig.length; i++) sig[i] = r.open[i] * U;
+      const rec = OPTO.noisy(sig, r.dt, 0.1, 1, s.seed * 31 + k);
+      const exp = new Float64Array(po.length); for (let i = 0; i < po.length; i++) exp[i] = N * U * po[i];
+      let pk = 0; for (let i = 0; i < sig.length; i++) if (sig[i] < pk) pk = sig[i];
+      const sm = OPTO.boxcar(rec, 20); let pr = 0; for (let i = 400; i < 2400; i++) if (sm[i] < pr) pr = sm[i];
+      return { N, sig, rec, exp, dt: r.dt, pk, pr };
+    });
+    let pmax = 0; for (let i = 0; i < po.length; i++) pmax = Math.max(pmax, po[i]);
+    this.chPo = pmax;
+  }
+  computeAp() {
+    const s = this.state, t0 = 10, tEnd = Math.max(60, t0 + s.ad + 45);
+    const r = NEURO.cell({ variant: s.av, pulses: [{ a: t0, b: t0 + s.ad, irr: s.ai }], tEnd });
+    let vmax = -100; for (let i = 0; i < r.V.length; i++) vmax = Math.max(vmax, r.V[i]);
+    let imin = 0; for (let i = 0; i < r.I.length; i++) imin = Math.min(imin, r.I[i]);
+    this.ap = { r, t0, tEnd, vmax, imin, lat: r.spikes.length ? r.spikes[0] - t0 : null };
+  }
+  computeSD() { const s = this.state; this.sd = { v: s.av, pts: Component.ADS.map(d => ({ d, th: NEURO.threshold({ variant: s.av }, d) })) }; }
+  thrOf(v) { if (this.thr[v] == null) this.thr[v] = NEURO.threshold({ variant: v }, 2); return this.thr[v]; }
+  computeTr() {
+    const s = this.state, irr = 3 * this.thrOf(s.tv), r = NEURO.train({ variant: s.tv, dt: 0.02 }, s.tf, 20, 2, irr);
+    const pk = p => { let m = 0; const a = Math.round(p.a / r.dt), b = Math.round((p.b + 2) / r.dt); for (let i = a; i < b && i < r.I.length; i++) m = Math.min(m, r.I[i]); return m; };
+    const p1 = pk(r.pulses[0]), pn = pk(r.pulses[r.pulses.length - 1]);
+    let vmin = 100; const a = Math.round((r.pulses[r.pulses.length - 1].a - 0.5) / r.dt); for (let i = Math.round(r.pulses[r.pulses.length - 3].a / r.dt); i < a; i++) vmin = Math.min(vmin, r.V[i]);
+    this.tr = { r, irr, ratio: p1 ? pn / p1 : null, floor: vmin - NEURO.rest()[0], v: s.tv, f: s.tf };
+    if (!this.fid[s.tv]) this.fid[s.tv] = {};
+    this.fid[s.tv][s.tf] = r.fidelity;
+  }
+  fillFid() {
+    const todo = [];
+    ['h134r', 'wt', 'cheta'].forEach(v => Component.FREQS.forEach(f => { if (!this.fid[v] || this.fid[v][f] == null) todo.push([v, f]); }));
+    if (!todo.length) return;
+    const [v, f] = todo[0];
+    const r = NEURO.train({ variant: v, dt: 0.02 }, f, 20, 2, 3 * this.thrOf(v));
+    (this.fid[v] = this.fid[v] || {})[f] = r.fidelity;
+    this.drawFid();
+    this._fidT = setTimeout(() => this.fillFid(), 16);
+    if (todo.length === 1) this.setState({ n: this.state.n + 1 });
+  }
+  computeMod() {
+    const s = this.state, trials = [];
+    for (let k = 0; k < 8; k++) trials.push(NEURO.cell({ variant: 'h134r', bias: 3, noise: 1.5, seed: 40 + k, tEnd: 1500, dt: 0.02, rec: 1, pulses: s.mi > 0 ? [{ a: 500, b: 1000, irr: s.mi }] : [] }).spikes);
+    const cnt = (a, b) => trials.reduce((n, t) => n + t.filter(x => x >= a && x < b).length, 0) / trials.length / ((b - a) / 1000);
+    this.mod = { trials, pre: cnt(100, 500), on: cnt(500, 1000), post: cnt(1100, 1500) };
+  }
+  computeNet() {
+    const s = this.state;
+    const R = NEURO.network({ seed: 3, target: s.nt, frac: s.nf, f: s.nl, irr: s.ni, gradient: !!s.ng });
+    this.net = { R, st: NEURO.netStats(R) };
+  }
+  /* ---------- drawing ---------- */
+  prep(cv) {
+    if (!cv) return null; const dpr = Math.min(2, window.devicePixelRatio || 1), W = cv.clientWidth, H = cv.clientHeight; if (!W || !H) return null;
+    if (cv.width !== Math.round(W * dpr) || cv.height !== Math.round(H * dpr)) { cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); }
+    const g = cv.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, W, H); return { g, W, H };
+  }
+  drawAll() {
+    if (!this.state.ready) return;
+    const S = Component.STATES[this.state.pc];
+    this.drawProtein(this.cvProt.current, Component.STATES[0], true);
+    this.drawProtein(this.cvProt2.current, S, false);
+    this.drawRing(); this.drawCh(); this.drawAp(); this.drawSD(); this.drawTr(); this.drawFid(); this.drawMod(); this.drawNet();
+  }
+  drawProtein(cv, S, full) {
+    const P = this.prep(cv); if (!P) return; const { g, W, H } = P, M = OPTO.MONO, C = OPTO.C;
+    const y0 = H * 0.2, y1 = H * 0.8, hm = y1 - y0, cx = W * (full ? 0.52 : 0.5), u = Math.min(W / 11, 52), hw = u * 0.42;
+    // bilayer
+    g.fillStyle = 'rgba(143,180,232,0.045)'; g.fillRect(0, y0, W, hm);
+    g.fillStyle = '#2a3548';
+    for (let x = 6; x < W; x += 13) { g.beginPath(); g.arc(x, y0, 4, 0, 6.283); g.fill(); g.beginPath(); g.arc(x, y1, 4, 0, 6.283); g.fill(); }
+    g.strokeStyle = 'rgba(255,255,255,0.05)'; g.lineWidth = 1;
+    for (let x = 6; x < W; x += 13) { g.beginPath(); g.moveTo(x, y0 + 5); g.lineTo(x, y0 + hm * 0.42); g.moveTo(x, y1 - 5); g.lineTo(x, y1 - hm * 0.42); g.stroke(); }
+    g.font = '10.5px ' + M; g.fillStyle = C.mute; g.textAlign = 'left'; g.textBaseline = 'middle';
+    g.fillText(full ? 'EXTRACELLULAR' : 'OUT', 8, y0 - 22); g.fillText(full ? 'CYTOPLASM' : 'IN', 8, y1 + 22);
+    const xs = { TM1: cx - 3.3 * u, TM2: cx - 1.55 * u, TM3: cx + 1.55 * u, TM7: cx + 3.3 * u };
+    const top = y0 - hm * 0.12, bot = y1 + hm * 0.12, rr = 10;
+    const helix = (x, lab) => {
+      g.fillStyle = '#141e30'; g.strokeStyle = '#7d889c'; g.lineWidth = 1.2;
+      g.beginPath(); g.moveTo(x - hw + rr, top); g.arcTo(x + hw, top, x + hw, bot, rr); g.arcTo(x + hw, bot, x - hw, bot, rr); g.arcTo(x - hw, bot, x - hw, top, rr); g.arcTo(x - hw, top, x + hw, top, rr); g.closePath(); g.fill(); g.stroke();
+      g.strokeStyle = 'rgba(255,255,255,0.06)';
+      for (let y = top + 10; y < bot - 6; y += 9) { g.beginPath(); g.moveTo(x - hw + 3, y); g.lineTo(x + hw - 3, y + 5); g.stroke(); }
+      g.fillStyle = C.soft; g.textAlign = 'center'; g.font = '10.5px ' + M; g.fillText(lab, x, top - 10);
+    };
+    Object.keys(xs).forEach(k => helix(xs[k], k));
+    const xl = xs.TM2 + hw, xr = xs.TM3 - hw, mid = (xl + xr) / 2, gap = (xr - xl) / 2;
+    const gy = [y0 + hm * 0.16, y0 + hm * 0.47, y0 + hm * 0.84], gname = ['Extracellular gate', 'Central gate · E90', 'Intracellular gate · H134, R268'];
+    // water
+    const wn = Math.round(S.water * 16);
+    g.fillStyle = C.blue;
+    for (let k = 0; k < wn; k++) { const hs = m => { const v = Math.sin(k * m) * 43758.5453; return v - Math.floor(v); }, fx = hs(12.9898), fy = hs(78.233); g.globalAlpha = 0.75; g.beginPath(); g.arc(xl + 5 + fx * (xr - xl - 10), y0 + hm * (0.08 + 0.84 * fy), 2.6, 0, 6.283); g.fill(); }
+    g.globalAlpha = 1;
+    // gates
+    gy.forEach((y, k) => {
+      const o = S.open[k], rad = 6.5, reach = (gap - rad) * (1 - o);
+      g.strokeStyle = C.gold3; g.lineWidth = 2;
+      g.beginPath(); g.moveTo(xl, y); g.lineTo(xl + reach, y); g.moveTo(xr, y); g.lineTo(xr - reach, y); g.stroke();
+      g.fillStyle = o > 0.5 ? '#0d1422' : C.gold2; g.strokeStyle = C.gold2; g.lineWidth = 1.4;
+      [xl + reach, xr - reach].forEach(x => { g.beginPath(); g.arc(x, y, rad, 0, 6.283); g.fill(); g.stroke(); });
+      g.fillStyle = C.soft; g.textAlign = 'right'; g.font = '10.5px ' + M; g.fillText(full ? gname[k] : ['ECG', 'CG', 'ICG'][k], xs.TM1 - hw - 8, y);
+    });
+    // retinal in the TM3–TM7 pocket
+    const ry = y0 + hm * 0.5, ra = xs.TM7 - hw - 2, rb = xs.TM3 + hw + 4, cis = S.ret === '13-cis';
+    g.strokeStyle = C.gold; g.lineWidth = 2.2; g.lineJoin = 'round'; g.beginPath();
+    const nSeg = 8, step = (ra - rb) / nSeg;
+    for (let k = 0; k <= nSeg; k++) {
+      let x = ra - k * step, y = ry + (k % 2 ? -4 : 4);
+      if (cis && k >= 4) { const t = k - 4; x = ra - 4 * step - t * step * 0.55; y = ry - t * step * 0.7 + (k % 2 ? -3 : 3); }
+      k ? g.lineTo(x, y) : g.moveTo(x, y);
+    }
+    g.stroke();
+    g.fillStyle = C.gold; g.beginPath(); g.arc(ra, ry + 4, 3.5, 0, 6.283); g.fill();
+    g.font = '10px ' + M; g.textAlign = 'right'; g.fillStyle = C.gold;
+    g.fillText('K257', xs.TM7 + hw + 30, ry + 20);
+    g.textAlign = 'center'; g.fillStyle = C.soft;
+    g.fillText(S.ret === 'not modelled' ? 'retinal' : 'retinal · ' + S.ret, (ra + rb) / 2, ry + 22);
+    if (S.sb !== '—') { g.fillStyle = S.sb.indexOf('de') === 0 ? C.mute : C.gold; g.textAlign = 'left'; g.fillText(S.sb.indexOf('de') === 0 ? 'SB' : 'SB–H⁺', ra - 4, ry - 12); }
+    // ion
+    if (S.na > 0) {
+      g.strokeStyle = C.ink; g.globalAlpha = S.na; g.lineWidth = 1.6; g.setLineDash([4, 4]);
+      g.beginPath(); g.moveTo(mid, y0 - hm * 0.2); g.lineTo(mid, y1 + hm * 0.14); g.stroke(); g.setLineDash([]);
+      g.beginPath(); g.moveTo(mid - 5, y1 + hm * 0.14 - 7); g.lineTo(mid, y1 + hm * 0.14); g.lineTo(mid + 5, y1 + hm * 0.14 - 7); g.stroke();
+      g.fillStyle = C.ink; g.textAlign = 'left'; g.font = '11px ' + M; g.fillText('Na⁺', mid + 8, y0 - hm * 0.16); g.globalAlpha = 1;
+    }
+    g.fillStyle = C.blue; g.textAlign = 'right'; g.font = '10px ' + M; g.fillText('water', W - 6, H - 8);
+    g.beginPath(); g.arc(W - 46, H - 8, 2.6, 0, 6.283); g.fill();
+  }
+  drawRing() {
+    const P = this.prep(this.cvRing.current); if (!P) return; const { g, W, H } = P, C = OPTO.C, M = OPTO.MONO, Sx = Component.STATES;
+    const cx = W / 2, cy = H / 2, R = Math.min(W, H) * 0.36, n = Sx.length, ang = k => -Math.PI / 2 + k * 2 * Math.PI / n;
+    g.strokeStyle = 'rgba(255,255,255,0.14)'; g.lineWidth = 1.2;
+    for (let k = 0; k < n; k++) {
+      const a0 = ang(k) + 0.2, a1 = ang(k + 1) - 0.2;
+      g.beginPath(); g.arc(cx, cy, R, a0, a1); g.stroke();
+      const ex = cx + R * Math.cos(a1), ey = cy + R * Math.sin(a1), tx = -Math.sin(a1), ty = Math.cos(a1);
+      g.beginPath(); g.moveTo(ex - 6 * tx + 4 * ty * 0, ey - 6 * ty); g.lineTo(ex, ey); g.lineTo(ex - 6 * tx - 3 * Math.cos(a1), ey - 6 * ty - 3 * Math.sin(a1)); g.stroke();
+    }
+    const am = ang(0.5); g.fillStyle = OPTO.wlColor(470); g.font = '12px ' + M; g.textAlign = 'center'; g.textBaseline = 'middle';
+    g.fillText('hν 470 nm', cx + (R + 26) * Math.cos(am), cy + (R + 26) * Math.sin(am));
+    for (let k = 0; k < n; k++) {
+      const x = cx + R * Math.cos(ang(k)), y = cy + R * Math.sin(ang(k)), on = k === this.state.pc;
+      g.beginPath(); g.arc(x, y, on ? 9 : 6.5, 0, 6.283);
+      g.fillStyle = on ? C.gold : '#0d1422'; g.fill(); g.strokeStyle = on ? C.gold : (Sx[k].na >= 1 ? C.gold2 : C.mute); g.lineWidth = 1.5; g.stroke();
+      const lx = cx + (R + 22) * Math.cos(ang(k)), ly = cy + (R + 18) * Math.sin(ang(k));
+      g.fillStyle = on ? C.gold : C.soft; g.font = '11px ' + M;
+      g.textAlign = Math.cos(ang(k)) > 0.3 ? 'left' : Math.cos(ang(k)) < -0.3 ? 'right' : 'center';
+      if (k !== 0) g.fillText(Sx[k].id.replace('P390e', 'P390-e').replace('P390l', 'P390-l'), lx, ly);
+      else g.fillText('D470', lx, ly - 4);
+    }
+    const S = Sx[this.state.pc];
+    g.textAlign = 'center'; g.fillStyle = C.ink; g.font = '500 20px Geist, sans-serif'; g.fillText(S.id.replace('P390e', 'P390-early').replace('P390l', 'P390-late'), cx, cy - 8);
+    g.fillStyle = S.na >= 1 ? C.gold : C.mute; g.font = '11px ' + M; g.fillText(S.cond.toUpperCase(), cx, cy + 16);
+  }
+  drawCh() {
+    const s = this.state, C = OPTO.C; if (!this.ch) return;
+    this.ch.forEach((d, k) => {
+      const cv = this.cvCh[k].current; if (!cv) return;
+      const arr = s.noise ? [d.rec, d.sig, d.exp] : [d.sig, d.exp];
+      let lo = 0, hi = 0; arr.forEach(a => { for (let i = 0; i < a.length; i++) { if (a[i] < lo) lo = a[i]; if (a[i] > hi) hi = a[i]; } });
+      if (!s.noise) { const m = Math.max(Math.abs(lo), 0.004); lo = -m * 1.1; hi = m * 0.25; } else { const p = (hi - lo) * 0.06; lo -= p; hi += p; }
+      const series = []; if (s.noise) series.push({ y: d.rec, x0: 0, dx: d.dt, color: '#7d889c', width: 1 });
+      series.push({ y: d.sig, x0: 0, dx: d.dt, color: C.gold, width: 1.3 });
+      if (d.N >= 10) series.push({ y: d.exp, x0: 0, dx: d.dt, color: C.blue, width: 1.2, dash: [4, 4] });
+      OPTO.plot(cv, { x: [0, 220], y: [lo, hi], top: 12, bottom: k === this.ch.length - 1 ? 34 : 18, xlabel: k === this.ch.length - 1 ? 'ms' : '', ylabel: 'pA', nx: 5, zeroY: true,
+        bars: [{ a: 20, b: 120, color: OPTO.wlColor(470), y: 2, h: 4 }], series, yticks: OPTO.ticks(lo, hi, 3) });
+    });
+  }
+  drawAp() {
+    const a = this.ap, C = OPTO.C; if (!a) return; const s = this.state, wl = OPTO.wlColor(470);
+    OPTO.plot(this.cvApV.current, { x: [0, a.tEnd], y: [-85, 55], top: 18, xlabel: '', ylabel: 'mV', yticks: [-80, -40, 0, 40],
+      bars: [{ a: a.t0, b: a.t0 + s.ad, color: wl, y: 4, h: 6 }],
+      series: [{ y: a.r.V, x0: 0, dx: a.r.dt, color: C.gold, width: 1.5 }],
+      labels: a.lat != null ? [{ x: a.t0 + a.lat, y: 0, text: '  ' + a.lat.toFixed(1) + ' ms', color: C.soft, dx: 4, dy: -10 }] : [] });
+    OPTO.plot(this.cvApI.current, { x: [0, a.tEnd], y: [Math.min(-1, a.imin * 1.15), Math.max(1, -a.imin * 0.15)], top: 8, xlabel: 'ms', ylabel: 'µA/cm²', zeroY: true,
+      series: [{ y: a.r.I, x0: 0, dx: a.r.dt, color: C.blue, width: 1.3 }], yticks: OPTO.ticks(Math.min(-1, a.imin * 1.15), 0, 3) });
+  }
+  drawSD() {
+    const d = this.sd, C = OPTO.C; if (!d) return; const s = this.state, pts = d.pts.filter(p => p.th);
+    const hit = this.ap && this.ap.r.spikes.length > 0;
+    OPTO.plot(this.cvSD.current, { x: [0.4, 130], xlog: true, xgrid: true, y: [0.1, 100], ylog: true, xlabel: 'pulse length (ms)', ylabel: 'mW/mm²',
+      series: [{ xs: pts.map(p => p.d), y: pts.map(p => p.th), color: C.gold, width: 1.3 }],
+      points: [{ xs: pts.map(p => p.d), ys: pts.map(p => p.th), color: C.gold, hollow: true }, { xs: [s.ad], ys: [Math.max(0.1, Math.min(100, s.ai))], color: hit ? C.blue : C.mute, r: 5 }],
+      labels: [{ px: 70, py: 16, text: hit ? 'fires' : 'no spike', color: hit ? C.blue : C.mute }] });
+  }
+  drawTr() {
+    const t = this.tr, C = OPTO.C; if (!t) return; const r = t.r, wl = OPTO.wlColor(470);
+    const bars = r.pulses.map(p => ({ a: p.a, b: p.b, color: wl, y: 4, h: 6 }));
+    OPTO.plot(this.cvTrV.current, { x: [0, r.tEnd], y: [-85, 55], top: 18, ylabel: 'mV', yticks: [-80, -40, 0, 40], bars, series: [{ y: r.V, x0: 0, dx: r.dt, color: C.gold, width: 1.3 }] });
+    let mn = 0; for (let i = 0; i < r.I.length; i++) mn = Math.min(mn, r.I[i]);
+    OPTO.plot(this.cvTrI.current, { x: [0, r.tEnd], y: [mn * 1.15, -mn * 0.12], top: 8, xlabel: 'ms', ylabel: 'µA/cm²', zeroY: true, yticks: OPTO.ticks(mn * 1.15, 0, 3), series: [{ y: r.I, x0: 0, dx: r.dt, color: C.blue, width: 1.2 }] });
+  }
+  drawFid() {
+    const C = OPTO.C, F = Component.FREQS, cols = { h134r: '#aab3c3', wt: '#e6b667', cheta: '#8fb4e8' }, series = [], points = [];
+    ['h134r', 'wt', 'cheta'].forEach(v => { const d = this.fid[v] || {}, xs = F.filter(f => d[f] != null); if (!xs.length) return;
+      series.push({ xs, y: xs.map(f => d[f]), color: cols[v], width: v === this.state.tv ? 2 : 1.2 }); points.push({ xs, ys: xs.map(f => d[f]), color: cols[v], r: v === this.state.tv ? 3.8 : 2.6 }); });
+    OPTO.plot(this.cvFid.current, { x: [4, 120], xlog: true, xgrid: true, xticks: [5, 10, 20, 40, 60, 100], y: [0, 1.05], yticks: [0, 0.25, 0.5, 0.75, 1], xlabel: 'pulse rate (Hz)', ylabel: 'spikes per pulse', series, points });
+  }
+  drawMod() {
+    const m = this.mod, C = OPTO.C; if (!m) return; const s = this.state;
+    const ax = OPTO.plot(this.cvModR.current, { x: [0, 1500], y: [0, 8], yticks: [], top: 14, bottom: 14, ylabel: 'trial', bars: s.mi > 0 ? [{ a: 500, b: 1000, color: OPTO.wlColor(470), y: 2, h: 5, alpha: 0.4 + 0.6 * s.mi / 0.15 }] : [] });
+    if (ax) { const g = this.cvModR.current.getContext('2d'); g.fillStyle = C.gold; m.trials.forEach((tr, k) => tr.forEach(t => g.fillRect(ax.X(t) - 0.6, ax.Y(k + 0.85), 1.4, ax.Y(k + 0.15) - ax.Y(k + 0.85)))); }
+    const bw = 50, nb = 1500 / bw, h = new Array(nb).fill(0); m.trials.forEach(tr => tr.forEach(t => { const b = Math.floor(t / bw); if (b < nb) h[b]++; }));
+    const xs = [], ys = []; h.forEach((c, b) => { const r = c / m.trials.length / (bw / 1000); xs.push(b * bw, (b + 1) * bw); ys.push(r, r); });
+    OPTO.plot(this.cvModP.current, { x: [0, 1500], y: [0, Math.max(10, Math.max.apply(null, ys) * 1.15)], top: 8, xlabel: 'ms', ylabel: 'Hz', series: [{ xs, y: ys, color: C.gold, width: 1.3 }] });
+  }
+  drawNet() {
+    const d = this.net, C = OPTO.C; if (!d) return; const R = d.R, wl = OPTO.wlColor(470);
+    const bars = R.f > 0 ? R.onsets.map(t => ({ a: t, b: t + R.pw, color: wl, y: 4, h: 6 })) : [{ a: R.l0, b: R.l1, color: wl, y: 4, h: 6 }];
+    const ax = OPTO.plot(this.cvRas.current, { x: [0, R.tEnd], y: [0, R.N], yticks: [0, R.NE, R.N], top: 18, ylabel: 'cell', bars });
+    if (ax) {
+      const g = this.cvRas.current.getContext('2d'), ex = R.expr, NE = R.NE, rowH = Math.max(1, ax.ph / R.N);
+      g.save(); g.beginPath(); g.rect(ax.L, ax.T, ax.pw, ax.ph); g.clip();
+      g.fillStyle = 'rgba(255,255,255,0.025)'; for (let i = 0; i < R.N; i++) if (ex[i]) g.fillRect(ax.L, ax.Y(i + 1), ax.pw, rowH);
+      R.spikes.forEach(s => { const i = s[0]; g.fillStyle = ex[i] ? C.gold : i < NE ? '#7d889c' : C.blue; g.fillRect(ax.X(s[1]) - 0.6, ax.Y(i + 1), 1.3, Math.max(1, rowH * 0.9)); });
+      g.restore();
+      g.fillStyle = C.mute; g.font = '10px ' + OPTO.MONO; g.textAlign = 'left'; g.fillText('E', ax.L + ax.pw + 2 - 10, ax.Y(NE / 2)); g.fillText('I', ax.L + ax.pw + 2 - 10, ax.Y(NE + (R.N - NE) / 2));
+    }
+    const bw = 5, nb = Math.round(R.tEnd / bw), hE = new Float64Array(nb), hI = new Float64Array(nb);
+    R.spikes.forEach(s => { const b = Math.floor(s[1] / bw); if (b < nb) (s[0] < R.NE ? hE : hI)[b]++; });
+    const sm = (h, n) => { const o = new Float64Array(h.length); for (let i = 0; i < h.length; i++) o[i] = h[i] / n / (bw / 1000); return o; };
+    const rE = sm(hE, R.NE), rI = sm(hI, R.N - R.NE);
+    let mx = 10; for (let i = 0; i < nb; i++) mx = Math.max(mx, rE[i], rI[i]);
+    OPTO.plot(this.cvRate.current, { x: [0, R.tEnd], y: [0, mx * 1.08], top: 8, ylabel: 'Hz', yticks: OPTO.ticks(0, mx, 3),
+      series: [{ y: rI, x0: bw / 2, dx: bw, color: C.blue, width: 1.1 }, { y: rE, x0: bw / 2, dx: bw, color: C.gold, width: 1.3 }] });
+    OPTO.plot(this.cvProbe.current, { x: [0, R.tEnd], y: [-82, 5], top: 8, xlabel: 'ms', ylabel: 'mV', yticks: [-80, -60, -40, -20, 0], series: [{ y: R.pv, x0: 0, dx: R.dt, color: C.ink, width: 1 }] });
+  }
+  /* ---------- template values ---------- */
+  renderVals() {
+    const s = this.state, ready = s.ready && window.OPTO && window.NEURO;
+    const seg = on => ({ bg: on ? '#f1d49a' : 'transparent', fg: on ? '#070c16' : '#aab3c3', bd: on ? '#f1d49a' : 'rgba(255,255,255,0.18)', pressed: on ? 'true' : 'false' });
+    const VN = { h134r: 'H134R', wt: 'Wild type', cheta: 'ChETA' }, VL = { h134r: 'ChR2(H134R)', wt: 'ChR2 wild type', cheta: 'ChETA (E123T)' };
+    const lp = (x, a, b) => Math.round(Math.log(x / a) / Math.log(b / a) * 100), le = (p, a, b) => +(a * Math.pow(b / a, p / 100)).toPrecision(2);
+    const fmt = x => x >= 10 ? x.toFixed(0) : x >= 1 ? x.toFixed(1) : x >= 0.1 ? x.toFixed(2) : x.toPrecision(2);
+    const neg = x => String(x).replace('-', '−');
+    const ST = Component.STATES, S = ST[s.pc];
+    const pcStates = ST.map((x, k) => Object.assign({ label: x.id.replace('P390e', 'P390-e').replace('P390l', 'P390-l'), pick: () => { this.stopPlay(); this.setState({ pc: k }); } }, seg(k === s.pc)));
+    const pcFacts = [{ k: 'Retinal', v: S.ret }, { k: 'Schiff base', v: S.sb }, { k: 'E90', v: S.e90 }, { k: 'Lifetime', v: S.time }, { k: 'Four-state model', v: S.model }];
+    // channels
+    const fI = x => { const a = Math.abs(x); return a >= 1000 ? { v: neg((x / 1000).toFixed(2)), u: 'nA' } : a >= 1 ? { v: neg(x.toFixed(a >= 100 ? 0 : 1)), u: 'pA' } : { v: neg(x.toPrecision(2)), u: 'pA' }; };
+    const ch = ready && this.ch;
+    const chPanels = Component.NS.map((N, k) => {
+      const d = ch && ch[k], lab = N === 1 ? '1 channel' : N.toLocaleString('en-GB').replace(/,/g, ' ') + ' channels';
+      const sn = d ? 'peak ' + fI(d.pk).v + ' ' + fI(d.pk).u + (s.noise ? ' · S/N ' + (Math.abs(d.pk) / 0.1).toPrecision(2) : '') : '';
+      return { ref: this.cvCh[k], title: lab, sn, aria: 'Simulated current from ' + lab + ' during a 100 ms light pulse' };
+    });
+    const big = ch && ch[4];
+    const chReadouts = [
+      { k: 'i, one open channel', v: '−0.005', u: 'pA' },
+      { k: 'Recording noise', v: '0.10', u: 'pA rms' },
+      { k: 'Peak Pₒ (O1 + 0.1·O2)', v: this.chPo ? this.chPo.toFixed(2) : '—', u: '' },
+      { k: 'N·i·Pₒ, 10⁶ channels', v: big ? fI(1e6 * NEURO.UNIT_PA * this.chPo).v : '—', u: 'nA' },
+      { k: 'Measured peak, 10⁶', v: big ? fI(big.pr).v : '—', u: big ? fI(big.pr).u : '' }
+    ];
+    // spike
+    const ap = ready && this.ap, sd = ready && this.sd;
+    const thNow = sd && sd.pts.find(p => p.d === s.ad), thLong = sd && sd.pts[sd.pts.length - 1];
+    const apReadouts = [
+      { k: 'Spike', v: ap ? (ap.r.spikes.length ? (ap.r.spikes.length > 1 ? ap.r.spikes.length + ' spikes' : 'yes') : 'no') : '—', u: '' },
+      { k: ap && ap.r.spikes.length ? 'Latency' : 'Peak depolarisation', v: ap ? (ap.lat != null ? ap.lat.toFixed(1) : neg((ap.vmax - NEURO.rest()[0]).toFixed(1))) : '—', u: ap ? (ap.lat != null ? 'ms' : 'mV') : '' },
+      { k: 'Threshold at ' + s.ad + ' ms', v: thNow && thNow.th ? fmt(thNow.th) : '—', u: 'mW/mm²' },
+      { k: 'Threshold at 100 ms', v: thLong && thLong.th ? fmt(thLong.th) : '—', u: 'mW/mm²' }
+    ];
+    // trains
+    const tr = ready && this.tr;
+    const trReadouts = [
+      { k: 'Spikes per pulse', v: tr ? tr.r.fidelity.toFixed(2) : '—', u: '' },
+      { k: 'Extra spikes', v: tr ? String(tr.r.extra) : '—', u: '' },
+      { k: 'Current, pulse 20 / pulse 1', v: tr && tr.ratio != null ? tr.ratio.toFixed(2) : '—', u: '' },
+      { k: 'Light (3 × 2 ms threshold)', v: tr ? fmt(tr.irr) : '—', u: 'mW/mm²' }
+    ];
+    const fidDone = ['h134r', 'wt', 'cheta'].every(v => this.fid[v] && Component.FREQS.every(f => this.fid[v][f] != null));
+    // modulation
+    const m = ready && this.mod;
+    const modNote = m ? 'Rate ' + m.pre.toFixed(1) + ' Hz before · ' + m.on.toFixed(1) + ' Hz with light · ' + m.post.toFixed(1) + ' Hz after · 8 trials, 50 ms bins' : '';
+    // network
+    const nt = ready && this.net, st = nt && nt.st;
+    const netReadouts = st ? [
+      { k: 'E rate, before → light', v: st.E0.toFixed(1) + ' → ' + st.E1.toFixed(1), u: 'Hz' },
+      { k: 'I rate, before → light', v: st.I0.toFixed(1) + ' → ' + st.I1.toFixed(1), u: 'Hz' },
+      { k: 'E spikes locked to pulses', v: st.lock != null ? Math.round(st.lock * 100) + '%' : '—', u: st.lock != null ? 'chance ' + Math.round(st.chance * 100) + '%' : 'continuous light' }
+    ] : [];
+    const lightLab = s.nl ? s.nl + ' Hz pulses (5 ms)' : 'continuous';
+    return {
+      cvProt: this.cvProt, cvRing: this.cvRing, cvProt2: this.cvProt2, cvApV: this.cvApV, cvApI: this.cvApI, cvSD: this.cvSD, cvTrV: this.cvTrV, cvTrI: this.cvTrI, cvFid: this.cvFid, cvModR: this.cvModR, cvModP: this.cvModP, cvRas: this.cvRas, cvRate: this.cvRate, cvProbe: this.cvProbe,
+      pcStates, pcFacts, pc: { name: S.name, cond: S.cond, text: S.text },
+      ringAria: 'ChR2 photocycle, current intermediate ' + S.id, protAria: 'ChR2 pore in the ' + S.id + ' intermediate: ' + S.cond.toLowerCase(),
+      pcPrev: () => { this.stopPlay(); this.setState({ pc: (s.pc + ST.length - 1) % ST.length }); },
+      pcNext: () => { this.stopPlay(); this.setState({ pc: (s.pc + 1) % ST.length }); },
+      pcPlay: () => { if (s.playing) { this.stopPlay(); return; } this.setState({ playing: true, pc: (s.pc + 1) % ST.length }); this._play = setInterval(() => this.setState(t => ({ pc: (t.pc + 1) % ST.length })), OPTO.reduce ? 4000 : 1800); },
+      pcPlayLabel: s.playing ? 'Pause' : 'Play cycle',
+      ciPos: lp(s.ci, 0.05, 10), ciLabel: fmt(s.ci), onCi: e => this.set({ ci: le(+e.target.value, 0.05, 10) }, ['ch']),
+      noiseOpts: [['On', true], ['Off', false]].map(([label, v]) => Object.assign({ label, pick: () => this.setState({ noise: v }) }, seg(s.noise === v))),
+      chAgain: () => this.set({ seed: s.seed + 1 }, ['ch']),
+      chPanels, chReadouts,
+      capCh: 'Simulated · ' + Component.NS.length + ' independent stochastic simulations of the four-state ChR2(H134R) model (Williams et al. 2013 rates); ' + fmt(s.ci) + ' mW/mm² at 470 nm, −60 mV, 22 °C, 100 ms pulse; unit current −0.005 pA; 0.1 pA rms noise, 1 kHz; sweep ' + s.seed,
+      apVariants: ['h134r', 'wt', 'cheta'].map(v => Object.assign({ label: VN[v], pick: () => this.set({ av: v }, ['ap', 'sd']) }, seg(s.av === v))),
+      aiPos: lp(s.ai, 0.02, 20), aiLabel: fmt(s.ai), onAi: e => this.set({ ai: le(+e.target.value, 0.02, 20) }, ['ap']),
+      ad: s.ad, adPos: Component.ADS.indexOf(s.ad), onAd: e => this.set({ ad: Component.ADS[+e.target.value] }, ['ap']),
+      apReadouts, apHit: ap ? (ap.r.spikes.length ? 'fires' : 'below threshold') : '',
+      apAria: 'Simulated membrane potential during a ' + s.ad + ' ms light pulse',
+      capAp: 'Simulated · Hodgkin–Huxley membrane (rates at 12 °C) with ' + VL[s.av] + ' photocurrent (four-state model, 22 °C, 470 nm); ' + fmt(s.ai) + ' mW/mm², ' + s.ad + ' ms pulse · lower panel: ChR2 current density, inward negative',
+      trVariants: ['h134r', 'wt', 'cheta'].map(v => Object.assign({ label: VN[v], pick: () => this.set({ tv: v }, ['tr']) }, seg(s.tv === v))),
+      trFreqs: Component.FREQS.map(f => Object.assign({ label: f + ' Hz', pick: () => this.set({ tf: f }, ['tr']) }, seg(s.tf === f))),
+      trReadouts, trAria: 'Simulated membrane potential during twenty 2 ms light pulses at ' + s.tf + ' Hz',
+      capTr: 'Simulated · Hodgkin–Huxley membrane (12 °C) with ' + VL[s.tv] + (s.tv === 'h134r' ? ' (Williams et al. 2013)' : ' (rates rescaled here)') + '; 20 pulses of 2 ms at ' + s.tf + ' Hz, ' + (tr ? fmt(tr.irr) : '—') + ' mW/mm² (3 × this variant\u2019s 2 ms threshold)',
+      fidNote: fidDone ? '' : 'computing…',
+      mi: s.mi, miLabel: s.mi.toFixed(3), onMi: e => this.set({ mi: +e.target.value }, ['mod']), modNote,
+      netTargets: [['Excitatory', 'E'], ['Inhibitory', 'I']].map(([label, v]) => Object.assign({ label, pick: () => this.set({ nt: v }, ['net']) }, seg(s.nt === v))),
+      nf: s.nf, nfLabel: Math.round(s.nf * 100), onNf: e => this.set({ nf: +e.target.value }, ['net']),
+      netLights: [[10, '10 Hz'], [20, '20 Hz'], [40, '40 Hz'], [0, 'Steady']].map(([v, label]) => Object.assign({ label, pick: () => this.set({ nl: v }, ['net']) }, seg(s.nl === v))),
+      niPos: lp(s.ni, 0.05, 10), niLabel: fmt(s.ni), onNi: e => this.set({ ni: le(+e.target.value, 0.05, 10) }, ['net']),
+      netGrads: [['Uniform', 0], ['Scattered', 1]].map(([label, v]) => Object.assign({ label, pick: () => this.set({ ng: v }, ['net']) }, seg(s.ng === v))),
+      netReadouts, netAria: 'Spike raster of 400 simulated neurons; light ' + lightLab + ' from 500 to 1000 ms',
+      capNet: 'Simulated · 400 conductance-based integrate-and-fire cells (320 E, 80 I; after Vogels & Abbott 2005), ' + Math.round(s.nf * 100) + '% of ' + (s.nt === 'E' ? 'excitatory' : 'inhibitory') + ' cells expressing ChR2(H134R); light ' + lightLab + ', ' + fmt(s.ni) + ' mW/mm²' + (s.ng ? ' at the fibre, attenuated with depth' : ' at every cell') + ', 500–1000 ms · parameters illustrative, fixed seed',
+      copyLink: () => { const done = () => { this.setState({ copied: true }); clearTimeout(this._cp); this._cp = setTimeout(() => this.setState({ copied: false }), 1800); }; try { navigator.clipboard.writeText(location.href).then(done, done); } catch (e) { done(); } },
+      copyLabel: s.copied ? 'Link copied' : 'Copy link',
+      reset: () => { this.stopPlay(); this.set(Object.assign({}, Component.DEF, { seed: 1, noise: true, pc: 0 }), ['ch', 'ap', 'sd', 'tr', 'mod', 'net']); }
+    };
+  }
+  stopPlay() { clearInterval(this._play); if (this.state.playing) this.setState({ playing: false }); }
+}
+</script>
+</body>
+</html>

@@ -4,7 +4,7 @@
    This one file holds ALL the content that changes over time. Every page of
    the site reads from it. Edit it with Dashboard.dc.html (Chrome or Edge:
    "Open site folder" → edit → "Save to folder"), or by hand — keep the commas
-   and quotes intact. Last saved from the dashboard: 2026-10-12.
+   and quotes intact. Last saved from the dashboard: 2026-10-01.
    ============================================================================ */
 window.LAB_CONTENT = {
 
@@ -18,7 +18,7 @@ window.LAB_CONTENT = {
     {"status":"current","img":"assets/people/mahesh.webp","name":"Mahesh Mahadeo Mathe","role":"Ph.D. Scholar","email":"","linkedin":"","bio":"Screening ion channels involved in neuropathic pain — in silico / in vitro HTS, transcriptomics, electrophysiology and MD simulations.","past":"Past:\nM.Tech Medical Biotechnology, IIT Hyderabad (2018–20)"},
     {"status":"current","img":"assets/people/rajiv.webp","name":"Rajiv Sharma","role":"Ph.D. Scholar","email":"","linkedin":"","bio":"Understanding the mechanism of nicotine binding to nAChRs and its role in synapse development, combining electrophysiology and computational studies.","past":"Past:\nMSc Biotechnology, University of Hyderabad (2021–23)"},
     {"status":"current","img":"assets/people/ritu.webp","name":"Ritu Singh","role":"Ph.D. Scholar","email":"","linkedin":"","bio":"Investigating the biophysical properties and functional role of ion channels in endolysosomes — ion permeability, channel regulation and intracellular trafficking.","past":"Past:\nMSc Biochemistry, Institute of Sciences, Banaras Hindu University (2021–2023)"},
-    {"status":"current","img":"assets/people/gauri-saini-2.webp","name":"Gauri Saini","role":"Ph.D. Scholar","email":"blz248264@iitd.ac.in","linkedin":"","bio":"Understanding the Mechanism underlying neuronal hyperexcitability using chick embryo as a model system","past":"MSc Biotechnology, Christ University (2021-2023)"},
+    {"status":"current","img":"assets/people/gauri-saini.webp","name":"Gauri Saini","role":"Ph.D. Scholar","email":"blz248264@iitd.ac.in","linkedin":"","bio":"Understanding the Mechanism underlying neuronal hyperexcitability using chick embryo as a model system","past":"MSc Biotechnology, Christ University (2021-2023)"},
     {"status":"current","img":"assets/people/rakesh-barwar.webp","name":"Rakesh Barwar","role":"Ph.D. Scholar","email":"","linkedin":"https://www.linkedin.com/in/rakesh-barwar-47182a91/","bio":"Works on TPC2, an ion channel of the endolysosome, and the molecular mechanisms that control its opening and closing. Builds the structural models, makes the mutants and records what they do.","past":"Past:\nMSc Biotech, Maharshi Dayanand University - Rohtak, Haryana"},
     {"status":"current","img":"assets/people/jaweria-mariam.webp","name":"Jaweria Mariam","role":"Ph.D. Scholar","email":"","linkedin":"","bio":"Ligand-Binding Energetics Measuring how much of an agonist's binding energy is spent opening the channel.","past":""},
     {"status":"current","img":"assets/people/tanish-gupta.webp","name":"Tanish Gupta","role":"Ph.D. Scholar","email":"blz258022@iitd.ac.in","linkedin":"","bio":"Work on cellular network electrical recording and profiling; interests in neuronal development, synaptogenesis, and cortical hierarchy. Research objectives to follow soon.\nLove to read, walk, clean, and think too much. \nHope to be of use, in general that is.","past":"Past:\nAnalog Design Engineer, Signalchip Innovations\nB. E. (Hons.) Electrical and Electronics Engineering, BITS Pilani K. K. Birla Goa Campus"},
