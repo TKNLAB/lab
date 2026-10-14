@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Explore — Nayak Lab · IIT Delhi</title>
+<meta name="description" content="Interactive simulations from the Nayak Lab: the channelrhodopsin-2 photocurrent, from photon to neural network, fear memory in the amygdala, and the Hodgkin–Huxley action potential.">
+<meta property="og:title" content="Explore — Nayak Lab · IIT Delhi">
+<meta property="og:description" content="Interactive simulations of ion channels, optogenetics and excitable membranes, built on published models.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://channellab.iitd.ac.in/explore">
+<meta property="og:image" content="https://channellab.iitd.ac.in/assets/logos/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://channellab.iitd.ac.in/explore">
+<script src="./support.js"></script>
+<script src="./js/theme.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="icon" type="image/svg+xml" href="assets/logos/tkn-favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/logos/tkn-favicon-32.png">
+<link rel="apple-touch-icon" href="assets/logos/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&amp;family=Geist+Mono:wght@400;500&amp;family=Newsreader:ital,opsz,wght@1,6..72,400&amp;display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#070c16;-webkit-font-smoothing:antialiased;}
+:focus-visible{outline:2px solid #f1d49a;outline-offset:3px;}
+::selection{background:#e0a53a;color:#070c16;}
+a{text-decoration:none;color:inherit;}
+a:hover{color:inherit;}
+img{max-width:100%;}
+@media (prefers-reduced-motion:reduce){*{transition-duration:.01ms !important;}}
+</style>
+<script src="./data/content.js"></script>
+<script src="./js/site-fx.js"></script>
+<script src="./js/tap-fix.js"></script>
+</helmet>
+<div style="font-family:'Geist',sans-serif;color:#e8ecf3;background:#070c16;min-height:100vh;overflow-x:clip;">
+  <dc-import name="SiteNav" active="explore" hint-size="100%,64px" style="position:sticky;top:0;z-index:200;"></dc-import>
+
+  <section id="main" style="position:relative;overflow:hidden;border-bottom:1px solid rgba(255,255,255,0.07);">
+    <div style="position:relative;max-width:1360px;margin:0 auto;padding:clamp(72px,10vw,136px) clamp(20px,5vw,40px) clamp(56px,7vw,88px);">
+      <div style="font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.2em;color:#e6b667;text-transform:uppercase;margin-bottom:22px;">Explore</div>
+      <h1 style="font-weight:500;font-size:clamp(38px,6vw,84px);line-height:1;letter-spacing:-0.04em;margin-bottom:26px;max-width:900px;text-wrap:balance;">Run the <span style="font-family:'Newsreader',serif;font-style:italic;font-weight:400;color:#f1d49a;letter-spacing:-0.02em;">experiment</span> yourself.</h1>
+      <p style="font-size:clamp(16px,1.5vw,18px);line-height:1.65;color:#aab3c3;max-width:640px;font-weight:300;text-wrap:pretty;">Working simulators built on published models and calibrated against published measurements. Change the protocol, watch the recording, read the numbers off a live fit. Each one explains itself in plain language first and keeps the detail underneath.</p>
+    </div>
+  </section>
+
+  <section style="max-width:1360px;margin:0 auto;padding:clamp(56px,7vw,96px) clamp(20px,5vw,40px) 0;">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:16px;">
+
+      <a href="explore-photocurrent.html" data-reveal="" style="background:#0d1422;border:1px solid rgba(255,255,255,0.07);border-radius:20px;padding:26px;display:flex;flex-direction:column;gap:14px;transition:border-color .25s,transform .3s cubic-bezier(.32,.72,0,1),background .25s;" style-hover="border-color:rgba(241,212,154,0.45);transform:translateY(-6px);background:#101a2c;">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+          <div style="font-family:'Geist Mono',monospace;font-size:12.5px;color:#070c16;background:#f1d49a;padding:4px 10px;border-radius:999px;">01</div>
+          <div style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#7d889c;">Patch clamp</div>
+        </div>
+        <h2 style="font-weight:500;font-size:22px;letter-spacing:-0.02em;line-height:1.2;">The channelrhodopsin-2 photocurrent</h2>
+        <p style="font-size:14.5px;line-height:1.6;color:#8792a6;font-weight:300;flex:1;">Why a light-gated current peaks, sags to a plateau and takes seconds to recover. Set the irradiance, the pulse, the holding voltage and the temperature; the page fits τ<sub>ON</sub>, τ<sub>INACT</sub>, τ<sub>OFF</sub> and I<sub>SS</sub>/I<sub>p</sub> as you go.</p>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;font-family:'Geist Mono',monospace;font-size:10.5px;letter-spacing:0.08em;color:#98a2b4;padding-top:12px;border-top:1px solid rgba(255,255,255,0.07);">
+          <span style="padding:5px 8px;border:1px solid rgba(255,255,255,0.14);border-radius:4px;">4-STATE PHOTOCYCLE</span><span style="padding:5px 8px;border:1px solid rgba(255,255,255,0.14);border-radius:4px;">I–V</span><span style="padding:5px 8px;border:1px solid rgba(255,255,255,0.14);border-radius:4px;">S1–S2 RECOVERY</span>
+        </div>
+      </a>
+
+      <a href="explore-network.html" data-reveal="" data-reveal-delay="90" style="background:#0d1422;border:1px solid rgba(255,255,255,0.07);border-radius:20px;padding:26px;display:flex;flex-direction:column;gap:14px;transition:border-color .25s,transform .3s cubic-bezier(.32,.72,0,1),background .25s;" style-hover="border-color:rgba(241,212,154,0.45);transform:translateY(-6px);background:#101a2c;">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+          <div style="font-family:'Geist Mono',monospace;font-size:12.5px;color:#070c16;background:#f1d49a;padding:4px 10px;border-radius:999px;">02</div>
+          <div style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#7d889c;">Molecule to circuit</div>
+        </div>
+        <h2 style="font-weight:500;font-size:22px;letter-spacing:-0.02em;line-height:1.2;">From one photon to a network</h2>
+        <p style="font-size:14.5px;line-height:1.6;color:#8792a6;font-weight:300;flex:1;">Retinal isomerises, the pore opens, one channel carries femtosiemens and a cell-full carries nanoamps, a neuron spikes to every pulse — until the pulses come too fast — and a network entrains.</p>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;font-family:'Geist Mono',monospace;font-size:10.5px;letter-spacing:0.08em;color:#98a2b4;padding-top:12px;border-top:1px solid rgba(255,255,255,0.07);">
+          <span style="padding:5px 8px;border:1px solid rgba(255,255,255,0.14);border-radius:4px;">PHOTOCYCLE</span><span style="padding:5px 8px;border:1px solid rgba(255,255,255,0.14);border-radius:4px;">HODGKIN–HUXLEY</span><span style="padding:5px 8px;border:1px solid rgba(255,255,255,0.14);border-radius:4px;">SPIKING NETWORK</span>
+        </div>
+      </a>
+
+      <a href="explore-fear.html" data-reveal="" data-reveal-delay="180" style="background:#0d1422;border:1px solid rgba(255,255,255,0.07);border-radius:20px;padding:26px;display:flex;flex-direction:column;gap:14px;transition:border-color .25s,transform .3s cubic-bezier(.32,.72,0,1),background .25s;" style-hover="border-color:rgba(241,212,154,0.45);transform:translateY(-6px);background:#101a2c;">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+          <div style="font-family:'Geist Mono',monospace;font-size:12.5px;color:#070c16;background:#f1d49a;padding:4px 10px;border-radius:999px;">03</div>
+          <div style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#7d889c;">Plasticity</div>
+        </div>
+        <h2 style="font-weight:500;font-size:22px;letter-spacing:-0.02em;line-height:1.2;">A fear memory, written with light</h2>
+        <p style="font-size:14.5px;line-height:1.6;color:#8792a6;font-weight:300;flex:1;">Pair light at an auditory input to the lateral amygdala with a footshock. The synapse potentiates, and light alone then drives the conditioned response. LTD erases the memory; LTP puts it back.</p>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;font-family:'Geist Mono',monospace;font-size:10.5px;letter-spacing:0.08em;color:#98a2b4;padding-top:12px;border-top:1px solid rgba(255,255,255,0.07);">
+          <span style="padding:5px 8px;border:1px solid rgba(255,255,255,0.14);border-radius:4px;">LTP / LTD</span><span style="padding:5px 8px;border:1px solid rgba(255,255,255,0.14);border-radius:4px;">AMYGDALA CIRCUIT</span><span style="padding:5px 8px;border:1px solid rgba(255,255,255,0.14);border-radius:4px;">BEHAVIOUR</span>
+        </div>
+      </a>
+
+      <a href="hhsim.html" data-reveal="" data-reveal-delay="270" style="background:#0d1422;border:1px solid rgba(255,255,255,0.07);border-radius:20px;padding:26px;display:flex;flex-direction:column;gap:14px;transition:border-color .25s,transform .3s cubic-bezier(.32,.72,0,1),background .25s;" style-hover="border-color:rgba(241,212,154,0.45);transform:translateY(-6px);background:#101a2c;">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+          <div style="font-family:'Geist Mono',monospace;font-size:12.5px;color:#070c16;background:#f1d49a;padding:4px 10px;border-radius:999px;">04</div>
+          <div style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#7d889c;">Teaching tool</div>
+        </div>
+        <h2 style="font-weight:500;font-size:22px;letter-spacing:-0.02em;line-height:1.2;">HHsim — the action potential</h2>
+        <p style="font-size:14.5px;line-height:1.6;color:#8792a6;font-weight:300;flex:1;">The Hodgkin–Huxley membrane as a bench instrument: current and voltage clamp, gates and conductances, blockers and ion concentrations, with twenty-six guided lessons and challenges.</p>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;font-family:'Geist Mono',monospace;font-size:10.5px;letter-spacing:0.08em;color:#98a2b4;padding-top:12px;border-top:1px solid rgba(255,255,255,0.07);">
+          <span style="padding:5px 8px;border:1px solid rgba(255,255,255,0.14);border-radius:4px;">CURRENT CLAMP</span><span style="padding:5px 8px;border:1px solid rgba(255,255,255,0.14);border-radius:4px;">VOLTAGE CLAMP</span><span style="padding:5px 8px;border:1px solid rgba(255,255,255,0.14);border-radius:4px;">LESSONS</span>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <section style="max-width:1360px;margin:clamp(80px,10vw,128px) auto 0;padding:0 clamp(20px,5vw,40px);">
+    <div data-reveal="" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:28px 64px;border-top:1px solid rgba(255,255,255,0.1);padding-top:32px;">
+      <div>
+        <div style="font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.2em;color:#e6b667;text-transform:uppercase;margin-bottom:18px;">How to read these</div>
+        <h2 style="font-weight:500;font-size:clamp(30px,4vw,52px);line-height:1.02;letter-spacing:-0.035em;text-wrap:balance;">Simulations, not <span style="font-family:'Newsreader',serif;font-style:italic;font-weight:400;color:#f1d49a;">recordings</span>.</h2>
+      </div>
+      <div style="font-size:16px;line-height:1.75;color:#8792a6;font-weight:300;display:flex;flex-direction:column;gap:16px;">
+        <p>Every trace on these pages is computed in your browser from a kinetic model — the same mathematics the published papers use — then filtered and given noise the way a real amplifier would. Nothing is drawn by hand, and every number printed on a figure is fitted live to the simulated data.</p>
+        <p>Each figure names its model and its source. Where a parameter is ours rather than published, the caption says so. These pages are for explanation; our experimental data appear in our papers.</p>
+      </div>
+    </div>
+  </section>
+
+  <div style="height:clamp(80px,10vw,128px);"></div>
+  <dc-import name="SiteFooter" hint-size="100%,340px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  componentDidMount() { const go = () => { if (!window.LAB_CONTENT) { this._t = setTimeout(go, 40); return; } this.forceUpdate(); }; go(); }
+  componentWillUnmount() { clearTimeout(this._t); }
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

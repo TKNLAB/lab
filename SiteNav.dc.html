@@ -92,7 +92,7 @@ class Component extends DCLogic {
   renderVals() {
     const a = this.props.active || '';
     const piDept = ((window.LAB_CONTENT || {}).pi || {}).dept || '[DEPARTMENT]';
-    const L = [['research', 'Research', 'research.html'], ['publications', 'Publications', 'publications.html'], ['people', 'People', 'people.html'], ['teaching', 'Teaching', 'teaching.html'], ['explore', 'Explore', 'explore.html'], ['gallery', 'Gallery', 'gallery.html'], ['join', 'Join us', 'join.html']];
+    const L = [['research', 'Research', 'research.html'], ['publications', 'Publications', 'publications.html'], ['people', 'People', 'people.html'], ['teaching', 'Teaching', 'teaching.html'], ['gallery', 'Gallery', 'gallery.html'], ['join', 'Join us', 'join.html']];
     const w = this.state.w, mobile = w < 1180, brand = w < 400 ? 'Nayak Lab' :  w < 600 ? 'Nayak Lab / IIT Delhi' : 'Tapan Kumar Nayak Lab / IIT Delhi';
     return {
       links: L.map(([k, label, href], i) => ({ label, href, on: k === a, off: k !== a, n: '0' + (i + 1), color: k === a ? '#f1d49a' : '#e8ecf3' })),
