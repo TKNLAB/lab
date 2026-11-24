@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Inventory · Nayak Lab</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#070c16">
+<link rel="icon" type="image/svg+xml" href="assets/logos/tkn-favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&amp;family=Geist+Mono:wght@400;500&amp;family=Newsreader:ital,opsz,wght@1,6..72,400&amp;display=swap" rel="stylesheet">
+<script>
+/* ============================ SETTINGS ============================
+   API_URL: paste the Google Apps Script "Web app" URL (ends in /exec) between the quotes.
+   Leave it empty to run in preview mode (changes stay in this browser only). */
+window.INVENTORY_CONFIG = {
+  API_URL: '',
+  POLL_SECONDS: 8,          // how often the page looks for other people's changes
+  EXPIRY_WARN_DAYS: 60      // "expiring soon" window
+};
+</script>
+<script src="./js/theme.js"></script>
+<style>
+:root{
+  --bg:#070c16;--panel:#0d1422;--panel2:#101a2c;--field:#0a101c;--line:rgba(255,255,255,0.08);--line2:rgba(255,255,255,0.15);
+  --text:#e8ecf3;--muted:#aab3c3;--dim:#8792a6;--faint:#7d889c;--gold:#f1d49a;--gold2:#e6b667;--blue:#8fb4e8;
+  --red:#f2777a;--redbg:rgba(242,119,122,0.14);--amber:#efb75e;--amberbg:rgba(239,183,94,0.15);
+  --green:#6fd3a0;--greenbg:rgba(111,211,160,0.14);--violet:#b9a2f0;--violetbg:rgba(185,162,240,0.15);
+  --goldbg:rgba(241,212,154,0.12);--bluebg:rgba(143,180,232,0.14);
+}
+html[data-theme=light]{--red:#b4232a;--redbg:rgba(180,35,42,0.09);--amber:#94570a;--amberbg:rgba(176,108,16,0.11);--green:#16774a;--greenbg:rgba(22,119,74,0.1);--violet:#5b3fb4;--violetbg:rgba(91,63,180,0.09);--goldbg:rgba(150,98,18,0.1);--bluebg:rgba(46,98,176,0.1);}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{background:var(--bg);}
+body{color:var(--text);font-family:'Geist',system-ui,sans-serif;font-size:14px;-webkit-font-smoothing:antialiased;min-height:100vh;-webkit-tap-highlight-color:transparent;}
+a{color:var(--gold);text-decoration:none;}
+button,input,select,textarea{font:inherit;color:inherit;}
+button{cursor:pointer;background:none;border:0;}
+::placeholder{color:#5d6779;}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+::selection{background:#e0a53a;color:#070c16;}
+.ic{width:20px;height:20px;flex:none;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+.ic.sm{width:16px;height:16px;}.ic.lg{width:24px;height:24px;}
+.mono{font-family:'Geist Mono',ui-monospace,monospace;}
+.wrap{max-width:1180px;margin:0 auto;padding:0 clamp(14px,4vw,28px);}
+[hidden]{display:none !important;}
+
+/* ---------- top bar ---------- */
+.top{position:sticky;top:0;z-index:40;background:rgba(7,12,22,0.88);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line);}
+.top .wrap{display:flex;align-items:center;gap:6px;min-height:58px;}
+.brand{display:flex;align-items:center;gap:10px;margin-right:auto;color:var(--text);font-weight:500;font-size:16px;letter-spacing:-0.01em;}
+.brand img{width:26px;height:26px;}
+.brand small{font-family:'Geist Mono',monospace;font-size:10.5px;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold2);font-weight:400;}
+.ibtn{width:42px;height:42px;border-radius:12px;display:inline-flex;align-items:center;justify-content:center;color:var(--muted);position:relative;transition:background .15s,color .15s;}
+.ibtn:hover{background:rgba(255,255,255,0.07);color:var(--text);}
+.user{display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 14px 0 10px;border-radius:999px;border:1px solid var(--line2);font-size:13.5px;white-space:nowrap;}
+.user:hover{background:rgba(255,255,255,0.06);}
+.user .av{width:24px;height:24px;border-radius:50%;background:#f1d49a;color:#070c16;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;}
+
+/* ---------- hero + steps ---------- */
+.hero{padding:clamp(22px,4vw,40px) 0 14px;display:flex;align-items:flex-end;gap:12px 24px;flex-wrap:wrap;}
+.hero h1{font-weight:500;font-size:clamp(30px,4.6vw,50px);line-height:1;letter-spacing:-0.04em;}
+.hero h1 em{font-family:'Newsreader',serif;font-style:italic;font-weight:400;color:var(--gold);letter-spacing:-0.02em;}
+.hero .sync{margin-left:auto;display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--faint);}
+.hero .sync i{width:8px;height:8px;border-radius:50%;background:var(--faint);}
+.hero .sync i.live{background:var(--green);animation:pulse 2.4s infinite;}.hero .sync i.warn{background:var(--amber);}.hero .sync i.err{background:var(--red);}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(111,211,160,0.5);}70%{box-shadow:0 0 0 7px rgba(111,211,160,0);}100%{box-shadow:0 0 0 0 rgba(111,211,160,0);}}
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr)) auto;gap:10px;align-items:stretch;margin:6px 0 18px;}
+.step{display:flex;gap:12px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px 14px;}
+.step .n{width:38px;height:38px;border-radius:11px;background:var(--goldbg);color:var(--gold);display:flex;align-items:center;justify-content:center;flex:none;}
+.step b{display:block;font-weight:500;font-size:14px;}
+.step span{color:var(--dim);font-size:12.5px;line-height:1.4;}
+.steps .x{align-self:center;}
+.banner{display:flex;gap:10px;align-items:flex-start;margin:0 0 16px;padding:11px 14px;border-radius:12px;background:var(--amberbg);color:var(--amber);font-size:13px;line-height:1.5;}
+.banner p{color:var(--muted);}.banner b{color:var(--amber);font-weight:500;}
+
+/* ---------- search + filters ---------- */
+.searchrow{display:flex;gap:10px;align-items:center;margin-bottom:12px;}
+.search{flex:1;position:relative;}
+.search > .ic{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--faint);}
+.search input{width:100%;height:54px;padding:0 48px 0 48px;border-radius:16px;border:1px solid var(--line2);background:var(--field);font-size:16px;}
+.search input:focus{border-color:#f1d49a;outline:none;box-shadow:0 0 0 4px var(--goldbg);}
+.search input::-webkit-search-cancel-button{display:none;}
+.search .clear{position:absolute;right:6px;top:50%;transform:translateY(-50%);}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 18px;border-radius:14px;border:1px solid var(--line2);background:var(--panel);font-size:14.5px;font-weight:500;white-space:nowrap;transition:background .15s,border-color .15s,transform .1s;}
+.btn:hover{background:var(--panel2);border-color:rgba(241,212,154,0.5);}
+.btn:active{transform:scale(.98);}
+.btn.primary{background:#f1d49a;color:#070c16;border-color:#f1d49a;}
+.btn.primary:hover{background:#fbe7bf;}
+.btn.danger{color:var(--red);border-color:transparent;background:transparent;padding:0 12px;}
+.btn.danger:hover{background:var(--redbg);}
+.btn.full{width:100%;}
+.btn:disabled{opacity:.55;cursor:not-allowed;}
+.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none;margin-bottom:10px;}
+.chips::-webkit-scrollbar{display:none;}
+.chip{display:inline-flex;align-items:center;gap:7px;height:40px;padding:0 14px;border-radius:999px;border:1px solid var(--line2);background:var(--panel);font-size:13.5px;color:var(--muted);white-space:nowrap;flex:none;transition:all .15s;}
+.chip:hover{color:var(--text);border-color:rgba(255,255,255,0.28);}
+.chip .c{font-family:'Geist Mono',monospace;font-size:11.5px;opacity:.75;}
+.chip.on{background:#f1d49a;border-color:#f1d49a;color:#070c16;font-weight:500;}
+.chip.flag.on{background:var(--panel2);border-color:currentColor;font-weight:500;}
+.chip.zero{opacity:.45;}
+.bar{display:flex;align-items:center;gap:10px;margin:2px 0 10px;flex-wrap:wrap;color:var(--faint);font-size:13px;}
+.bar .grow{flex:1;}
+.selwrap{position:relative;display:inline-flex;align-items:center;}
+.selwrap .ic{position:absolute;left:11px;color:var(--faint);pointer-events:none;}
+.sel{height:38px;padding:0 30px 0 34px;border-radius:11px;border:1px solid var(--line2);background:var(--field);font-size:13px;appearance:none;-webkit-appearance:none;max-width:230px;background-image:linear-gradient(45deg,transparent 50%,#7d889c 50%),linear-gradient(135deg,#7d889c 50%,transparent 50%);background-position:calc(100% - 15px) 50%,calc(100% - 10px) 50%;background-size:5px 5px;background-repeat:no-repeat;}
+.link{color:var(--gold);font-size:13px;display:inline-flex;align-items:center;gap:6px;}
+.link:hover{color:#ffffff;}
+
+/* ---------- list ---------- */
+.list{display:flex;flex-direction:column;gap:8px;}
+.item{display:grid;grid-template-columns:46px minmax(0,2.3fr) minmax(0,1.5fr) minmax(0,1fr) auto 20px;gap:14px;align-items:center;padding:12px;background:var(--panel);border:1px solid var(--line);border-radius:16px;cursor:pointer;transition:border-color .15s,background .15s;}
+.item:hover{border-color:var(--line2);background:var(--panel2);}
+.item.flash{animation:flash 1.4s ease;}
+@keyframes flash{0%{border-color:#f1d49a;box-shadow:0 0 0 4px var(--goldbg);}100%{}}
+.tile{width:46px;height:46px;border-radius:13px;display:flex;align-items:center;justify-content:center;flex:none;}
+.t-R{background:var(--goldbg);color:var(--gold);}.t-A{background:var(--bluebg);color:var(--blue);}.t-G{background:var(--greenbg);color:var(--green);}
+.nm{font-size:15px;font-weight:500;letter-spacing:-0.01em;line-height:1.3;display:flex;align-items:center;gap:6px;min-width:0;}
+.nm span{overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
+.nm .ic{color:var(--amber);}
+.sub{color:var(--dim);font-size:12.5px;margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.sub .mono{font-size:11.5px;}
+.where{display:flex;align-items:center;gap:9px;min-width:0;}
+.where .ic{color:var(--faint);}
+.where .ic.cold{color:var(--blue);}
+.where div{min-width:0;}
+.where b{display:block;font-weight:400;font-size:13.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.where small{display:block;color:var(--faint);font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.st{display:flex;flex-wrap:wrap;gap:5px;}
+.b{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:500;padding:4px 9px 4px 7px;border-radius:999px;white-space:nowrap;}
+.b .ic{width:14px;height:14px;stroke-width:2.2;}
+.b-red{color:var(--red);background:var(--redbg);}.b-amber{color:var(--amber);background:var(--amberbg);}
+.b-violet{color:var(--violet);background:var(--violetbg);}.b-dim{color:var(--faint);background:rgba(255,255,255,0.05);}
+.qty{display:flex;align-items:center;background:var(--field);border:1px solid var(--line2);border-radius:14px;padding:3px;}
+.qty button{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;color:var(--muted);transition:background .12s,color .12s;}
+.qty button:hover{background:rgba(255,255,255,0.08);color:var(--text);}
+.qty button:active{background:#f1d49a;color:#070c16;}
+.qty button:disabled{opacity:.4;cursor:default;}
+.qty .v{min-width:58px;height:40px;text-align:center;font-size:16px;font-weight:600;line-height:1;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:10px;cursor:text;}
+.qty .v:hover{background:rgba(255,255,255,0.05);}
+.qty .v small{font-size:10.5px;color:var(--faint);font-weight:400;margin-top:3px;}
+.qty .v.zero{color:var(--red);}
+.qty .v.unk{color:var(--violet);}
+.qty > input.qin{width:58px;height:40px;text-align:center;font-size:16px;font-weight:600;border:0;border-radius:10px;background:#f1d49a;color:#070c16;outline:none;-moz-appearance:textfield;}
+.qty input::-webkit-inner-spin-button,.qty input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0;}
+.go{color:var(--faint);}
+.empty{padding:48px 20px;text-align:center;color:var(--dim);line-height:1.6;background:var(--panel);border:1px dashed var(--line2);border-radius:18px;display:flex;flex-direction:column;align-items:center;gap:10px;}
+.empty > .ic{width:36px;height:36px;color:var(--faint);}
+.empty b{color:var(--text);font-size:17px;font-weight:500;}
+.showall{display:flex;justify-content:center;padding:8px;}
+@media (max-width:900px){
+  .item{grid-template-columns:44px minmax(0,1fr) 20px;grid-template-areas:"tile name go" "tile where where" "st st qty";gap:6px 12px;}
+  .tile{width:44px;height:44px;}
+  .item > .tile{grid-area:tile;align-self:start;}
+  .c-name{grid-area:name;}.c-where{grid-area:where;}.c-st{grid-area:st;align-self:center;}.c-qty{grid-area:qty;justify-self:end;margin-top:4px;}.go{grid-area:go;align-self:start;margin-top:2px;}
+  .steps{grid-template-columns:1fr;gap:6px;position:relative;}
+  .step{padding:9px 12px;}.step .n{width:32px;height:32px;}
+  .steps .x{position:absolute;right:4px;top:4px;}
+  .hide-sm{display:none !important;}
+  .hero .sync{margin-left:0;}
+  .bar .selwrap{flex:1 1 140px;}.bar .sel{width:100%;max-width:none;}
+}
+
+/* ---------- FAB (phones) ---------- */
+.fab{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom));z-index:45;width:60px;height:60px;border-radius:20px;background:#f1d49a;color:#070c16;display:none;align-items:center;justify-content:center;box-shadow:0 14px 40px rgba(0,0,0,0.45);}
+@media (max-width:900px){.fab{display:flex;}}
+
+/* ---------- activity drawer ---------- */
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(400px,100%);background:var(--panel);border-left:1px solid var(--line2);z-index:60;transform:translateX(100%);transition:transform .28s cubic-bezier(.32,.72,0,1);display:flex;flex-direction:column;visibility:hidden;}
+.drawer.open{transform:none;box-shadow:-30px 0 80px rgba(0,0,0,0.45);visibility:visible;}
+.drawer header{display:flex;align-items:center;gap:10px;padding:14px 12px 14px 18px;border-bottom:1px solid var(--line);}
+.drawer h2{font-size:17px;font-weight:500;margin-right:auto;}
+.drawer .body{overflow:auto;padding:4px 18px 24px;}
+.ev{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);font-size:13.5px;line-height:1.45;}
+.ev .tile{width:34px;height:34px;border-radius:10px;}
+.ev .tile .ic{width:16px;height:16px;}
+.ev .t{font-size:11.5px;color:var(--faint);margin-top:2px;}
+.ev .d{color:var(--dim);font-size:12.5px;overflow-wrap:anywhere;}
+.ev b{font-weight:500;}
+
+/* ---------- sheets (dialog on desktop, bottom sheet on phones) ---------- */
+.scrim{position:fixed;inset:0;background:rgba(5,9,17,0.66);z-index:70;display:none;align-items:center;justify-content:center;padding:20px;}
+.scrim.open{display:flex;animation:fade .18s ease;}
+#unlockScrim{z-index:80;}
+@keyframes fade{from{opacity:0;}}
+.sheet{width:min(560px,100%);max-height:calc(100vh - 40px);display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--line2);border-radius:22px;box-shadow:0 40px 120px rgba(0,0,0,0.5);animation:up .24s cubic-bezier(.32,.72,0,1);}
+.sheet.small{width:min(400px,100%);}
+@keyframes up{from{transform:translateY(24px);opacity:.4;}}
+.sheet header{display:flex;align-items:center;gap:12px;padding:16px 12px 8px 20px;}
+.sheet header .tile{width:44px;height:44px;}
+.sheet h2{font-size:19px;font-weight:500;letter-spacing:-0.02em;line-height:1.2;overflow-wrap:anywhere;}
+.sheet .hint{color:var(--dim);font-size:12.5px;margin-top:2px;}
+.sheet .hd{flex:1;min-width:0;}
+.sheet .body{padding:8px 20px;overflow:auto;display:flex;flex-direction:column;gap:14px;}
+.sheet footer{display:flex;gap:10px;align-items:center;padding:14px 20px calc(16px + env(safe-area-inset-bottom));border-top:1px solid var(--line);}
+.sheet footer .sp{flex:1;}
+.grab{display:none;width:40px;height:5px;border-radius:9px;background:var(--line2);margin:8px auto 0;flex:none;}
+@media (max-width:640px){
+  .scrim{align-items:flex-end;padding:0;}
+  .sheet,.sheet.small{width:100%;max-height:94vh;border-radius:22px 22px 0 0;border-bottom:0;animation:upm .28s cubic-bezier(.32,.72,0,1);}
+  @keyframes upm{from{transform:translateY(100%);}}
+  .grab{display:block;}
+}
+.f{display:flex;flex-direction:column;gap:6px;min-width:0;}
+.f > span{font-size:12.5px;color:var(--faint);display:flex;align-items:center;gap:6px;}
+.f > span .ic{width:15px;height:15px;}
+.f input,.f select,.f textarea{width:100%;height:46px;padding:0 13px;border-radius:12px;border:1px solid var(--line2);background:var(--field);font-size:15px;}
+.f textarea{height:auto;min-height:72px;padding:11px 13px;resize:vertical;line-height:1.5;}
+.f input:focus,.f select:focus,.f textarea:focus{border-color:#f1d49a;outline:none;}
+.f input:disabled,.f select:disabled,.f textarea:disabled{color:var(--muted);background:transparent;border-style:dashed;opacity:1;}
+.f.big input{height:52px;font-size:17px;font-weight:500;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media (max-width:420px){.g2.st2{grid-template-columns:1fr;}}
+.catpick{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.catpick label{cursor:pointer;position:relative;}
+.catpick input{position:absolute;opacity:0 !important;width:1px !important;height:1px !important;pointer-events:none;}
+.catpick div{display:flex;flex-direction:column;align-items:center;gap:6px;padding:11px 6px;border-radius:13px;border:1px solid var(--line2);font-size:12.5px;color:var(--muted);text-align:center;transition:all .15s;}
+.catpick input:checked + div{border-color:#f1d49a;background:var(--goldbg);color:var(--text);}
+.catpick input:disabled + div{opacity:.6;cursor:default;}
+.catpick input:focus-visible + div{outline:2px solid var(--gold);outline-offset:2px;}
+.bigqty{display:flex;align-items:center;gap:10px;}
+.bigqty .qty{padding:4px;border-radius:16px;}
+.bigqty .qty button{width:50px;height:50px;border-radius:13px;}
+.bigqty .qty input{width:80px;height:50px;font-size:22px;font-weight:600;text-align:center;border:0;background:transparent;color:var(--text);border-radius:10px;outline:none;-moz-appearance:textfield;}
+.bigqty .qty input:focus{background:var(--goldbg);}
+.bigqty .unit{flex:1;}
+details.more{border:1px solid var(--line);border-radius:14px;}
+details.more summary{list-style:none;display:flex;align-items:center;gap:8px;padding:13px 14px;cursor:pointer;color:var(--muted);font-size:13.5px;}
+details.more summary::-webkit-details-marker{display:none;}
+details.more summary .chev{margin-left:auto;transition:transform .2s;}
+details.more[open] summary .chev{transform:rotate(180deg);}
+details.more .in{padding:2px 14px 14px;display:flex;flex-direction:column;gap:12px;}
+.toggle{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--muted);min-height:44px;cursor:pointer;}
+.toggle input{width:20px;height:20px;accent-color:#f1d49a;}
+.dupwarn{display:flex;gap:10px;align-items:flex-start;padding:11px 12px;border-radius:12px;background:var(--amberbg);color:var(--amber);font-size:13px;line-height:1.5;}
+.dupwarn p{color:var(--text);}
+.err{color:var(--red);font-size:13px;}
+.err:empty{display:none;}
+.stamp{color:var(--faint);font-size:12px;display:flex;align-items:center;gap:6px;}
+.stamp:empty{display:none;}
+.pwrap{position:relative;display:block;}
+.pwrap .ibtn{position:absolute;right:2px;top:2px;}
+
+/* ---------- toast ---------- */
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom));transform:translate(-50%,calc(100% + 40px));visibility:hidden;background:#e8ecf3;color:#070c16;border-radius:14px;padding:10px 10px 10px 14px;display:flex;align-items:center;gap:12px;z-index:90;font-size:14px;box-shadow:0 16px 50px rgba(0,0,0,0.4);transition:transform .25s cubic-bezier(.32,.72,0,1),visibility .25s;max-width:calc(100% - 24px);}
+.toast.show{transform:translate(-50%,0);visibility:visible;}
+.toast > .ic{color:#16774a;}
+.toast.err > .ic{color:#b4232a;}
+.toast button{background:#070c16;color:#f1d49a;border-radius:9px;height:34px;padding:0 12px;font-weight:500;display:inline-flex;align-items:center;gap:6px;}
+@media (max-width:900px){.toast{bottom:calc(92px + env(safe-area-inset-bottom));}}
+footer.page{color:var(--faint);font-size:12px;padding:28px 0 96px;display:flex;gap:8px 18px;flex-wrap:wrap;justify-content:space-between;}
+.spin{width:18px;height:18px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:sp .7s linear infinite;display:inline-block;}
+@keyframes sp{to{transform:rotate(360deg);}}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important;}}
+</style>
+</head>
+<body>
+
+<!-- ======================= icons ======================= -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+  <symbol id="i-flask" viewBox="0 0 24 24"><path d="M9 3h6M10 3v6.2L4.6 18.4A1.7 1.7 0 0 0 6.1 21h11.8a1.7 1.7 0 0 0 1.5-2.6L14 9.2V3"/><path d="M7.2 15h9.6"/></symbol>
+  <symbol id="i-ab" viewBox="0 0 24 24"><path d="M12 21v-8M12 13L6.5 7.5M12 13l5.5-5.5"/><path d="M4.5 9.5l4-4M15.5 5.5l4 4"/></symbol>
+  <symbol id="i-tube" viewBox="0 0 24 24"><path d="M7 3h10M8 3v14a4 4 0 0 0 8 0V3"/><path d="M8 11h8"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></symbol>
+  <symbol id="i-snow" viewBox="0 0 24 24"><path d="M12 2v20M4.2 7l15.6 10M4.2 17L19.8 7"/><path d="M9.5 3.5L12 6l2.5-2.5M9.5 20.5L12 18l2.5 2.5"/></symbol>
+  <symbol id="i-fridge" viewBox="0 0 24 24"><rect x="5" y="2.5" width="14" height="19" rx="2.5"/><path d="M5 10h14M8.5 5.5v2M8.5 13v3"/></symbol>
+  <symbol id="i-shelf" viewBox="0 0 24 24"><path d="M3 21V3M21 21V3M3 9h18M3 15h18"/><rect x="6" y="5" width="3" height="4"/><rect x="11" y="11" width="4" height="4"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 19 9.5C19 14.9 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></symbol>
+  <symbol id="i-pen" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16v4z"/><path d="M13.5 6.5l4 4"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></symbol>
+  <symbol id="i-dl" viewBox="0 0 24 24"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 21h16"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></symbol>
+  <symbol id="i-unlock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 7.5-2"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></symbol>
+  <symbol id="i-warn" viewBox="0 0 24 24"><path d="M12 3.5L2.5 20h19L12 3.5z"/><path d="M12 10v4.5M12 17.5v.01"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></symbol>
+  <symbol id="i-out" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M5.6 5.6l12.8 12.8"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 5v14M6 13l6 6 6-6"/></symbol>
+  <symbol id="i-flag" viewBox="0 0 24 24"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16.5 9.5"/></symbol>
+  <symbol id="i-sort" viewBox="0 0 24 24"><path d="M7 4v16M7 20l-3-3M7 20l3-3M17 20V4M17 4l-3 3M17 4l3 3"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+  <symbol id="i-right" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></symbol>
+  <symbol id="i-undo" viewBox="0 0 24 24"><path d="M9 14L4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></symbol>
+  <symbol id="i-tap" viewBox="0 0 24 24"><path d="M9 11V5.5a1.5 1.5 0 0 1 3 0V11l4.2.9a2 2 0 0 1 1.6 2.3l-.8 4.5A2 2 0 0 1 15 20.5h-4.3a2 2 0 0 1-1.6-.8L5.5 15a1.5 1.5 0 0 1 2.3-1.9L9 14.5"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8v.01"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol>
+</svg>
+
+<div class="top">
+  <div class="wrap">
+    <a class="brand" href="index.html"><img src="assets/logos/tkn-favicon.svg" alt=""><span>Inventory <small class="hide-sm">· Nayak Lab</small></span></a>
+    <button class="ibtn" id="activityBtn" type="button" title="Recent changes" aria-label="Recent changes"><svg class="ic"><use href="#i-clock"/></svg></button>
+    <button class="ibtn" id="exportTop" type="button" title="Download Excel" aria-label="Download Excel"><svg class="ic"><use href="#i-dl"/></svg></button>
+    <button class="ibtn" id="themeBtn" type="button" aria-label="Switch theme"><svg class="ic"><use href="#i-sun"/></svg></button>
+    <button class="user" id="userBtn" type="button"></button>
+  </div>
+</div>
+
+<main class="wrap">
+  <section class="hero">
+    <h1>Lab <em>inventory</em></h1>
+    <div class="sync" id="sync"><i id="syncDot"></i><span id="syncText">Loading…</span></div>
+  </section>
+
+  <div class="steps" id="steps">
+    <div class="step"><div class="n"><svg class="ic"><use href="#i-search"/></svg></div><div><b>1 · Find it</b><span>Type a name, catalogue no. or place</span></div></div>
+    <div class="step"><div class="n"><svg class="ic"><use href="#i-tap"/></svg></div><div><b>2 · Tap − or +</b><span>or tap the number to type the count</span></div></div>
+    <div class="step"><div class="n"><svg class="ic"><use href="#i-check"/></svg></div><div><b>3 · Done</b><span>Saved for everyone automatically</span></div></div>
+    <button class="ibtn x" id="stepsX" type="button" title="Hide tips" aria-label="Hide tips"><svg class="ic sm"><use href="#i-x"/></svg></button>
+  </div>
+  <div id="banner"></div>
+
+  <div class="searchrow">
+    <label class="search">
+      <svg class="ic"><use href="#i-search"/></svg>
+      <input id="q" type="search" placeholder="Search anything…" autocomplete="off" aria-label="Search inventory" enterkeyhint="search">
+      <button class="ibtn clear" id="qClear" type="button" aria-label="Clear search" hidden><svg class="ic sm"><use href="#i-x"/></svg></button>
+    </label>
+    <button class="btn primary hide-sm" id="addBtn" type="button"><svg class="ic"><use href="#i-plus"/></svg>Add item</button>
+  </div>
+
+  <div class="chips" id="cats" role="tablist" aria-label="Category"></div>
+  <div class="chips" id="flags" aria-label="Filters"></div>
+
+  <div class="bar">
+    <span id="count"></span>
+    <button class="link" id="clearBtn" type="button" hidden><svg class="ic sm"><use href="#i-x"/></svg>Clear</button>
+    <span class="grow"></span>
+    <span class="selwrap"><svg class="ic sm"><use href="#i-pin"/></svg><select class="sel" id="locSel" aria-label="Location"></select></span>
+    <span class="selwrap"><svg class="ic sm"><use href="#i-sort"/></svg><select class="sel" id="sortSel" aria-label="Sort">
+      <option value="name">A → Z</option>
+      <option value="location">By location</option>
+      <option value="qty">Lowest stock first</option>
+      <option value="expiry">Expiry date</option>
+      <option value="updated">Recently changed</option>
+    </select></span>
+  </div>
+
+  <div class="list" id="list" aria-live="polite"></div>
+
+  <footer class="page">
+    <span>Nayak Lab · Ion Channel &amp; Receptor Biology · IIT Delhi</span>
+    <button class="link" id="exportBtn" type="button"><svg class="ic sm"><use href="#i-dl"/></svg>Download Excel</button>
+  </footer>
+</main>
+
+<button class="fab" id="fab" type="button" aria-label="Add item"><svg class="ic lg"><use href="#i-plus"/></svg></button>
+
+<!-- activity -->
+<aside class="drawer" id="drawer" aria-label="Recent changes">
+  <header><svg class="ic"><use href="#i-clock"/></svg><h2>Recent changes</h2><button class="ibtn" data-close-drawer aria-label="Close"><svg class="ic"><use href="#i-x"/></svg></button></header>
+  <div class="body" id="activity"></div>
+</aside>
+
+<!-- unlock -->
+<div class="scrim" id="unlockScrim">
+  <form class="sheet small" id="unlockForm" autocomplete="off">
+    <div class="grab"></div>
+    <header><div class="tile t-R"><svg class="ic"><use href="#i-lock"/></svg></div><div class="hd"><h2>Unlock editing</h2><p class="hint" id="unlockHint">You only need to do this once on this device.</p></div><button type="button" class="ibtn" data-close aria-label="Close"><svg class="ic"><use href="#i-x"/></svg></button></header>
+    <div class="body">
+      <label class="f"><span><svg class="ic"><use href="#i-user"/></svg>Your name</span><input id="uName" maxlength="40" placeholder="e.g. Rakesh" autocomplete="name"></label>
+      <div class="f"><span><svg class="ic"><use href="#i-lock"/></svg>Lab password</span><span class="pwrap"><input id="uPass" type="password" autocomplete="current-password" style="padding-right:48px" aria-label="Lab password"><button type="button" class="ibtn" id="uEye" aria-label="Show password"><svg class="ic sm"><use href="#i-eye"/></svg></button></span></div>
+      <label class="toggle"><input type="checkbox" id="uRemember" checked>Keep me unlocked on this device</label>
+      <div class="err" id="uErr"></div>
+    </div>
+    <footer><button class="btn primary full" id="uGo"><svg class="ic"><use href="#i-unlock"/></svg>Unlock</button></footer>
+  </form>
+</div>
+
+<!-- item sheet -->
+<div class="scrim" id="itemScrim">
+  <form class="sheet" id="itemForm" autocomplete="off" novalidate>
+    <div class="grab"></div>
+    <header>
+      <div class="tile t-R" id="iTile"><svg class="ic"><use href="#i-flask"/></svg></div>
+      <div class="hd"><h2 id="iTitle">Add item</h2><p class="hint" id="iHint"></p></div>
+      <button type="button" class="ibtn" data-close aria-label="Close"><svg class="ic"><use href="#i-x"/></svg></button>
+    </header>
+    <div class="body">
+      <div id="iDup"></div>
+      <label class="f big"><span>Name</span><input name="item" maxlength="200" placeholder="What is it? e.g. HEPES"></label>
+      <div class="f"><span>How many?</span>
+        <div class="bigqty">
+          <div class="qty"><button type="button" data-step="-1" aria-label="One less"><svg class="ic"><use href="#i-minus"/></svg></button><input name="qty" type="number" inputmode="decimal" min="0" step="any" placeholder="?" aria-label="Quantity"><button type="button" data-step="1" aria-label="One more"><svg class="ic"><use href="#i-plus"/></svg></button></div>
+          <label class="f unit"><input name="unit" list="dlUnit" maxlength="30" placeholder="unit (bottles, vials…)" aria-label="Unit"></label>
+        </div>
+      </div>
+      <div class="g2 st2">
+        <label class="f"><span><svg class="ic"><use href="#i-pin"/></svg>Where is it?</span><input name="location" list="dlLoc" maxlength="80" placeholder="e.g. Elanpro 4°C"></label>
+        <label class="f"><span><svg class="ic"><use href="#i-shelf"/></svg>Shelf / rack / box</span><input name="position" list="dlPos" maxlength="80" placeholder="e.g. Rack 2"></label>
+      </div>
+      <div class="f"><span>Type</span>
+        <div class="catpick">
+          <label><input type="radio" name="category" value="Reagents"><div><svg class="ic"><use href="#i-flask"/></svg>Reagent / kit</div></label>
+          <label><input type="radio" name="category" value="Antibodies"><div><svg class="ic"><use href="#i-ab"/></svg>Antibody</div></label>
+          <label><input type="radio" name="category" value="Glass-Plasticware"><div><svg class="ic"><use href="#i-tube"/></svg>Glass / plastic</div></label>
+        </div>
+      </div>
+      <details class="more" id="moreBox">
+        <summary><svg class="ic sm"><use href="#i-info"/></svg>More details <span style="color:var(--faint)" class="hide-sm">— brand, catalogue no., expiry, lot, notes</span><svg class="ic sm chev"><use href="#i-chev"/></svg></summary>
+        <div class="in">
+          <div class="g2">
+            <label class="f"><span>Make / brand</span><input name="make" list="dlMake" maxlength="80"></label>
+            <label class="f"><span>Catalogue no.</span><input name="catalog" maxlength="80"></label>
+          </div>
+          <div class="g2">
+            <label class="f"><span><svg class="ic"><use href="#i-cal"/></svg>Expiry date</span><input name="expiry" type="date"></label>
+            <label class="f"><span>Pack size</span><input name="pack" maxlength="60" placeholder="500 g, 1 mL…"></label>
+          </div>
+          <div class="g2">
+            <label class="f"><span>Lot no.</span><input name="lot" maxlength="60"></label>
+            <label class="f"><span>Warn me when stock ≤</span><input name="minQty" type="number" inputmode="decimal" min="0" step="any" placeholder="optional"></label>
+          </div>
+          <div class="g2">
+            <label class="f"><span><svg class="ic"><use href="#i-warn"/></svg>Hazard</span><input name="hazard" maxlength="120" placeholder="Corrosive, Flammable…"></label>
+            <label class="f"><span>Group</span><input name="group" list="dlGroup" maxlength="60" placeholder="Enzymes, Buffers…"></label>
+          </div>
+          <div id="abFields" class="g2">
+            <label class="f"><span>Host</span><input name="host" list="dlHost" maxlength="40"></label>
+            <label class="f"><span>Primary / secondary</span><select name="abType"><option value=""></option><option>Primary</option><option>Secondary</option></select></label>
+            <label class="f"><span>Clonality</span><select name="clonality"><option value=""></option><option>Mono</option><option>Poly</option></select></label>
+            <label class="f"><span>Conjugate</span><input name="conjugate" maxlength="40" placeholder="HRP, CF488A…"></label>
+            <label class="f"><span>Ex / Em (nm)</span><input name="exem" maxlength="20" placeholder="490/515"></label>
+            <label class="f"><span>Received</span><input name="received" maxlength="30" placeholder="Feb 2024"></label>
+          </div>
+          <label class="f"><span>Notes</span><textarea name="remarks" maxlength="500" placeholder="Opened on…, aliquoted, who has it…"></textarea></label>
+          <label class="toggle"><input type="checkbox" name="check"><svg class="ic sm" style="color:var(--violet)"><use href="#i-flag"/></svg>Needs checking (count or label unclear)</label>
+        </div>
+      </details>
+      <p class="stamp" id="iStamp"></p>
+      <div class="err" id="iErr"></div>
+    </div>
+    <footer>
+      <button type="button" class="btn danger" id="iDelete"><svg class="ic"><use href="#i-trash"/></svg><span>Delete</span></button>
+      <span class="sp"></span>
+      <button type="button" class="btn" id="iUnlock" hidden><svg class="ic"><use href="#i-lock"/></svg>Unlock to edit</button>
+      <button class="btn primary" id="iSave"><svg class="ic"><use href="#i-check"/></svg>Save</button>
+    </footer>
+  </form>
+</div>
+
+<datalist id="dlMake"></datalist><datalist id="dlLoc"></datalist><datalist id="dlPos"></datalist>
+<datalist id="dlUnit"></datalist><datalist id="dlGroup"></datalist><datalist id="dlHost"></datalist>
+<div class="toast" id="toast" role="status"><svg class="ic" id="toastIc"><use href="#i-check"/></svg><span id="toastMsg"></span><button id="toastBtn" type="button" hidden></button></div>
+
+<script src="./data/inventory-seed.js"></script>
+<script>
+(function () {
+'use strict';
+const CFG = window.INVENTORY_CONFIG || {};
+const API = (CFG.API_URL || '').trim();
+const LIVE = !!API;
+const POLL = Math.max(4, CFG.POLL_SECONDS || 8) * 1000;
+const WARN_DAYS = CFG.EXPIRY_WARN_DAYS || 60;
+const PREVIEW_HASH = 'ee08a6d9bb8f299d945c7a4ae45bbe27955b26d537949d4ccda4ed0ddc87e112';   // preview only; live mode checks on the server
+const PREVIEW_KEY = 'tkn-inventory-preview-v1', AUTH_KEY = 'tkn-inventory-auth', NAME_KEY = 'tkn-inventory-name', TIPS_KEY = 'tkn-inventory-tips';
+const CATS = [['all', 'All', 'i-grid'], ['Reagents', 'Reagents & kits', 'i-flask'], ['Antibodies', 'Antibodies', 'i-ab'], ['Glass-Plasticware', 'Glass & plastic', 'i-tube']];
+const CAT = { Reagents: { ic: 'i-flask', t: 'R', name: 'Reagent / kit' }, Antibodies: { ic: 'i-ab', t: 'A', name: 'Antibody' }, 'Glass-Plasticware': { ic: 'i-tube', t: 'G', name: 'Glass / plastic' } };
+const FIELDS = ['id', 'category', 'item', 'make', 'catalog', 'qty', 'unit', 'pack', 'minQty', 'location', 'position', 'group', 'lot', 'expiry', 'hazard', 'remarks', 'host', 'abType', 'clonality', 'conjugate', 'exem', 'received', 'check', 'updated', 'updatedBy'];
+const PAGE = 100;
+const S = { items: [], log: [], version: '0', auth: null, q: '', cat: 'all', loc: 'all', flag: null, sort: 'name', limit: PAGE,
+  editing: null, pending: 0, lastSync: 0, status: 'loading', loaded: false, afterUnlock: null, needKeyToView: false };
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s === null || s === undefined ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const norm = s => String(s || '').toLowerCase().replace(/[\s\-_.()/]/g, '');
+const icon = (id, cls) => `<svg class="ic ${cls || ''}" aria-hidden="true"><use href="#${id}"/></svg>`;
+const today = () => { const d = new Date(); d.setHours(0, 0, 0, 0); return d; };
+const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const placeIcon = l => /-\s?20|−20|-80|freez|cryo/i.test(l || '') ? ['i-snow', 'cold'] : /4\s?°|4 ?deg|fridge|elanpro/i.test(l || '') ? ['i-fridge', 'cold'] : ['i-shelf', ''];
+
+/* ---------------- status ---------------- */
+function flags(it) {
+  const f = {};
+  if (it.qty === 0) f.out = true;
+  else if (it.qty !== null && it.minQty !== null && it.minQty !== undefined && it.qty <= it.minQty) f.low = true;
+  if (it.expiry && /^\d{4}-\d{2}-\d{2}$/.test(it.expiry)) {
+    const days = Math.round((new Date(it.expiry + 'T00:00:00') - today()) / 864e5);
+    if (days < 0) f.expired = true; else if (days <= WARN_DAYS) f.expiring = days;
+  }
+  if (it.check || it.qty === null) f.check = true;
+  return f;
+}
+const FLAGS = [['out', 'Out of stock', 'i-out', 'var(--red)'], ['low', 'Running low', 'i-down', 'var(--amber)'], ['expiring', 'Expiring soon', 'i-cal', 'var(--amber)'], ['expired', 'Expired', 'i-cal', 'var(--red)'], ['check', 'Needs check', 'i-flag', 'var(--violet)']];
+
+/* ---------------- data: live (Google Sheet) or preview (this browser) ---------------- */
+async function http(method, body) {
+  const opt = method === 'GET' ? { method: 'GET' } : { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(body) };
+  const r = await fetch(method === 'GET' ? API + (API.includes('?') ? '&' : '?') + body : API, opt);
+  if (!r.ok) throw new Error('Server error ' + r.status);
+  return r.json();
+}
+const preview = {
+  load() {
+    let d = null;
+    try { d = JSON.parse(localStorage.getItem(PREVIEW_KEY) || 'null'); } catch (e) { d = null; }
+    if (!d || !Array.isArray(d.items)) d = { items: (window.INVENTORY_SEED || []).map(x => Object.assign({}, x)), log: [], version: String(Date.now()) };
+    return d;
+  },
+  save(d) { try { localStorage.setItem(PREVIEW_KEY, JSON.stringify(d)); } catch (e) {} },
+  op(b) {
+    const d = this.load(), now = new Date().toISOString(), by = b.by;
+    const find = id => d.items.findIndex(x => x.id === id);
+    const nid = cat => { const p = (CAT[cat] || CAT.Reagents).t; let m = 0; d.items.forEach(x => { if (x.id && x.id[0] === p) m = Math.max(m, parseInt(x.id.slice(1), 10) || 0); }); return p + String(m + 1).padStart(4, '0'); };
+    const log = (action, it, details) => d.log.unshift({ time: now, by, action, id: it.id, item: it.item, details: details || '' });
+    let res = { ok: false, error: 'Unknown action' };
+    if (b.action === 'add') { const it = Object.assign({}, b.item, { id: nid(b.item.category), updated: now, updatedBy: by }); d.items.push(it); log('Added', it); res = { ok: true, item: it }; }
+    if (b.action === 'update') { const i = find(b.item.id); if (i < 0) res = { ok: false, gone: true, error: 'Item no longer exists.' }; else { const old = d.items[i]; const it = Object.assign({}, old, b.item, { updated: now, updatedBy: by }); d.items[i] = it; log('Edited', it, old.qty !== it.qty ? 'Qty ' + (old.qty === null ? '?' : old.qty) + ' → ' + it.qty : ''); res = { ok: true, item: it }; } }
+    if (b.action === 'adjust') { const i = find(b.id); if (i >= 0) { const it = d.items[i], before = it.qty || 0; it.qty = Math.max(0, Math.round((before + b.delta) * 100) / 100); it.updated = now; it.updatedBy = by; log(b.delta < 0 ? 'Used' : 'Restocked', it, 'Qty ' + before + ' → ' + it.qty); res = { ok: true, item: Object.assign({}, it) }; } }
+    if (b.action === 'delete') { const i = find(b.id); const it = i >= 0 ? d.items.splice(i, 1)[0] : null; if (it) log('Deleted', it); res = { ok: true, item: it }; }
+    if (b.action === 'restore') { const it = Object.assign({}, b.item, { updated: now, updatedBy: by }); d.items.push(it); log('Restored', it); res = { ok: true, item: it }; }
+    d.log = d.log.slice(0, 200); d.version = String(Date.now()); this.save(d);
+    res.version = d.version; return res;
+  }
+};
+async function sha256(s) {
+  if (!(window.crypto && crypto.subtle)) return PREVIEW_HASH;
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+let refreshT = null;
+function refreshSoon() { clearTimeout(refreshT); refreshT = setTimeout(() => { if (S.pending || document.querySelector('input.qin')) return refreshSoon(); loadAll(true); }, 800); }
+async function call(action, payload) {
+  const body = Object.assign({ action, key: S.auth && S.auth.key, by: S.auth && S.auth.name }, payload || {});
+  S.pending++;
+  try {
+    const res = LIVE ? await http('POST', body) : preview.op(body);
+    if (res.badKey) { lock(true); toast('Password not accepted — please unlock again.', true); }
+    if (res.version) S.version = res.version;
+    if (res.ok && action !== 'verify') { if (LIVE) refreshSoon(); else { S.log = preview.load().log; renderActivity(); } }
+    return res;
+  } finally { S.pending--; }
+}
+async function loadAll(quiet) {
+  try {
+    let d;
+    if (!LIVE) d = preview.load();
+    else if (S.needKeyToView && S.auth) d = await http('POST', { action: 'list', key: S.auth.key, by: S.auth.name });
+    else d = await http('GET', 'action=list&t=' + Date.now());
+    if (d.needKey || d.badKey) { S.needKeyToView = true; S.status = 'locked'; if (!S.auth || d.badKey) openUnlock(null, 'The inventory is private. Enter the lab password to view it.'); renderSync(); return; }
+    if (d.ok === false) throw new Error(d.error || 'Could not load');
+    S.items = (d.items || []).map(cleanItem); S.log = d.log || []; S.version = d.version || S.version;
+    S.lastSync = Date.now(); S.status = 'ok'; S.loaded = true;
+    render();
+  } catch (e) {
+    S.status = 'error'; renderSync();
+    if (!quiet) toast('Could not reach the inventory. Retrying…', true);
+  }
+}
+async function poll() {
+  if (document.hidden || S.pending || !S.loaded || !LIVE || document.querySelector('input.qin')) return;
+  try {
+    const v = await http('GET', 'action=version&t=' + Date.now());
+    S.lastSync = Date.now(); S.status = 'ok';
+    if (v.version && v.version !== S.version && !S.pending) await loadAll(true); else renderSync();
+  } catch (e) { S.status = 'error'; renderSync(); }
+}
+function cleanItem(it) {
+  const o = {};
+  FIELDS.forEach(f => { o[f] = it[f] === undefined ? (f === 'qty' || f === 'minQty' ? null : f === 'check' ? false : '') : it[f]; });
+  ['qty', 'minQty'].forEach(f => { o[f] = o[f] === '' || o[f] === null ? null : Number(o[f]); if (Number.isNaN(o[f])) o[f] = null; });
+  o.check = o.check === true || o.check === 'Yes' || o.check === 'true';
+  return o;
+}
+
+/* ---------------- unlock ---------------- */
+function readAuth() { try { const a = JSON.parse(sessionStorage.getItem(AUTH_KEY) || localStorage.getItem(AUTH_KEY) || 'null'); if (a && a.key && a.name) S.auth = a; } catch (e) { S.auth = null; } }
+function lock(silent) {
+  S.auth = null;
+  try { sessionStorage.removeItem(AUTH_KEY); localStorage.removeItem(AUTH_KEY); } catch (e) {}
+  renderUser(); if (!silent) toast('Locked — view only now');
+  if (S.editing) fillItem();
+}
+function openUnlock(after, hint) {
+  S.afterUnlock = after || null;
+  $('unlockHint').textContent = hint || 'You only need to do this once on this device.';
+  $('uErr').textContent = ''; $('uPass').value = ''; $('uPass').type = 'password';
+  try { $('uName').value = localStorage.getItem(NAME_KEY) || ''; } catch (e) {}
+  openScrim('unlockScrim');
+  setTimeout(() => ($('uName').value ? $('uPass') : $('uName')).focus(), 40);
+}
+$('uEye').addEventListener('click', () => { const p = $('uPass'); p.type = p.type === 'password' ? 'text' : 'password'; p.focus(); });
+$('unlockForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const name = $('uName').value.trim(), key = $('uPass').value;
+  if (!name) { $('uErr').textContent = 'Please type your name.'; $('uName').focus(); return; }
+  if (!key) { $('uErr').textContent = 'Please type the lab password.'; $('uPass').focus(); return; }
+  const btn = $('uGo'), html = btn.innerHTML; btn.disabled = true; btn.innerHTML = '<span class="spin"></span>';
+  let ok = false;
+  try { ok = LIVE ? !!(await http('POST', { action: 'verify', key, by: name })).ok : (await sha256(key)) === PREVIEW_HASH; }
+  catch (err) { $('uErr').textContent = 'No connection. Check your internet and try again.'; btn.disabled = false; btn.innerHTML = html; return; }
+  btn.disabled = false; btn.innerHTML = html;
+  if (!ok) { $('uErr').textContent = 'That password is not right.'; $('uPass').select(); return; }
+  S.auth = { name, key };
+  try { localStorage.setItem(NAME_KEY, name); ($('uRemember').checked ? localStorage : sessionStorage).setItem(AUTH_KEY, JSON.stringify(S.auth)); } catch (err) {}
+  const fn = S.afterUnlock; S.afterUnlock = null;
+  closeScrim('unlockScrim'); renderUser();
+  toast('Hi ' + name + ' — you can edit now');
+  if (S.needKeyToView) await loadAll();
+  if (S.editing) fillItem();
+  if (fn) fn();
+});
+const needAuth = fn => (S.auth ? fn() : openUnlock(fn));
+
+/* ---------------- filter & sort ---------------- */
+const hay = it => it._h || (it._h = [it.item, it.make, it.catalog, it.location, it.position, it.group, it.lot, it.remarks, it.host, it.conjugate, it.abType, it.hazard, it.id, it.pack].join(' ').toLowerCase());
+const sortKey = it => it._k || (it._k = it.item.replace(/^[^A-Za-z0-9]+/, ''));
+const inCat = it => S.cat === 'all' || it.category === S.cat;
+function visible() {
+  const toks = S.q.toLowerCase().split(/\s+/).filter(Boolean);
+  const out = S.items.filter(it => {
+    if (!inCat(it)) return false;
+    if (S.loc !== 'all' && (it.location || '—') !== S.loc) return false;
+    if (S.flag && !(S.flag in flags(it))) return false;
+    if (toks.length) { const h = hay(it), hn = norm(h); return toks.every(t => h.includes(t) || hn.includes(norm(t))); }
+    return true;
+  });
+  const by = {
+    name: (a, b) => sortKey(a).localeCompare(sortKey(b), undefined, { numeric: true, sensitivity: 'base' }),
+    location: (a, b) => (a.location || '~').localeCompare(b.location || '~') || (a.position || '').localeCompare(b.position || '', undefined, { numeric: true }) || by.name(a, b),
+    qty: (a, b) => (a.qty === null ? 1e9 : a.qty) - (b.qty === null ? 1e9 : b.qty) || by.name(a, b),
+    expiry: (a, b) => (a.expiry || '9999').localeCompare(b.expiry || '9999') || by.name(a, b),
+    updated: (a, b) => String(b.updated || '').localeCompare(String(a.updated || '')) || by.name(a, b)
+  };
+  return out.sort(by[S.sort] || by.name);
+}
+
+/* ---------------- render ---------------- */
+function render() {
+  S.items.forEach(it => { delete it._h; delete it._k; });
+  renderCats(); renderFlags(); renderLocs(); renderList(); renderSync(); renderUser(); renderBanner(); renderActivity(); renderLists();
+}
+function renderCats() {
+  const n = c => c === 'all' ? S.items.length : S.items.filter(x => x.category === c).length;
+  $('cats').innerHTML = CATS.map(([id, label, ic]) => `<button type="button" role="tab" aria-selected="${S.cat === id}" class="chip ${S.cat === id ? 'on' : ''}" data-cat="${id}">${icon(ic, 'sm')}${esc(label)}<span class="c">${n(id)}</span></button>`).join('');
+}
+function renderFlags() {
+  const c = { out: 0, low: 0, expiring: 0, expired: 0, check: 0 };
+  S.items.filter(inCat).forEach(it => Object.keys(flags(it)).forEach(k => c[k]++));
+  $('flags').innerHTML = FLAGS.map(([k, label, ic, col]) => `<button type="button" class="chip flag ${S.flag === k ? 'on' : ''} ${c[k] ? '' : 'zero'}" data-flag="${k}" aria-pressed="${S.flag === k}" style="${S.flag === k ? 'color:' + col : ''}"><svg class="ic sm" style="color:${col}" aria-hidden="true"><use href="#${ic}"/></svg>${label}<span class="c">${c[k]}</span></button>`).join('');
+}
+function renderLocs() {
+  const counts = {}; S.items.filter(inCat).forEach(x => { const l = x.location || '—'; counts[l] = (counts[l] || 0) + 1; });
+  const locs = Object.keys(counts).sort((a, b) => a === '—' ? 1 : b === '—' ? -1 : a.localeCompare(b));
+  if (S.loc !== 'all' && !counts[S.loc]) S.loc = 'all';
+  $('locSel').innerHTML = `<option value="all">Everywhere</option>` + locs.map(l => `<option value="${esc(l)}"${S.loc === l ? ' selected' : ''}>${esc(l === '—' ? 'No location' : l)} (${counts[l]})</option>`).join('');
+}
+function statusHtml(it) {
+  const f = flags(it), o = [];
+  if (f.out) o.push(`<span class="b b-red">${icon('i-out')}Out</span>`);
+  if (f.low) o.push(`<span class="b b-amber">${icon('i-down')}Low</span>`);
+  if (f.expired) o.push(`<span class="b b-red">${icon('i-cal')}Expired</span>`);
+  else if ('expiring' in f) o.push(`<span class="b b-amber">${icon('i-cal')}${f.expiring <= 31 ? f.expiring + ' days left' : fmtMonth(it.expiry)}</span>`);
+  else if (it.expiry) o.push(`<span class="b b-dim">${icon('i-cal')}${fmtMonth(it.expiry)}</span>`);
+  if (f.check) o.push(`<span class="b b-violet">${icon('i-flag')}Check</span>`);
+  return o.join('');
+}
+function qtyHtml(it) {
+  const q = it.qty === null ? '?' : it.qty, cls = it.qty === 0 ? ' zero' : it.qty === null ? ' unk' : '';
+  return `<div class="qty"><button type="button" data-act="minus" aria-label="Used one ${esc(it.item)}"${it.qty === 0 ? ' disabled' : ''}>${icon('i-minus')}</button><div class="v${cls}" data-act="type" role="button" tabindex="0" aria-label="Count ${esc(q)}. Tap to type a new count">${esc(q)}${it.unit ? `<small>${esc(it.unit)}</small>` : ''}</div><button type="button" data-act="plus" aria-label="Add one ${esc(it.item)}">${icon('i-plus')}</button></div>`;
+}
+function rowHtml(it) {
+  const c = CAT[it.category] || CAT.Reagents, [pic, pcl] = placeIcon(it.location);
+  const sub = [it.make ? esc(it.make) : '', it.catalog ? `<span class="mono">${esc(it.catalog)}</span>` : '', it.category === 'Antibodies' ? esc([it.host, it.conjugate].filter(Boolean).join(' · ')) : esc(it.pack)].filter(Boolean).join(' · ');
+  return `<div class="item" data-id="${esc(it.id)}">
+    <div class="tile t-${c.t}">${icon(c.ic)}</div>
+    <div class="c-name"><div class="nm"><span>${esc(it.item)}</span>${it.hazard ? `<svg class="ic sm" role="img" aria-label="Hazard: ${esc(it.hazard)}"><title>${esc(it.hazard)}</title><use href="#i-warn"/></svg>` : ''}</div><div class="sub">${sub || '&nbsp;'}</div></div>
+    <div class="c-where where">${icon(pic, 'sm ' + pcl)}<div><b>${esc(it.location || 'No location')}</b>${it.position ? `<small>${esc(it.position)}</small>` : ''}</div></div>
+    <div class="c-st st">${statusHtml(it)}</div>
+    <div class="c-qty">${qtyHtml(it)}</div>
+    ${icon('i-right', 'go')}
+  </div>`;
+}
+function renderList() {
+  if (!S.loaded) { $('list').innerHTML = `<div class="empty"><span class="spin"></span>Loading inventory…</div>`; return; }
+  const v = visible(), filtered = S.q || S.cat !== 'all' || S.loc !== 'all' || S.flag;
+  $('count').textContent = filtered ? `${v.length} of ${S.items.length} items` : `${S.items.length} items`;
+  $('clearBtn').hidden = !filtered;
+  if (!S.items.length) {
+    $('list').innerHTML = `<div class="empty">${icon('i-flask')}<b>The inventory is empty</b>${LIVE ? `Load the starting list — ${(window.INVENTORY_SEED || []).length} items cleaned from the Nov 2026 Excel sheet.<button class="btn primary" type="button" id="importBtn">${icon('i-dl')}Load starting inventory</button>` : 'Add your first item.'}</div>`;
+    return;
+  }
+  if (!v.length) {
+    $('list').innerHTML = `<div class="empty">${icon('i-search')}<b>Nothing found${S.q ? ' for “' + esc(S.q) + '”' : ''}</b>Not in the lab yet?<button class="btn primary" type="button" data-act="addFromSearch">${icon('i-plus')}Add ${S.q ? '“' + esc(S.q) + '”' : 'it'}</button></div>`;
+    return;
+  }
+  const shown = v.slice(0, S.limit);
+  $('list').innerHTML = shown.map(rowHtml).join('') + (v.length > shown.length ? `<div class="showall"><button class="btn" type="button" data-act="more">Show all ${v.length}</button></div>` : '');
+}
+function renderSync() {
+  const dot = $('syncDot'), txt = $('syncText'); let cls = '', t = '';
+  if (!LIVE) { cls = 'warn'; t = 'Preview — saved in this browser only'; }
+  else if (S.status === 'error') { cls = 'err'; t = 'Offline · retrying'; }
+  else if (S.status === 'locked') { cls = 'warn'; t = 'Locked'; }
+  else if (!S.lastSync) { t = 'Connecting…'; }
+  else { cls = 'live'; const s = Math.round((Date.now() - S.lastSync) / 1000); t = 'Live · updated ' + (s < 5 ? 'just now' : s < 60 ? s + 's ago' : Math.round(s / 60) + ' min ago'); }
+  dot.className = cls; txt.textContent = t;
+}
+function renderUser() {
+  $('userBtn').innerHTML = S.auth ? `<span class="av">${esc((S.auth.name.trim()[0] || '?').toUpperCase())}</span><span class="hide-sm">${esc(S.auth.name)}</span>${icon('i-unlock', 'sm')}`
+    : `${icon('i-lock', 'sm')}<span>Unlock</span>`;
+  $('userBtn').title = S.auth ? 'Editing as ' + S.auth.name + ' — tap to lock' : 'Enter the lab password to make changes';
+  $('userBtn').setAttribute('aria-label', $('userBtn').title);
+}
+function renderBanner() {
+  $('banner').innerHTML = LIVE ? '' : `<div class="banner">${icon('i-info')}<p><b>Preview mode.</b> Not connected to the shared Google Sheet yet, so changes stay in this browser. See <span class="mono">tools/INVENTORY_SETUP.md</span> to go live.</p></div>`;
+  let hide = false; try { hide = localStorage.getItem(TIPS_KEY) === 'hide'; } catch (e) {}
+  $('steps').hidden = hide;
+}
+function renderActivity() {
+  const ic = { Used: ['i-minus', 'R'], Restocked: ['i-plus', 'G'], Added: ['i-plus', 'G'], Edited: ['i-pen', 'A'], Deleted: ['i-trash', 'R'], Restored: ['i-undo', 'A'], Imported: ['i-dl', 'A'] };
+  const L = S.log.slice(0, 60);
+  $('activity').innerHTML = L.length ? L.map(e => { const [i, t] = ic[e.action] || ['i-pen', 'A']; return `<div class="ev"><div class="tile t-${t}">${icon(i)}</div><div><div><b>${esc(e.action)}</b> ${esc(e.item)}</div>${e.details ? `<div class="d">${esc(e.details)}</div>` : ''}<div class="t">${esc(ago(e.time))}${e.by ? ' · ' + esc(e.by) : ''}</div></div></div>`; }).join('')
+    : `<div class="empty" style="margin-top:16px">${icon('i-clock')}No changes yet.</div>`;
+}
+function renderLists() {
+  const uniq = (f, extra) => Array.from(new Set(S.items.map(x => x[f]).concat(extra || []).filter(Boolean))).sort().slice(0, 300).map(v => `<option value="${esc(v)}">`).join('');
+  $('dlMake').innerHTML = uniq('make'); $('dlLoc').innerHTML = uniq('location'); $('dlPos').innerHTML = uniq('position');
+  $('dlUnit').innerHTML = uniq('unit', ['bottles', 'boxes', 'vials', 'packs', 'pieces', 'kits', 'tubes', 'aliquots']); $('dlGroup').innerHTML = uniq('group'); $('dlHost').innerHTML = uniq('host');
+}
+function fmtMonth(iso) { const p = String(iso).split('-'); return p.length >= 2 ? MON[(+p[1]) - 1] + ' ' + p[0] : iso; }
+function ago(t) {
+  const d = new Date(t); if (isNaN(d)) return String(t || '');
+  const s = (Date.now() - d) / 1000;
+  if (s < 60) return 'just now'; if (s < 3600) return Math.round(s / 60) + ' min ago'; if (s < 86400) return Math.round(s / 3600) + ' h ago';
+  return d.getDate() + ' ' + MON[d.getMonth()] + ' ' + d.getFullYear() + ', ' + String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
+}
+const rowEl = id => document.querySelector(`.item[data-id="${CSS.escape(id)}"]`);
+function flashRow(id) { requestAnimationFrame(() => { const el = rowEl(id); if (el) { el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash'); } }); }
+function upsert(it) { const i = S.items.findIndex(x => x.id === it.id); if (i >= 0) S.items[i] = it; else S.items.push(it); }
+function refreshRow(id) { const it = S.items.find(x => x.id === id), el = rowEl(id); if (it && el) el.outerHTML = rowHtml(it); renderFlags(); }
+
+/* ---------------- one-tap stock changes ---------------- */
+async function adjust(id, delta) {
+  const it = S.items.find(x => x.id === id); if (!it) return;
+  if (delta < 0 && it.qty === 0) { toast('Already at 0'); return; }
+  const before = it.qty;
+  it.qty = Math.max(0, Math.round(((before === null ? 0 : before) + delta) * 100) / 100); delete it._h;
+  refreshRow(id);
+  try {
+    const res = await call('adjust', { id, delta });
+    if (!res.ok) throw new Error(res.error || 'failed');
+    upsert(cleanItem(res.item)); refreshRow(id); flashRow(id);
+    toast(res.item.qty === 0 ? `${res.item.item} is now out of stock — please reorder` : `${res.item.item}: ${res.item.qty}${res.item.unit ? ' ' + res.item.unit : ''} left`);
+  } catch (e) { it.qty = before; refreshRow(id); toast('Not saved — check your connection', true); }
+}
+function startTyping(id) {
+  const el = document.querySelector(`.item[data-id="${CSS.escape(id)}"] .qty .v`), it = S.items.find(x => x.id === id);
+  if (!el || !it) return;
+  const inp = document.createElement('input');
+  inp.className = 'qin'; inp.type = 'number'; inp.inputMode = 'decimal'; inp.min = '0'; inp.step = 'any'; inp.value = it.qty === null ? '' : it.qty;
+  inp.setAttribute('aria-label', 'New count for ' + it.item); inp.setAttribute('enterkeyhint', 'done');
+  el.replaceWith(inp); inp.focus(); inp.select();
+  let done = false;
+  const finish = save => {
+    if (done) return; done = true;
+    const v = inp.value.trim();
+    if (!save || v === '' || Number(v) === it.qty || Number.isNaN(Number(v))) { refreshRow(id); return; }
+    setQty(id, Math.max(0, Math.round(Number(v) * 100) / 100));
+  };
+  inp.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); finish(true); } if (e.key === 'Escape') { e.stopPropagation(); finish(false); } });
+  inp.addEventListener('blur', () => finish(true));
+}
+async function setQty(id, val) {
+  const it = S.items.find(x => x.id === id); if (!it) return;
+  const before = Object.assign({}, it);
+  const wasUnknown = before.qty === null;
+  it.qty = val; if (wasUnknown) it.check = false; delete it._h; refreshRow(id);
+  try {
+    const res = await call('update', { item: wasUnknown ? { id, qty: val, check: false } : { id, qty: val }, base: before.updated });
+    if (res.conflict) { upsert(cleanItem(res.item)); refreshRow(id); toast(res.error + ' Try again.', true); return; }
+    if (!res.ok) throw new Error(res.error);
+    upsert(cleanItem(res.item)); refreshRow(id); flashRow(id); toast(`${res.item.item}: count set to ${val}`);
+  } catch (e) { upsert(before); refreshRow(id); toast('Not saved — check your connection', true); }
+}
+
+/* ---------------- item sheet ---------------- */
+const F = $('itemForm');
+function openItem(it, preset) {
+  S.editing = it ? Object.assign({}, it) : Object.assign({ category: S.cat !== 'all' ? S.cat : 'Reagents', location: S.loc !== 'all' && S.loc !== '—' ? S.loc : '' }, preset || {});
+  S.editing._new = !it;
+  $('moreBox').open = false;
+  fillItem(); openScrim('itemScrim');
+  F.querySelector('.body').scrollTop = 0;
+  setTimeout(() => { if (S.auth && !it) F.item.focus(); }, 60);
+}
+function setTile(cat) { const c = CAT[cat] || CAT.Reagents; $('iTile').className = 'tile t-' + c.t; $('iTile').innerHTML = icon(c.ic); $('abFields').style.display = cat === 'Antibodies' ? '' : 'none'; }
+function fillItem() {
+  const it = S.editing, can = !!S.auth;
+  $('iTitle').textContent = it._new ? 'Add item' : it.item;
+  $('iHint').textContent = it._new ? 'Only the name is needed — fill what you know' : (can ? 'Change anything, then Save' : 'View only — unlock to edit');
+  Array.from(F.elements).forEach(el => {
+    if (!el.name) return;
+    const v = it[el.name];
+    if (el.type === 'radio') el.checked = el.value === (it.category || 'Reagents');
+    else if (el.type === 'checkbox') el.checked = !!v;
+    else el.value = v === null || v === undefined ? '' : v;
+    el.disabled = !can;
+  });
+  F.querySelectorAll('[data-step]').forEach(b => b.disabled = !can);
+  setTile(it.category);
+  if (!it._new && !can && (it.make || it.catalog || it.expiry || it.lot || it.hazard || it.remarks)) $('moreBox').open = true;
+  $('iStamp').innerHTML = it.updated ? `${icon('i-clock', 'sm')}Last changed ${esc(ago(it.updated))}${it.updatedBy ? ' by ' + esc(it.updatedBy) : ''}` : '';
+  $('iErr').textContent = ''; $('iDup').innerHTML = '';
+  $('iDelete').hidden = it._new || !can; $('iSave').hidden = !can; $('iUnlock').hidden = can;
+  if (it._new) checkDup();
+}
+function checkDup() {
+  if (!S.editing || !S.editing._new) return;
+  const c = norm(F.catalog.value), n = F.item.value.trim().toLowerCase();
+  const hit = S.items.find(x => (c.length > 3 && norm(x.catalog) === c) || (n.length > 3 && x.item.toLowerCase() === n));
+  $('iDup').innerHTML = hit ? `<div class="dupwarn">${icon('i-warn')}<div><p>Already listed: <b>${esc(hit.item)}</b>${hit.make ? ' (' + esc(hit.make) + ')' : ''} — ${esc(hit.location || 'no location')}, qty ${hit.qty === null ? '?' : esc(hit.qty)}.</p><button type="button" class="link" data-open-id="${esc(hit.id)}">Open that one instead ${icon('i-right', 'sm')}</button></div></div>` : '';
+}
+F.addEventListener('input', e => { if (e.target.name === 'catalog' || e.target.name === 'item') checkDup(); });
+F.addEventListener('change', e => { if (e.target.name === 'category') setTile(e.target.value); });
+F.querySelectorAll('[data-step]').forEach(b => b.addEventListener('click', () => {
+  const v = F.qty.value === '' ? 0 : Number(F.qty.value); F.qty.value = Math.max(0, Math.round((v + Number(b.dataset.step)) * 100) / 100);
+}));
+$('iDup').addEventListener('click', e => { const b = e.target.closest('[data-open-id]'); if (b) { const it = S.items.find(x => x.id === b.dataset.openId); if (it) openItem(it); } });
+$('iUnlock').addEventListener('click', () => openUnlock(() => fillItem()));
+function readForm() {
+  const o = {};
+  Array.from(F.elements).forEach(el => {
+    if (!el.name) return;
+    if (el.type === 'radio') { if (el.checked) o.category = el.value; }
+    else if (el.type === 'checkbox') o[el.name] = el.checked;
+    else if (el.type === 'number') o[el.name] = el.value === '' ? null : Math.max(0, Number(el.value));
+    else o[el.name] = el.value.trim();
+  });
+  return o;
+}
+F.addEventListener('submit', async e => {
+  e.preventDefault();
+  if (!S.auth) return openUnlock(() => fillItem());
+  const data = readForm();
+  if (!data.item) { $('iErr').textContent = 'Please give it a name.'; F.item.focus(); return; }
+  const btn = $('iSave'), html = btn.innerHTML; btn.disabled = true; btn.innerHTML = '<span class="spin"></span>';
+  try {
+    const isNew = S.editing._new;
+    const res = isNew ? await call('add', { item: data }) : await call('update', { item: Object.assign({ id: S.editing.id }, data), base: S.editing.updated });
+    if (res.conflict) { const cur = cleanItem(res.item); upsert(cur); S.editing = Object.assign({}, cur, { _new: false }); fillItem(); $('iErr').textContent = res.error + ' Their version is shown — make your change again.'; return; }
+    if (!res.ok) { $('iErr').textContent = res.error || 'Could not save.'; return; }
+    upsert(cleanItem(res.item)); closeScrim('itemScrim');
+    if (isNew) { S.q = ''; $('q').value = ''; $('qClear').hidden = true; }
+    render(); flashRow(res.item.id); toast(isNew ? `Added ${res.item.item}` : 'Saved');
+  } catch (err) { $('iErr').textContent = 'No connection — not saved. Try again.'; }
+  finally { btn.disabled = false; btn.innerHTML = html; }
+});
+let delArmed = null;
+$('iDelete').addEventListener('click', async () => {
+  const it = S.editing; if (!it || it._new) return;
+  const lbl = $('iDelete').querySelector('span');
+  if (delArmed !== it.id) { delArmed = it.id; lbl.textContent = 'Tap again to delete'; setTimeout(() => { if (delArmed === it.id) { delArmed = null; lbl.textContent = 'Delete'; } }, 3500); return; }
+  delArmed = null; lbl.textContent = 'Delete';
+  try {
+    const res = await call('delete', { id: it.id });
+    if (!res.ok) { $('iErr').textContent = res.error || 'Could not delete.'; return; }
+    S.items = S.items.filter(x => x.id !== it.id); closeScrim('itemScrim'); render();
+    toast(`Deleted ${it.item}`, false, 'Undo', async () => {
+      const r = await call('restore', { item: Object.assign({}, it) });
+      if (r.ok) { upsert(cleanItem(r.item)); render(); flashRow(r.item.id); toast('Restored'); } else toast(r.error || 'Could not restore', true);
+    });
+  } catch (err) { $('iErr').textContent = 'No connection.'; }
+});
+
+/* ---------------- first import ---------------- */
+async function importSeed() {
+  const seed = window.INVENTORY_SEED || [];
+  if (!seed.length) return toast('Starting list not found (data/inventory-seed.js)', true);
+  const btn = $('importBtn'); if (btn) { btn.disabled = true; btn.innerHTML = '<span class="spin"></span> Loading…'; }
+  try {
+    const res = await call('bulk', { items: seed });
+    if (!res.ok) { toast(res.error || 'Import failed', true); return; }
+    toast(`Loaded ${res.count} items`); await loadAll();
+  } catch (e) { toast('Import failed — check the connection', true); }
+  finally { const b = $('importBtn'); if (b) { b.disabled = false; b.innerHTML = icon('i-dl') + 'Load starting inventory'; } }
+}
+
+/* ---------------- Excel export ---------------- */
+function loadScript(src) { return new Promise((ok, bad) => { const s = document.createElement('script'); s.src = src; s.onload = ok; s.onerror = bad; document.head.appendChild(s); }); }
+async function ensureXLSX() {
+  if (window.XLSX) return;
+  try { await loadScript('https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js'); }
+  catch (e) { await loadScript('https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js'); }
+}
+async function exportExcel() {
+  toast('Preparing Excel…');
+  try {
+    await ensureXLSX();
+    const X = window.XLSX, wb = X.utils.book_new();
+    const num = v => (v === null || v === undefined || v === '' ? '' : v);
+    const date = v => v ? new Date(v) : '';
+    const stamp = v => { const d = new Date(v); return isNaN(d) ? '' : d; };
+    const sortL = a => a.slice().sort((x, y) => (x.location || '~').localeCompare(y.location || '~') || x.item.localeCompare(y.item));
+    const sheet = (name, cols, rows) => {
+      const aoa = [cols.map(c => c[0])].concat(rows.map(r => cols.map(c => c[1](r))));
+      const ws = X.utils.aoa_to_sheet(aoa, { cellDates: true, dateNF: 'dd-mmm-yyyy' });
+      ws['!cols'] = cols.map(c => ({ wch: c[2] || 14 }));
+      ws['!autofilter'] = { ref: X.utils.encode_range({ s: { r: 0, c: 0 }, e: { r: Math.max(1, aoa.length - 1), c: cols.length - 1 } }) };
+      X.utils.book_append_sheet(wb, ws, name);
+    };
+    const status = it => { const f = flags(it); return [f.out && 'Out of stock', f.low && 'Running low', f.expired && 'Expired', ('expiring' in f) && 'Expiring soon', f.check && 'Needs check'].filter(Boolean).join(', '); };
+    const common = [['Location', r => r.location, 22], ['Shelf / box', r => r.position, 22]];
+    const tail = [['Notes', r => r.remarks, 40], ['Status', status, 18], ['Last updated', r => stamp(r.updated), 18], ['Updated by', r => r.updatedBy, 14], ['ID', r => r.id, 8]];
+    const by = c => sortL(S.items.filter(x => x.category === c));
+    sheet('Reagents', [['Item', r => r.item, 40], ['Make', r => r.make, 18], ['Catalogue no.', r => r.catalog, 18], ['Qty', r => num(r.qty), 6], ['Unit', r => r.unit, 9], ['Pack size', r => r.pack, 12], ['Warn at', r => num(r.minQty), 8]]
+      .concat(common, [['Group', r => r.group, 18], ['Lot no.', r => r.lot, 14], ['Expiry', r => date(r.expiry), 12], ['Hazard', r => r.hazard, 24]], tail), by('Reagents'));
+    sheet('Antibodies', [['Target', r => r.item, 28], ['Host', r => r.host, 9], ['Type', r => r.abType, 10], ['Clonality', r => r.clonality, 9], ['Conjugate', r => r.conjugate, 10], ['Ex/Em (nm)', r => r.exem, 10], ['Amount', r => r.pack, 9], ['Vials', r => num(r.qty), 6], ['Catalogue no.', r => r.catalog, 16], ['Make', r => r.make, 20], ['Received', r => r.received, 12]]
+      .concat(common, [['Expiry', r => date(r.expiry), 12]], tail), by('Antibodies'));
+    sheet('Glass-Plasticware', [['Item', r => r.item, 34], ['Make', r => r.make, 16], ['Catalogue no.', r => r.catalog, 16], ['Qty', r => num(r.qty), 6], ['Unit', r => r.unit, 9], ['Warn at', r => num(r.minQty), 8]].concat(common, tail), by('Glass-Plasticware'));
+    const att = S.items.filter(it => status(it)).sort((a, b) => status(a).localeCompare(status(b)) || a.item.localeCompare(b.item));
+    sheet('Needs attention', [['Status', status, 24], ['Type', r => (CAT[r.category] || {}).name, 14], ['Item', r => r.item, 40], ['Make', r => r.make, 18], ['Catalogue no.', r => r.catalog, 18], ['Qty', r => num(r.qty), 6], ['Unit', r => r.unit, 9], ['Expiry', r => date(r.expiry), 12], ['Location', r => r.location, 22], ['Notes', r => r.remarks, 40]], att);
+    if (S.log.length) sheet('Change log', [['Time', r => stamp(r.time), 18], ['By', r => r.by, 14], ['Action', r => r.action, 11], ['Item', r => r.item, 36], ['Details', r => r.details, 60], ['ID', r => r.id, 8]], S.log);
+    const d = new Date();
+    X.writeFile(wb, `TKN_Lab_Inventory_${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}.xlsx`, { compression: true });
+    toast('Excel downloaded');
+  } catch (e) { toast('Could not make the Excel file (needs internet)', true); }
+}
+
+/* ---------------- plumbing ---------------- */
+let lastFocus = null;
+function openScrim(id) { if (!document.querySelector('.scrim.open')) lastFocus = document.activeElement; $(id).classList.add('open'); document.body.style.overflow = 'hidden'; }
+function closeScrim(id) {
+  $(id).classList.remove('open');
+  if (id === 'itemScrim') S.editing = null;
+  if (id === 'unlockScrim') S.afterUnlock = null;
+  if (!document.querySelector('.scrim.open')) { document.body.style.overflow = ''; if (lastFocus && lastFocus.focus && document.contains(lastFocus)) lastFocus.focus(); }
+}
+document.querySelectorAll('.scrim').forEach(sc => {
+  sc.addEventListener('mousedown', e => { if (e.target === sc) closeScrim(sc.id); });
+  sc.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', () => closeScrim(sc.id)));
+});
+let toastT = null;
+function toast(msg, isErr, actLabel, act) {
+  const t = $('toast'); $('toastMsg').textContent = msg; t.classList.toggle('err', !!isErr);
+  $('toastIc').innerHTML = `<use href="#${isErr ? 'i-warn' : 'i-check'}"/>`;
+  const b = $('toastBtn'); b.hidden = !actLabel; b.innerHTML = actLabel ? icon('i-undo', 'sm') + esc(actLabel) : '';
+  b.onclick = act ? () => { t.classList.remove('show'); act(); } : null;
+  t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), actLabel ? 7000 : 2600);
+}
+$('list').addEventListener('click', e => {
+  if (e.target.closest('#importBtn')) return needAuth(importSeed);
+  const a = e.target.closest('[data-act]'), row = e.target.closest('.item');
+  const act = a ? a.dataset.act : null;
+  if (act === 'more') { S.limit = 1e9; renderList(); return; }
+  if (act === 'addFromSearch') { needAuth(() => openItem(null, { item: S.q })); return; }
+  if (!row || e.target.closest('input.qin')) return;
+  const id = row.dataset.id, it = S.items.find(x => x.id === id); if (!it) return;
+  if (act === 'minus') return needAuth(() => adjust(id, -1));
+  if (act === 'plus') return needAuth(() => adjust(id, +1));
+  if (act === 'type') return needAuth(() => startTyping(id));
+  if (e.target.closest('.qty')) return;
+  openItem(it);
+});
+$('list').addEventListener('keydown', e => { if ((e.key === 'Enter' || e.key === ' ') && e.target.dataset && e.target.dataset.act === 'type') { e.preventDefault(); const row = e.target.closest('.item'); needAuth(() => startTyping(row.dataset.id)); } });
+$('cats').addEventListener('click', e => { const b = e.target.closest('[data-cat]'); if (!b) return; S.cat = b.dataset.cat; S.limit = PAGE; render(); });
+$('flags').addEventListener('click', e => { const b = e.target.closest('[data-flag]'); if (!b) return; S.flag = S.flag === b.dataset.flag ? null : b.dataset.flag; S.limit = PAGE; renderFlags(); renderList(); });
+$('locSel').addEventListener('change', e => { S.loc = e.target.value; S.limit = PAGE; renderList(); });
+$('sortSel').addEventListener('change', e => { S.sort = e.target.value; renderList(); });
+let qT = null;
+$('q').addEventListener('input', e => { $('qClear').hidden = !e.target.value; clearTimeout(qT); qT = setTimeout(() => { S.q = e.target.value.trim(); S.limit = PAGE; renderList(); }, 110); });
+$('qClear').addEventListener('click', () => { $('q').value = ''; $('qClear').hidden = true; S.q = ''; renderList(); $('q').focus(); });
+$('clearBtn').addEventListener('click', () => { S.q = ''; $('q').value = ''; $('qClear').hidden = true; S.cat = 'all'; S.loc = 'all'; S.flag = null; S.limit = PAGE; render(); });
+['addBtn', 'fab'].forEach(id => $(id).addEventListener('click', () => needAuth(() => openItem(null, S.q ? { item: S.q } : null))));
+['exportBtn', 'exportTop'].forEach(id => $(id).addEventListener('click', exportExcel));
+$('userBtn').addEventListener('click', () => S.auth ? lock() : openUnlock(null));
+$('activityBtn').addEventListener('click', () => $('drawer').classList.add('open'));
+document.querySelector('[data-close-drawer]').addEventListener('click', () => $('drawer').classList.remove('open'));
+$('stepsX').addEventListener('click', () => { try { localStorage.setItem(TIPS_KEY, 'hide'); } catch (e) {} $('steps').hidden = true; });
+function themeIcon() { const l = window.TKNTheme && TKNTheme.get() === 'light'; $('themeBtn').innerHTML = icon(l ? 'i-moon' : 'i-sun'); $('themeBtn').setAttribute('aria-label', l ? 'Dark mode' : 'Light mode'); $('themeBtn').title = l ? 'Dark mode' : 'Light mode'; }
+$('themeBtn').addEventListener('click', () => { if (window.TKNTheme) TKNTheme.toggle(); themeIcon(); });
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { const open = Array.from(document.querySelectorAll('.scrim.open')).pop(); if (open) closeScrim(open.id); else $('drawer').classList.remove('open'); }
+  if (e.key === '/' && !/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)) { e.preventDefault(); $('q').focus(); }
+});
+document.addEventListener('visibilitychange', () => { if (!document.hidden) poll(); });
+window.addEventListener('storage', e => { if (!LIVE && e.key === PREVIEW_KEY) loadAll(true); });
+
+readAuth(); themeIcon(); renderUser(); renderBanner(); renderSync(); renderList();
+loadAll();
+setInterval(poll, POLL);
+setInterval(renderSync, 5000);
+})();
+</script>
+</body>
+</html>
