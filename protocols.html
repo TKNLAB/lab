@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Protocols — Nayak Lab · IIT Delhi</title>
+<meta name="description" content="Bench protocols and recipe sheets used in the Nayak Lab, IIT Delhi.">
+<meta property="og:title" content="Protocols — Nayak Lab · IIT Delhi">
+<meta property="og:description" content="Ion Channel &amp; Receptor Biology Lab at IIT Delhi — how ion channels and receptors work, how mutations break them, and how drugs can fix them.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://channellab.iitd.ac.in/protocols">
+<meta property="og:image" content="https://channellab.iitd.ac.in/assets/logos/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://channellab.iitd.ac.in/protocols">
+<script src="./support.js"></script>
+<script src="./js/theme.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="icon" type="image/svg+xml" href="assets/logos/tkn-favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/logos/tkn-favicon-32.png">
+<link rel="apple-touch-icon" href="assets/logos/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&amp;family=Geist+Mono:wght@400;500&amp;family=Newsreader:ital,opsz,wght@1,6..72,400&amp;display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#070c16;-webkit-font-smoothing:antialiased;}
+:focus-visible{outline:2px solid #f1d49a;outline-offset:3px;}
+::selection{background:#e0a53a;color:#070c16;}
+a{text-decoration:none;color:inherit;}
+a:hover{color:inherit;}
+img{max-width:100%;}
+@media (prefers-reduced-motion:reduce){*{transition-duration:.01ms !important;}}
+</style>
+<script src="./data/content.js"></script>
+<script src="./js/site-fx.js"></script>
+<script src="./js/tap-fix.js"></script>
+</helmet>
+<div style="font-family:'Geist',sans-serif;color:#e8ecf3;background:#070c16;min-height:100vh;overflow-x:clip;">
+  <dc-import name="SiteNav" active="protocols" hint-size="100%,64px" style="position:sticky;top:0;z-index:200;"></dc-import>
+
+  <section id="main" style="position:relative;overflow:hidden;border-bottom:1px solid rgba(255,255,255,0.07);">
+    <div aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;background:radial-gradient(900px 420px at 85% 20%,rgba(241,212,154,0.10),transparent 70%),radial-gradient(700px 380px at 10% 110%,rgba(58,98,160,0.18),transparent 70%);"></div>
+    <div style="position:relative;max-width:1360px;margin:0 auto;padding:clamp(72px,10vw,136px) clamp(20px,5vw,40px) clamp(56px,7vw,88px);">
+      <div style="font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.2em;color:#e6b667;text-transform:uppercase;margin-bottom:22px;">Lab resources</div>
+      <h1 style="font-weight:500;font-size:clamp(38px,6vw,84px);line-height:1;letter-spacing:-0.04em;margin-bottom:26px;">Bench <span style="font-family:'Newsreader',serif;font-style:italic;font-weight:400;color:#f1d49a;letter-spacing:-0.02em;">protocols</span></h1>
+      <p style="font-size:clamp(16px,1.5vw,18px);line-height:1.65;color:#aab3c3;max-width:620px;font-weight:300;">Recipe sheets and protocols we use every day at the bench. Open them on screen, or print one and stick it up next to the bench.</p>
+    </div>
+  </section>
+
+  <section style="max-width:1360px;margin:0 auto;padding:clamp(56px,7vw,96px) clamp(20px,5vw,40px) 0;">
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:16px;">
+      <sc-for list="{{ docs }}" as="d" hint-placeholder-count="2">
+        <article data-reveal="" data-reveal-delay="{{ d.delay }}" style="background:#0d1422;border:1px solid rgba(255,255,255,0.07);border-radius:20px;padding:12px;display:flex;flex-direction:column;transition:border-color .25s,transform .3s cubic-bezier(.32,.72,0,1),background .25s;" style-hover="border-color:rgba(241,212,154,0.45);transform:translateY(-6px);background:#101a2c;">
+          <a href="{{ d.pdf }}" target="_blank" rel="noopener" aria-label="Open {{ d.title }} (PDF)" style="display:block;aspect-ratio:4/3;border-radius:12px;overflow:hidden;background:#f4f6f9;">
+            <img loading="lazy" src="{{ d.thumb }}" alt="Preview of {{ d.title }}" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;">
+          </a>
+          <div style="padding:22px 12px 14px;display:flex;flex-direction:column;gap:10px;flex:1;">
+            <div style="font-family:'Geist Mono',monospace;font-size:12.5px;color:#070c16;background:#f1d49a;padding:4px 10px;border-radius:999px;align-self:flex-start;">{{ d.tag }}</div>
+            <h2 style="font-weight:500;font-size:21px;letter-spacing:-0.02em;line-height:1.2;">{{ d.title }}</h2>
+            <p style="font-size:14px;line-height:1.6;color:#8792a6;font-weight:300;flex:1;">{{ d.desc }}</p>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;">
+              <a href="{{ d.pdf }}" target="_blank" rel="noopener" style="font-size:14px;font-weight:500;color:#070c16;background:#f1d49a;padding:10px 18px;min-height:44px;display:flex;align-items:center;border-radius:999px;transition:box-shadow .18s;" style-hover="box-shadow:0 0 0 6px rgba(241,212,154,0.14);">Open PDF →</a>
+              <a href="{{ d.pdf }}" download="" style="font-size:14px;font-weight:500;color:#e8ecf3;border:1px solid rgba(255,255,255,0.18);padding:10px 18px;min-height:44px;display:flex;align-items:center;border-radius:999px;transition:border-color .2s,background .2s;" style-hover="border-color:rgba(241,212,154,0.5);background:rgba(255,255,255,0.04);">Download ↓</a>
+            </div>
+            <div style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#7d889c;padding-top:12px;margin-top:6px;border-top:1px solid rgba(255,255,255,0.07);">{{ d.meta }}</div>
+          </div>
+        </article>
+      </sc-for>
+    </div>
+    <p data-reveal="" style="margin-top:28px;font-size:14px;line-height:1.6;color:#7d889c;font-weight:300;max-width:720px;">Printing tip: choose <span style="color:#aab3c3;">“Actual size”</span> (not “Fit to page”) so the A5 and A6 sheets print at their true size.</p>
+  </section>
+
+  <div style="height:clamp(80px,10vw,128px);"></div>
+  <dc-import name="SiteFooter" hint-size="100%,340px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+// To add a protocol: put the PDF in assets/docs/, a preview image in assets/docs/thumbs/, and add one entry below.
+const DOCS = [
+  { tag: 'SDS-PAGE', title: 'SDS-PAGE gel recipes', pdf: 'assets/docs/sds-page-gel-recipes.pdf', thumb: 'assets/docs/thumbs/sds-page-gel-recipes.webp',
+    desc: 'Resolving gels at 6, 8, 10, 12 and 15% for 10, 15, 20 and 30 mL, plus stacking gel for 3, 5, 8 and 10 mL.', meta: 'PDF · A5 · 1 page' },
+  { tag: 'SDS-PAGE', title: '10% gel quick card', pdf: 'assets/docs/sds-page-10pct-gel-card.pdf', thumb: 'assets/docs/thumbs/sds-page-10pct-gel-card.webp',
+    desc: 'Our routine 10% resolving gel and stacking gel, for one gel or two gels.', meta: 'PDF · A6 · 1 page' },
+];
+class Component extends DCLogic {
+  renderVals() {
+    return { docs: DOCS.map((d, i) => ({ ...d, delay: i * 90 })) };
+  }
+}
+</script>
+</body>
+</html>
